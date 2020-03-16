@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">MotoSp</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kategori">Kategori</string>
+    <string name="teknik_ozellikler">Teknik Özellikler</string>
+    <string name="silindir_hacmi">Silindir Hacmi</string>
+    <string name="textview">TextView</string>
+    <string name="beygir_gucu">Beygir Gücü</string>
+    <string name="todo">TODO</string>
+    <string name="tanitim">Tanıtım</string>
+    <string name="azami_tork">Azami Tork</string>
+    <string name="yakit_kapasitesi">Yakıt Kapasitesi</string>
+    <string name="model">Model</string>
+    <string name="agirilik">Ağırlık</string>
+    <string name="azami_devir">Azami Devir</string>
+    <string name="motor_tanitim">Motor Tanıtım</string>
+    <string name="ana_sayfa">Ana Sayfa</string>
+    <string name="forum">Forum</string>
+    <string name="motovlog">MotoVlog</string>
+    <string name="veri_yok">Veri Yok</string>
+    <string name="duyurular">Duyurular</string>
+    <string name="duyuru">duyuru</string>
+    <string name="yorum_yaz">Yorum yaz...</string>
+    <string name="giri_yap">Giriş Yap</string>
+    <string name="e_mail">E-Mail</string>
+    <string name="sohbet_ekle">Sohbet Ekle</string>
+    <string name="yorum_yap">YORUM YAP</string>
+    <string name="azami_h_z">Azami Hız</string>
+    <string name="numara_veya_adresin_zerine_t_klayarak_direk_bayiye_ula_abilirsiniz">Numara veya Adresin üzerine tıklayarak direk bayiye ulaşabilirsiniz.</string>
+
+
+    <string name="uygulamaID">ca-app-pub-4759583087933961~2965685286</string>
+    <string name="banner_ad_unit_id">ca-app-pub-4759583087933961/4480262722</string>
+
+    <string name="title_activity_haber">HaberActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+
+</resources>
