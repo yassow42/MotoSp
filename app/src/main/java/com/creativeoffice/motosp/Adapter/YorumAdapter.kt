@@ -1,10 +1,13 @@
 package com.creativeoffice.motosp.Adapter
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.animation.AnimationUtils
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
@@ -30,20 +33,49 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
     override fun onBindViewHolder(p0: YorumHolder, p1: Int) {
         val currentItem = yorumlar.get(p1)
         p0.setData(currentItem)
+      //  p0.imgProfile.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
 
         p0.itemView.setOnLongClickListener {
 
-            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(currentItem.yorum_yapilan_model.toString()).child("yorumlar").child(currentItem.yorum_key.toString()).removeValue()
+            var yorumUserID = currentItem.yorum_yapan_kisi.toString()
+            if (yorumUserID.equals(userID)){
+
+                var alert = AlertDialog.Builder(myContext)
+                    .setTitle("Yorumu Sil")
+                    .setMessage("Emin Misiniz ?")
+                    .setPositiveButton("Sil", object : DialogInterface.OnClickListener {
+                        override fun onClick(p0: DialogInterface?, p1: Int) {
+                            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(currentItem.yorum_yapilan_model.toString()).child("yorumlar").child(currentItem.yorum_key.toString()).removeValue()
+                        }
+
+                    })
+                    .setNegativeButton("İptal", object : DialogInterface.OnClickListener {
+                        override fun onClick(p0: DialogInterface?, p1: Int) {
+                        }
+                    }).create()
+
+                alert.show()
+            }
+
             return@setOnLongClickListener true
         }
     }
 
     inner class YorumHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val userName = itemView.userName
+        val comment = itemView.comment
+        val date = itemView.date
+        val imgProfile = itemView.circleImageView
+        val yorumCL = itemView.yorumCL
+
+
         fun setData(currentItem: ModelDetaylariData.Yorumlar) {
             userName.text = currentItem.isim
             comment.text = currentItem.yorum
             date.text = formatDate(currentItem.tarih).toString()
-            var imgURL = FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+
+
+            FirebaseDatabase.getInstance().reference.child("users").child(currentItem.yorum_yapan_kisi.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                 }
 
@@ -67,10 +99,7 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
 
         }
 
-        val userName = itemView.userName
-        val comment = itemView.comment
-        val date = itemView.date
-        val imgProfile = itemView.circleImageView
+
     }
 
 

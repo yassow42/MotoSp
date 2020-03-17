@@ -76,6 +76,7 @@ class ProfileEditFragment : Fragment() {
         fragmentView.imgBtnDegisiklikleriKaydet.setOnClickListener {
 
             if (profilPhotoUri != null) {
+
                 var dialogYukleniyor = YukleniyorFragment()
                 dialogYukleniyor.show(activity!!.supportFragmentManager, "yukleniyorFragmenti")
                 dialogYukleniyor.isCancelable = false
@@ -91,13 +92,12 @@ class ProfileEditFragment : Fragment() {
                                 .addOnCompleteListener { p0 ->
 
                                     if (p0.isSuccessful) {
-                                        dialogYukleniyor.dismiss()
+                                         dialogYukleniyor.dismiss()
 
-                                        //     kullaniciAdiniGuncelle(view, true)
 
                                     } else {
-                                        //    Toast.makeText(activity, "Resim Yüklenemedi", Toast.LENGTH_LONG).show()
-                                        // kullaniciAdiniGuncelle(view, false)
+                                        Toast.makeText(activity, "Resim Yüklenemedi", Toast.LENGTH_LONG).show()
+
                                     }
                                 }
                         }
@@ -196,8 +196,8 @@ class ProfileEditFragment : Fragment() {
                         var marka = p0.child("user_details").child("kullanilan_motor_marka").value.toString()
                         var model = p0.child("user_details").child("kullanilan_motor_model").value.toString()
 
-                     //   spinnerMarka.setSelection(adapterMarka.getPosition(marka))
-                      //  spinnerModel.setSelection(adapterModel.getPosition(model))
+                        //   spinnerMarka.setSelection(adapterMarka.getPosition(marka))
+                        //  spinnerModel.setSelection(adapterModel.getPosition(model))
 
 
                     }

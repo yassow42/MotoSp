@@ -56,6 +56,8 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.squareup.picasso:picasso:(insert latest version)'
 
+
+
     // intent geçiş animasyonu
     //  implementation 'com.github.hajiyevelnur92:intentanimation:1.0'
 

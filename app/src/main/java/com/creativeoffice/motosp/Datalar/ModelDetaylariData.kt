@@ -18,6 +18,7 @@ class ModelDetaylariData {
     var yakitkap: String? = null
 
     val yorumlar: HashMap<String, Yorumlar>? = null
+    val yy_parcalar: HashMap<String, Parcalar>? = null
 
     constructor()
     constructor(
@@ -58,10 +59,27 @@ class ModelDetaylariData {
         val isim: String? = null,
         val yorum: String? = null,
         val tarih: Long? = null,
-        val yorum_key:String?=null,
-        val yorum_yapilan_model:String?=null
+        val yorum_key: String? = null,
+        val yorum_yapilan_model: String? = null,
+        val yorum_yapan_kisi: String? = null
 
-    )
+
+    ) {
+        override fun toString(): String {
+            return "Yorumlar(isim=$isim, yorum=$yorum, tarih=$tarih, yorum_key=$yorum_key, yorum_yapilan_model=$yorum_yapilan_model, yorum_yapan_kisi=$yorum_yapan_kisi)"
+        }
+    }
+
+    data class Parcalar(
+
+        val parca_ismi: String? = null,
+        val parca_model_uyumu: String? = null,
+        val parca_uyum_model_yili: String? = null
+    ) {
+        override fun toString(): String {
+            return "Parcalar(parca_ismi=$parca_ismi, parca_model_uyumu=$parca_model_uyumu, parca_uyum_model_yili=$parca_uyum_model_yili)"
+        }
+    }
 
 
 }

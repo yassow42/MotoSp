@@ -53,7 +53,9 @@ class HomeActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         rvModelListesi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         // rvModelListesi.layoutManager = LinearLayoutManager(context!!.applicationContext, LinearLayoutManager.VERTICAL, false)
-        rvModelListesi.adapter = MarkaModelAdapter(this.applicationContext, tumModeller)
+        val markaAdapter = MarkaModelAdapter(this.applicationContext, tumModeller)
+
+        rvModelListesi.adapter = markaAdapter
         rvModelListesi.setItemViewCacheSize(20)
 
 
