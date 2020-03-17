@@ -41,7 +41,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
 
-        p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+        p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol_yari))
 
         //  p0.tvModel.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme))
 
@@ -102,7 +102,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
 
         fun setData(oAnkiModel: ModelDetaylariData, myContext: Context) {
-
+            val youTubeUrl = oAnkiModel.motorVideo
             tvMarka.text = oAnkiModel.marka.toString()
             tvModel.text = oAnkiModel.model.toString()
             tvTanitim.text = oAnkiModel.tanitim.toString()
@@ -119,30 +119,17 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             detay_kapasite.text = oAnkiModel.yakitkap
             detay_tuketimi.text = oAnkiModel.yakitTuk
 
-
-            val ref = FirebaseDatabase.getInstance().reference
             var currentSecond = 0f
-            ref.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
+
+            youTubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
+                    youTubePlayer.cueVideo(youTubeUrl.toString(), 0f)
                 }
 
-                override fun onDataChange(p0: DataSnapshot) {
-                    val youTubeUrl = p0.child("tum_motorlar").child(oAnkiModel.model.toString()).child("motorVideo").value
-                    youTubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            youTubePlayer.cueVideo(youTubeUrl.toString(), 0f)
-                        }
-
-                        override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-                            currentSecond = second
-                        }
-                    })
-
-
+                override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                    currentSecond = second
                 }
             })
-
-
 
             if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
                 tvTanitim.visibility = View.GONE
@@ -151,7 +138,6 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
 
             tvDetaylariGoster.setOnClickListener {
-
 
                 scrollView.visibility = View.VISIBLE
                 tvDetaylariGoster.visibility = View.GONE

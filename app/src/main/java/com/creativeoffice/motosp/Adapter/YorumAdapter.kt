@@ -65,7 +65,7 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
         val userName = itemView.userName
         val comment = itemView.comment
         val date = itemView.date
-        val imgProfile = itemView.circleImageView
+      //  val imgProfile = itemView.circleImageView
         val yorumCL = itemView.yorumCL
 
 
@@ -83,7 +83,7 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
                     var imgURL = p0.child("user_details").child("profile_picture").value.toString()
 
                     if (imgURL != "default") {
-                        Picasso.get().load(imgURL).into(imgProfile)
+                      //  Picasso.get().load(imgURL).into(imgProfile)
                     }
                 }
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.ParcaAdapter
 import com.creativeoffice.motosp.Adapter.YorumAdapter
@@ -38,36 +39,7 @@ class ModelDetayiActivity : AppCompatActivity() {
         val ref = FirebaseDatabase.getInstance().reference
         setupYorumlarRecyclerView()
         init(ref)
-        initVeri()
         verileriGetir()
-
-
-    }
-
-    private fun initVeri() {
-        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                val model = p0.getValue(ModelDetaylariData::class.java) ?: return //Cok onemli
-
-                val yorumHashMap = model.yorumlar ?: return
-                yorumListesi = ArrayList<ModelDetaylariData.Yorumlar>()
-                for (i in yorumHashMap.values) {
-                    yorumListesi.add(i)
-                }
-                yorumListesi.sortBy { it.tarih } //sortby tarihe göre sıralar
-
-
-            }
-
-
-        })
-
-
-
 
 
     }
@@ -155,29 +127,7 @@ class ModelDetayiActivity : AppCompatActivity() {
         }
     }
 
-    private var watcher: TextWatcher = object : TextWatcher {
-        override fun afterTextChanged(p0: Editable?) {
 
-        }
-
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-        }
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            if (etYorum.text.toString().length >= 4) {
-                yorumGonderBtn.isEnabled = true
-                yorumGonderBtn.setBackgroundResource(R.drawable.ic_sendmavi)
-
-
-            } else {
-                yorumGonderBtn.isEnabled = false
-                yorumGonderBtn.setBackgroundResource(R.drawable.ic_send)
-            }
-
-        }
-
-    }
 
 
     fun setupYorumlarRecyclerView() {
@@ -292,13 +242,50 @@ class ModelDetayiActivity : AppCompatActivity() {
             imgMarka.setBackgroundResource(R.drawable.kawasaki)
         }
 
+        imgMotorTipi.setAnimation(AnimationUtils.loadAnimation(this, R.anim.olusma_sol))
+        if (kategori == "Scooter") {
+            imgMotorTipi.setBackgroundResource(R.drawable.ic_scooter)
+        } else if (kategori == "Sport" || kategori == "Racing") {
+            imgMotorTipi.setBackgroundResource(R.drawable.ic_sport)
+        } else if (kategori == "Touring" || kategori == "Enduro" || kategori == "Adventure") {
+            imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
+        } else if (kategori == "Cross") {
+            imgMotorTipi.setBackgroundResource(R.drawable.ic_cross)
+        } else if (kategori == "Naked") {
+            imgMotorTipi.setBackgroundResource(R.drawable.ic_naked)
+        } else if (kategori == "Chopper") {
+            imgMotorTipi.setBackgroundResource(R.drawable.ic_chopper)
+        }
+
 
     }
+
 
     override fun onStart() {
         super.onStart()
         setupYorumlarRecyclerView()
+    }
+    private var watcher: TextWatcher = object : TextWatcher {
+        override fun afterTextChanged(p0: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            if (etYorum.text.toString().length >= 4) {
+                yorumGonderBtn.isEnabled = true
+                yorumGonderBtn.setBackgroundResource(R.drawable.ic_sendmavi)
+
+
+            } else {
+                yorumGonderBtn.isEnabled = false
+                yorumGonderBtn.setBackgroundResource(R.drawable.ic_send)
+            }
+
+        }
 
     }
-
 }
