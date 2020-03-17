@@ -260,7 +260,6 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     }
 
-
     override fun onStart() {
         super.onStart()
         setupYorumlarRecyclerView()
