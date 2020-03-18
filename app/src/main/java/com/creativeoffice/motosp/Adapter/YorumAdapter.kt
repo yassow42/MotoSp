@@ -65,7 +65,7 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
         val userName = itemView.userName
         val comment = itemView.comment
         val date = itemView.date
-      //  val imgProfile = itemView.circleImageView
+
         val yorumCL = itemView.yorumCL
 
 
@@ -73,21 +73,6 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
             userName.text = currentItem.isim
             comment.text = currentItem.yorum
             date.text = formatDate(currentItem.tarih).toString()
-
-
-            FirebaseDatabase.getInstance().reference.child("users").child(currentItem.yorum_yapan_kisi.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    var imgURL = p0.child("user_details").child("profile_picture").value.toString()
-
-                    if (imgURL != "default") {
-                      //  Picasso.get().load(imgURL).into(imgProfile)
-                    }
-                }
-
-            })
 
         }
 

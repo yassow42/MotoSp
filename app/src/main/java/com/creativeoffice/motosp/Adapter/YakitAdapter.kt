@@ -37,8 +37,8 @@ class YakitAdapter(val myContext: Context, val yakitVerileri: ArrayList<ModelDet
 
         fun setData(oAnkiYakit: ModelDetaylariData.YakitTuketimi, myContext: Context) {
             userName.text = oAnkiYakit.kullanici_adi.toString()
-            model.text = oAnkiYakit.motor_yili.toString()
-            yakitDegeri.text = oAnkiYakit.yakitTuk.toString() + "lt /100km"
+            model.text = oAnkiYakit.motor_yili.toString() + " Model"
+            yakitDegeri.text = oAnkiYakit.yakitTuk.toString() + " lt /100km"
 
         }
 

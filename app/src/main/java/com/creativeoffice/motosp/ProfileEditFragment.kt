@@ -193,8 +193,7 @@ class ProfileEditFragment : Fragment() {
                             mProgresBarEdit.visibility = View.GONE
                         }
 
-                        var marka = p0.child("user_details").child("kullanilan_motor_marka").value.toString()
-                        var model = p0.child("user_details").child("kullanilan_motor_model").value.toString()
+
 
                         //   spinnerMarka.setSelection(adapterMarka.getPosition(marka))
                         //  spinnerModel.setSelection(adapterModel.getPosition(model))
@@ -214,7 +213,7 @@ class ProfileEditFragment : Fragment() {
 
         if (requestCode == RESIM_SEC && resultCode == AppCompatActivity.RESULT_OK && data!!.data != null) {
 
-            profilPhotoUri = data!!.data
+            profilPhotoUri = data.data
             circleEditProfileImage.setImageURI(profilPhotoUri)
 
         }

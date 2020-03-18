@@ -35,10 +35,7 @@ class ModelDetaylariData {
         tanitim: String?,
         tork: String?,
         yakitTuk: String?,
-        yakitkap: String?,
-        yorumlar: HashMap<String, Yorumlar>?,
-        yy_parcalar: HashMap<String, Parcalar>?,
-        yy_yakit_verileri: HashMap<String, YakitTuketimi>?
+        yakitkap: String?
     ) {
         this.marka = marka
         this.model = model
@@ -53,9 +50,7 @@ class ModelDetaylariData {
         this.tork = tork
         this.yakitTuk = yakitTuk
         this.yakitkap = yakitkap
-        this.yorumlar = yorumlar
-        this.yy_parcalar = yy_parcalar
-        this.yy_yakit_verileri = yy_yakit_verileri
+
     }
 
 
@@ -75,9 +70,9 @@ class ModelDetaylariData {
         val parca_uyum_model_yili: String? = null,
         val kullanici_adi: String? = null
     )
-/*
+
     data class YakitTuketimi(
-        val yakitTuk: Float?,
+        val yakitTuk: Float?=null,
         val kullanici_adi: String? = null,
         val motor_yili: String? = null
     )
@@ -85,5 +80,5 @@ class ModelDetaylariData {
     override fun toString(): String {
         return "ModelDetaylariData(marka=$marka, model=$model, agirlik=$agirlik, beygir=$beygir, devir=$devir, hiz=$hiz, kategori=$kategori, motorVideo=$motorVideo, silindirHacmi=$silindirHacmi, tanitim=$tanitim, tork=$tork, yakitTuk=$yakitTuk, yakitkap=$yakitkap, yorumlar=$yorumlar, yy_parcalar=$yy_parcalar, yy_yakit_verileri=$yy_yakit_verileri)"
     }
-*/
+
 }

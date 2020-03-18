@@ -3,6 +3,7 @@ package com.creativeoffice.motosp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -11,14 +12,19 @@ import kotlinx.android.synthetic.main.activity_parca_ekle.*
 
 class ParcaEkleActivity : AppCompatActivity() {
 
+    lateinit var mAuth: FirebaseAuth
     var kullaniciAdi: String? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_parca_ekle)
+        mAuth = FirebaseAuth.getInstance()
+        var userID = mAuth.currentUser!!.uid
 
         var model = intent.getStringExtra("Model")
         var marka = intent.getStringExtra("Marka")
-        var ParcaBilgisiGirenKisi = intent.getStringExtra("ParcaBilgisiGirenKisi")
+
 
 
         tvMarka.text = marka
@@ -32,7 +38,7 @@ class ParcaEkleActivity : AppCompatActivity() {
             var parcaIsmi = etParcaİsmi.text.toString()
             var parcaModel = etParcaModelYili.text.toString()
             var parcaUygun = etParcaUygunlugu.text.toString()
-            FirebaseDatabase.getInstance().reference.child("users").child(ParcaBilgisiGirenKisi.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            FirebaseDatabase.getInstance().reference.child("users").child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                 }
 

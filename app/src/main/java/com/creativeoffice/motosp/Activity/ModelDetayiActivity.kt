@@ -37,11 +37,11 @@ class ModelDetayiActivity : AppCompatActivity() {
     lateinit var gelenUsers: Users
     lateinit var yorumAdapter: YorumAdapter
     lateinit var parcaAdapter: ParcaAdapter
-    //lateinit var yakitAdapter: YakitAdapter
+    lateinit var yakitAdapter: YakitAdapter
 
     var parcaListesi = ArrayList<ModelDetaylariData.Parcalar>()
     var yorumListesi = ArrayList<ModelDetaylariData.Yorumlar>()
-  //  var yakitListesi = ArrayList<ModelDetaylariData.YakitTuketimi>()
+    var yakitListesi = ArrayList<ModelDetaylariData.YakitTuketimi>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +92,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                 val yakitHashMap = model.yy_yakit_verileri ?: return
                 for (i in yakitHashMap.values) {
-      //              yakitListesi.add(i)
+                    yakitListesi.add(i)
 
                 }
 
@@ -216,8 +216,8 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                     kullaniciAdi = gelenUsers.user_name.toString()
 
-              //      var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
-             //       FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(gelenUsers.user_name.toString()).setValue(yakitVerisi)
+                    var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString()).setValue(yakitVerisi)
                 }
             })
 
@@ -254,14 +254,14 @@ class ModelDetayiActivity : AppCompatActivity() {
     }
 
     fun setupYakitRecyclerView() {
-/*
-        rcYorumlar.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, true)
+
+        rcYorumlar.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, false)
         yakitAdapter = YakitAdapter(this@ModelDetayiActivity, yakitListesi, userID)
         yakitAdapter.notifyDataSetChanged()
         rcYorumlar.setHasFixedSize(true)
         rcYorumlar.adapter = yakitAdapter
         rcYorumlar.refreshDrawableState()
-*/
+
     }
 
 
