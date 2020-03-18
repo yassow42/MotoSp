@@ -17,11 +17,12 @@ class ModelDetaylariData {
     var yakitTuk: String? = null
     var yakitkap: String? = null
 
-    val yorumlar: HashMap<String, Yorumlar>? = null
-    val yy_parcalar: HashMap<String, Parcalar>? = null
+    var yorumlar: HashMap<String, Yorumlar>? = null
+    var yy_parcalar: HashMap<String, Parcalar>? = null
+    var yy_yakit_verileri: HashMap<String, YakitTuketimi>? = null
 
     constructor()
-    constructor(
+      constructor(
         marka: String?,
         model: String?,
         agirlik: String?,
@@ -34,7 +35,10 @@ class ModelDetaylariData {
         tanitim: String?,
         tork: String?,
         yakitTuk: String?,
-        yakitkap: String?
+        yakitkap: String?,
+        yorumlar: HashMap<String, Yorumlar>?,
+        yy_parcalar: HashMap<String, Parcalar>?,
+        yy_yakit_verileri: HashMap<String, YakitTuketimi>?
     ) {
         this.marka = marka
         this.model = model
@@ -49,11 +53,12 @@ class ModelDetaylariData {
         this.tork = tork
         this.yakitTuk = yakitTuk
         this.yakitkap = yakitkap
+        this.yorumlar = yorumlar
+        this.yy_parcalar = yy_parcalar
+        this.yy_yakit_verileri = yy_yakit_verileri
     }
 
-    override fun toString(): String {
-        return "ModelDetaylariData(marka=$marka, model=$model, agirlik=$agirlik, beygir=$beygir, devir=$devir, hiz=$hiz, kategori=$kategori, motorVideo=$motorVideo, silindirHacmi=$silindirHacmi, tanitim=$tanitim, tork=$tork, yakitTuk=$yakitTuk, yakitkap=$yakitkap)"
-    }
+
 
     data class Yorumlar(
         val isim: String? = null,
@@ -62,24 +67,23 @@ class ModelDetaylariData {
         val yorum_key: String? = null,
         val yorum_yapilan_model: String? = null,
         val yorum_yapan_kisi: String? = null
-
-
-    ) {
-        override fun toString(): String {
-            return "Yorumlar(isim=$isim, yorum=$yorum, tarih=$tarih, yorum_key=$yorum_key, yorum_yapilan_model=$yorum_yapilan_model, yorum_yapan_kisi=$yorum_yapan_kisi)"
-        }
-    }
+    )
 
     data class Parcalar(
-
         val parca_ismi: String? = null,
         val parca_model_uyumu: String? = null,
-        val parca_uyum_model_yili: String? = null
-    ) {
-        override fun toString(): String {
-            return "Parcalar(parca_ismi=$parca_ismi, parca_model_uyumu=$parca_model_uyumu, parca_uyum_model_yili=$parca_uyum_model_yili)"
-        }
+        val parca_uyum_model_yili: String? = null,
+        val kullanici_adi: String? = null
+    )
+/*
+    data class YakitTuketimi(
+        val yakitTuk: Float?,
+        val kullanici_adi: String? = null,
+        val motor_yili: String? = null
+    )
+
+    override fun toString(): String {
+        return "ModelDetaylariData(marka=$marka, model=$model, agirlik=$agirlik, beygir=$beygir, devir=$devir, hiz=$hiz, kategori=$kategori, motorVideo=$motorVideo, silindirHacmi=$silindirHacmi, tanitim=$tanitim, tork=$tork, yakitTuk=$yakitTuk, yakitkap=$yakitkap, yorumlar=$yorumlar, yy_parcalar=$yy_parcalar, yy_yakit_verileri=$yy_yakit_verileri)"
     }
-
-
+*/
 }

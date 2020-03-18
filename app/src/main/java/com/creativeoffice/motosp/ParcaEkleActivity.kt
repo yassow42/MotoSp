@@ -11,12 +11,15 @@ import kotlinx.android.synthetic.main.activity_parca_ekle.*
 
 class ParcaEkleActivity : AppCompatActivity() {
 
+    var kullaniciAdi: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_parca_ekle)
 
         var model = intent.getStringExtra("Model")
         var marka = intent.getStringExtra("Marka")
+        var ParcaBilgisiGirenKisi = intent.getStringExtra("ParcaBilgisiGirenKisi")
+
 
         tvMarka.text = marka
         tvModel.text = model
@@ -29,9 +32,19 @@ class ParcaEkleActivity : AppCompatActivity() {
             var parcaIsmi = etParcaİsmi.text.toString()
             var parcaModel = etParcaModelYili.text.toString()
             var parcaUygun = etParcaUygunlugu.text.toString()
+            FirebaseDatabase.getInstance().reference.child("users").child(ParcaBilgisiGirenKisi.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
 
-            var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaModel, parcaUygun)
-            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").push().setValue(parcaVerisi)
+                override fun onDataChange(p0: DataSnapshot) {
+                    kullaniciAdi = p0.child("user_name").value.toString()
+                    var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaModel, parcaUygun, kullaniciAdi)
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").push().setValue(parcaVerisi)
+                }
+
+            }
+            )
+
         }
 
     }

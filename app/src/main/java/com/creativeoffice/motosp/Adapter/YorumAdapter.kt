@@ -33,7 +33,7 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
     override fun onBindViewHolder(p0: YorumHolder, p1: Int) {
         val currentItem = yorumlar.get(p1)
         p0.setData(currentItem)
-      //  p0.imgProfile.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+       p0.yorumCL.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme_anti))
 
         p0.itemView.setOnLongClickListener {
 

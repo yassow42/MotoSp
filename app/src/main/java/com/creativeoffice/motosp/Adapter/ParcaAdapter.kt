@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
@@ -22,13 +23,13 @@ class ParcaAdapter(val myContext: Context, val parcalar: ArrayList<ModelDetaylar
     override fun onBindViewHolder(p0: ParcaHolder, p1: Int) {
 
         p0.setData(parcalar.get(p1), myContext)
-
-
+        p0.parcaCL.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme_anti))
 
 
     }
 
     inner class ParcaHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val parcaCL = itemView.parcaCL
         val parcaIsmi = itemView.tvParcaismi
         val parcaUygunlugu = itemView.tvParcaUygunlugu
         val parcaModelYili = itemView.tvParcaModelYili

@@ -20,11 +20,9 @@
         android:textSize="12sp"
         android:textStyle="bold"
         android:transitionName="trans_marka"
-        app:layout_constraintBottom_toTopOf="@+id/tvTanitim"
         app:layout_constraintEnd_toEndOf="@+id/tvModel"
         app:layout_constraintStart_toStartOf="@+id/tvModel"
-        app:layout_constraintTop_toBottomOf="@+id/tvModel"
-        app:layout_constraintVertical_bias="0.13999999" />
+        app:layout_constraintTop_toBottomOf="@+id/tvModel" />
 
     <TextView
         android:id="@+id/tvModel"
@@ -382,15 +380,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:maxWidth="200dp"
-        android:maxLines="1"
+        android:maxWidth="300dp"
+        android:maxLines="2"
         android:text="TextView"
         android:textColor="@color/beyaz"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.35"
-        app:layout_constraintStart_toEndOf="@+id/tvModel"
-        app:layout_constraintTop_toBottomOf="@+id/imgMotorTipi" />
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@+id/imgMotorTipi"
+        app:layout_constraintStart_toStartOf="@+id/tvModel"
+        app:layout_constraintTop_toBottomOf="@+id/tvMarka" />
 
     <TextView
         android:id="@+id/tvTanitim2"
@@ -399,6 +396,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:maxWidth="300dp"
         android:text="sadfsafas"
         android:textColor="@color/beyaz"
         android:textSize="10sp"

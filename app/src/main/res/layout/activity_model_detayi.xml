@@ -52,8 +52,21 @@
                 android:layout_height="45dp"
                 android:background="@color/beyaz"
                 android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgYedek"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imgYorum"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="2dp"
+                android:layout_height="45dp"
+                android:background="@color/beyaz"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/view3"
+                app:layout_constraintEnd_toStartOf="@+id/imgYakitTuk"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imgYedek"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
 
             <TextView
@@ -416,27 +429,29 @@
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvParcaEkle" />
+                app:layout_constraintTop_toBottomOf="@+id/tvYakitTukEkle" />
 
             <ImageView
                 android:id="@+id/imgYorum"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/ic_yorum"
-                app:layout_constraintBottom_toBottomOf="@+id/view4"
+                app:layout_constraintBottom_toBottomOf="@+id/imgYedek"
                 app:layout_constraintEnd_toStartOf="@+id/view4"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintTop_toTopOf="@+id/imgYedek" />
 
             <ImageView
                 android:id="@+id/imgYedek"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/ic_yedekparca"
-                app:layout_constraintBottom_toBottomOf="@+id/imgYorum"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/view3"
+                app:layout_constraintEnd_toStartOf="@+id/view6"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view4"
-                app:layout_constraintTop_toTopOf="@+id/imgYorum" />
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -472,12 +487,38 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/edit_profile_button_background"
-                android:text="TextView"
+                android:fontFamily="monospace"
+                android:text="Parça Ekle"
                 android:textAlignment="center"
                 android:textColor="@color/siyah"
+                android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/view3"
                 app:layout_constraintStart_toStartOf="@+id/view3"
                 app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+            <ImageView
+                android:id="@+id/imgYakitTuk"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_yakit"
+                app:layout_constraintBottom_toBottomOf="@+id/imgYedek"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/view6"
+                app:layout_constraintTop_toTopOf="@+id/imgYedek" />
+
+            <TextView
+                android:id="@+id/tvYakitTukEkle"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:background="@drawable/edit_profile_button_background"
+                android:text="Yakıt Tüketimi Ekle"
+                android:textAlignment="center"
+                android:textColor="@color/siyah"
+                app:layout_constraintEnd_toEndOf="@+id/tvParcaEkle"
+                app:layout_constraintStart_toStartOf="@+id/tvParcaEkle"
+                app:layout_constraintTop_toBottomOf="@+id/tvParcaEkle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
