@@ -2,15 +2,12 @@ package com.creativeoffice.motosp.Activity
 
 import android.app.Dialog
 import android.content.DialogInterface
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.ParcaAdapter
@@ -18,13 +15,14 @@ import com.creativeoffice.motosp.Adapter.YakitAdapter
 import com.creativeoffice.motosp.Adapter.YorumAdapter
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.Datalar.Users
-import com.creativeoffice.motosp.ParcaEkleActivity
 import com.creativeoffice.motosp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 import kotlinx.android.synthetic.main.activity_model_detayi.*
+import kotlinx.android.synthetic.main.activity_parca_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_yakit_tuketim.view.*
+import kotlinx.android.synthetic.main.dialog_yorum.view.*
 
 
 class ModelDetayiActivity : AppCompatActivity() {
@@ -33,6 +31,8 @@ class ModelDetayiActivity : AppCompatActivity() {
     var model: String? = null
     var userID: String? = null
     var kullaniciAdi: String? = null
+
+    var ilkSetupOldumu: Boolean? = null
 
     lateinit var gelenUsers: Users
     lateinit var yorumAdapter: YorumAdapter
@@ -48,7 +48,8 @@ class ModelDetayiActivity : AppCompatActivity() {
         setContentView(R.layout.activity_model_detayi)
 
         userID = FirebaseAuth.getInstance().currentUser!!.uid
-
+        ilkSetupOldumu = false
+        Log.e("sad", ilkSetupOldumu.toString())
         init()
         verileriGetir()
 
@@ -56,24 +57,27 @@ class ModelDetayiActivity : AppCompatActivity() {
     }
 
     private fun initVeri() {
+
         //Kullanıcı Verilerini getirdik
         FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
             override fun onDataChange(p0: DataSnapshot) {
-
                 gelenUsers = p0.getValue(Users::class.java)!!
+                // kullaniciAdi = gelenUsers.user_name.toString()
             }
         })
         //MotorVeri listesi
-        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
 
             override fun onDataChange(p0: DataSnapshot) {
                 val model = p0.getValue(ModelDetaylariData::class.java) ?: return //Cok onemli
-
+                yorumListesi.clear()
+                parcaListesi.clear()
+                yakitListesi.clear()
 
                 val yorumHashMap = model.yorumlar ?: return
                 yorumListesi = ArrayList()
@@ -81,7 +85,6 @@ class ModelDetayiActivity : AppCompatActivity() {
                     yorumListesi.add(i)
                 }
                 yorumListesi.sortBy { it.tarih } //sortby tarihe göre sıralar
-                setupYorumlarRecyclerView()
 
 
                 val parcaHashMap = model.yy_parcalar ?: return
@@ -89,11 +92,17 @@ class ModelDetayiActivity : AppCompatActivity() {
                 for (i in parcaHashMap.values) {
                     parcaListesi.add(i)
                 }
+                parcaListesi.sortBy { it.parca_uyum_model_yili } //sortby tarihe göre sıralar
 
                 val yakitHashMap = model.yy_yakit_verileri ?: return
                 for (i in yakitHashMap.values) {
                     yakitListesi.add(i)
+                }
+                yakitListesi.sortBy { it.yakitTuk }
 
+                if (ilkSetupOldumu == false) {
+                    setupYorumlarRecyclerView()
+                    ilkSetupOldumu = true
                 }
 
 
@@ -112,51 +121,15 @@ class ModelDetayiActivity : AppCompatActivity() {
         val ref = FirebaseDatabase.getInstance().reference
         tvParcaEkle.visibility = View.GONE
         tvYakitTukEkle.visibility = View.GONE
-        etYorum.addTextChangedListener(watcher)
+
         imgYorum.setBackgroundResource(R.drawable.ic_yorum_mavi)
-
-
-
-        yorumGonderBtn.setOnClickListener {
-
-
-            kullaniciAdi = gelenUsers!!.user_name.toString()
-            val yorum = etYorum.text.toString()
-
-            //Önce key oluşturduk
-            val key = ref.child("tum_motorlar").child(model.toString()).child("yorumlar").push().key
-
-            var yorumlar = ModelDetaylariData.Yorumlar(kullaniciAdi, yorum, null, key, model, userID)
-
-            //Bu keyin altına yorumu yazdık
-            ref.child("tum_motorlar").child(model.toString()).child("yorumlar")
-                .child(key.toString()).setValue(yorumlar)
-
-            //Bu yorumun içine server zamanını yazdık
-            ref.child("tum_motorlar").child(model.toString()).child("yorumlar")
-                .child(key.toString()).child("tarih").setValue(ServerValue.TIMESTAMP)
-
-
-            //+5 yorum puan ekleme
-            var eskiPuan = gelenUsers.user_details!!.puan!!.toInt()
-            var yeniPuan = eskiPuan + 5
-            ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
-
-
-            etYorum.text.clear()
-            setupYorumlarRecyclerView()
-        }
-
 
         imgYorum.setOnClickListener {
             imgYorum.setBackgroundResource(R.drawable.ic_yorum_mavi)
             imgYedek.setBackgroundResource(R.drawable.ic_yedekparca)
             imgYakitTuk.setBackgroundResource(R.drawable.ic_yakit)
 
-            etYorum.text.clear()
-            yorumGonderBtn.setBackgroundResource(R.drawable.ic_send)
-            etYorum.visibility = View.VISIBLE
-            yorumGonderBtn.visibility = View.VISIBLE
+            tvYorumYap.visibility = View.VISIBLE
             tvParcaEkle.visibility = View.GONE
             tvYakitTukEkle.visibility = View.GONE
 
@@ -167,8 +140,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             imgYorum.setBackgroundResource(R.drawable.ic_yorum)
             imgYakitTuk.setBackgroundResource(R.drawable.ic_yakit)
 
-            etYorum.visibility = View.GONE
-            yorumGonderBtn.visibility = View.GONE
+            tvYorumYap.visibility = View.GONE
             tvParcaEkle.visibility = View.VISIBLE
             tvYakitTukEkle.visibility = View.GONE
 
@@ -178,24 +150,103 @@ class ModelDetayiActivity : AppCompatActivity() {
             imgYakitTuk.setBackgroundResource(R.drawable.ic_yakittuk_mavi)
             imgYorum.setBackgroundResource(R.drawable.ic_yorum)
             imgYedek.setBackgroundResource(R.drawable.ic_yedekparca)
-            etYorum.visibility = View.GONE
-            yorumGonderBtn.visibility = View.GONE
+
+            tvYorumYap.visibility = View.GONE
             tvParcaEkle.visibility = View.GONE
             tvYakitTukEkle.visibility = View.VISIBLE
             setupYakitRecyclerView()
 
         }
 
+
+        tvYorumYap.setOnClickListener {
+
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var inflater: LayoutInflater = layoutInflater
+            var view: View = inflater.inflate(R.layout.dialog_yorum, null)
+
+            builder.setView(view)
+            builder.setNegativeButton("İptal", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    dialog!!.dismiss()
+                }
+
+            })
+            builder.setPositiveButton("Gönder", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    var yorum = view.edYorum.text.toString()
+                    if (yorum.length > 5) {
+                        FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onCancelled(p0: DatabaseError) {
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                val key = ref.child("tum_motorlar").child(model.toString()).child("yorumlar").push().key
+                                kullaniciAdi = p0.child("user_name").value.toString()
+                                var yorumlar = ModelDetaylariData.Yorumlar(kullaniciAdi, yorum, null, key, model, userID)
+                                ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).setValue(yorumlar)
+                                ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).child("tarih").setValue(ServerValue.TIMESTAMP)
+                                //+5 yorum puan ekleme
+                                var eskiPuan = gelenUsers.user_details!!.puan!!.toInt()
+                                var yeniPuan = eskiPuan + 5
+                                ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+                                setupYorumlarRecyclerView()
+                            }
+                        })
+                    }
+                }
+            })
+
+            var dialog: Dialog = builder.create()
+            dialog.show()
+            setupYorumlarRecyclerView()
+        }
+
+
         tvParcaEkle.setOnClickListener {
-            val intent = Intent(this, ParcaEkleActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-            intent.putExtra("Model", model)
-            intent.putExtra("Marka", marka)
-            intent.putExtra("ParcaBilgisiGirenKisi", userID)
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var inflater: LayoutInflater = layoutInflater
+            var view: View = inflater.inflate(R.layout.activity_parca_ekle, null)
 
-            startActivity(intent)
+            builder.setView(view)
+            builder.setNegativeButton("İptal", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    dialog!!.dismiss()
+                }
+
+            })
+            builder.setPositiveButton("Ekle", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                    var parcaIsmi = view.etParcaİsmi.text.toString()
+                    var parcaModel = view.etParcaModelYili.text.toString()
+                    var parcaYorum = view.etParcaUygunlugu.text.toString()
+                    FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot) {
+                            kullaniciAdi = p0.child("user_name").value.toString()
+
+                            var parcaKey = FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").push().key
+
+
+                            var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaYorum, parcaModel, kullaniciAdi, parcaKey, marka, model)
+                            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").child(parcaKey.toString()).setValue(parcaVerisi)
+                            setupParcalarRecyclerView()
+                        }
+                    })
+                }
+            })
+            var dialog: Dialog = builder.create()
+            dialog.show()
+
 
         }
+
+
         tvYakitTukEkle.setOnClickListener {
 
             var builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -218,6 +269,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                     var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
                     FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString()).setValue(yakitVerisi)
+                    setupYakitRecyclerView()
                 }
             })
 
@@ -225,6 +277,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             dialog.show()
 
         }
+
     }
 
 
@@ -336,27 +389,5 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     }
 
-    private var watcher: TextWatcher = object : TextWatcher {
-        override fun afterTextChanged(p0: Editable?) {
 
-        }
-
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-        }
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            if (etYorum.text.toString().length >= 4) {
-                yorumGonderBtn.isEnabled = true
-                yorumGonderBtn.setBackgroundResource(R.drawable.ic_sendmavi)
-
-
-            } else {
-                yorumGonderBtn.isEnabled = false
-                yorumGonderBtn.setBackgroundResource(R.drawable.ic_send)
-            }
-
-        }
-
-    }
 }

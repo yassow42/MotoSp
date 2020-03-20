@@ -426,7 +426,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvYakitTukEkle" />
@@ -453,39 +452,10 @@
                 app:layout_constraintStart_toEndOf="@+id/view4"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <EditText
-                    android:id="@+id/etYorum"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Yorumun..."
-                    android:inputType="textPersonName" />
-
-                <ImageView
-                    android:id="@+id/yorumGonderBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    android:layout_weight="8"
-                    android:background="@drawable/ic_send" />
-
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/tvParcaEkle"
                 android:layout_width="120dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="4dp"
                 android:background="@drawable/edit_profile_button_background"
                 android:fontFamily="monospace"
                 android:text="Parça Ekle"
@@ -495,7 +465,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/view3"
                 app:layout_constraintStart_toStartOf="@+id/view3"
-                app:layout_constraintTop_toBottomOf="@+id/view3" />
+                app:layout_constraintTop_toBottomOf="@+id/tvYorumYap" />
 
             <ImageView
                 android:id="@+id/imgYakitTuk"
@@ -519,6 +489,18 @@
                 app:layout_constraintEnd_toEndOf="@+id/tvParcaEkle"
                 app:layout_constraintStart_toStartOf="@+id/tvParcaEkle"
                 app:layout_constraintTop_toBottomOf="@+id/tvParcaEkle" />
+
+            <TextView
+                android:id="@+id/tvYorumYap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edit_profile_button_background"
+                android:padding="5dp"
+                android:text="@string/yorum_yap"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

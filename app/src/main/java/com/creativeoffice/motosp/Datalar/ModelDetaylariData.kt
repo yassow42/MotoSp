@@ -66,9 +66,12 @@ class ModelDetaylariData {
 
     data class Parcalar(
         val parca_ismi: String? = null,
-        val parca_model_uyumu: String? = null,
+        val parca_model_yorumu: String? = null,
         val parca_uyum_model_yili: String? = null,
-        val kullanici_adi: String? = null
+        val kullanici_adi: String? = null,
+        val parca_key:String?=null,
+        val marka:String?=null,
+        val model:String?=null
     )
 
     data class YakitTuketimi(
@@ -77,8 +80,5 @@ class ModelDetaylariData {
         val motor_yili: String? = null
     )
 
-    override fun toString(): String {
-        return "ModelDetaylariData(marka=$marka, model=$model, agirlik=$agirlik, beygir=$beygir, devir=$devir, hiz=$hiz, kategori=$kategori, motorVideo=$motorVideo, silindirHacmi=$silindirHacmi, tanitim=$tanitim, tork=$tork, yakitTuk=$yakitTuk, yakitkap=$yakitkap, yorumlar=$yorumlar, yy_parcalar=$yy_parcalar, yy_yakit_verileri=$yy_yakit_verileri)"
-    }
 
 }

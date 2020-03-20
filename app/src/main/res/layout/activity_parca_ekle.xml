@@ -3,27 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ParcaEkleActivity">
 
     <EditText
         android:id="@+id/etParcaİsmi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="Parcaİsmi"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMarka" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etParcaModelYili"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Parca Model Yili"
+        android:hint="Parca Model Yılı"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/etParcaİsmi"
         app:layout_constraintStart_toStartOf="@+id/etParcaİsmi"
@@ -35,41 +35,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Parca Uygunlugu"
+        android:hint="Parca Yorumun"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/etParcaModelYili"
         app:layout_constraintStart_toStartOf="@+id/etParcaModelYili"
-        app:layout_constraintTop_toBottomOf="@+id/etParcaModelYili" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <Button
-        android:id="@+id/btnKaydet"
+    <TextView
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Kaydet"
-        app:layout_constraintEnd_toEndOf="@+id/etParcaUygunlugu"
-        app:layout_constraintStart_toStartOf="@+id/etParcaUygunlugu"
-        app:layout_constraintTop_toBottomOf="@+id/etParcaUygunlugu" />
-
-    <TextView
-        android:id="@+id/tvMarka"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Markaa"
-        app:layout_constraintEnd_toStartOf="@+id/tvModel"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvModel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/model"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tvMarka"
-        app:layout_constraintTop_toTopOf="@+id/tvMarka" />
+        android:text="Parça nerede bulunur ? Fiyat nedir? vs."
+        app:layout_constraintEnd_toEndOf="@+id/etParcaModelYili"
+        app:layout_constraintStart_toStartOf="@+id/etParcaModelYili"
+        app:layout_constraintTop_toBottomOf="@+id/etParcaModelYili" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
