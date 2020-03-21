@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Activity.BayiActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="activity bayi"
-        tools:layout_editor_absoluteX="166dp"
-        tools:layout_editor_absoluteY="202dp" />
-
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
@@ -23,4 +15,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcBayi"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

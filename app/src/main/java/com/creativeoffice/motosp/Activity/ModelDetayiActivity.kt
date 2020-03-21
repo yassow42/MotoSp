@@ -188,6 +188,8 @@ class ModelDetayiActivity : AppCompatActivity() {
                                 ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).setValue(yorumlar)
                                 ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).child("tarih").setValue(ServerValue.TIMESTAMP)
                                 //+5 yorum puan ekleme
+
+
                                 var eskiPuan = gelenUsers.user_details!!.puan!!.toInt()
                                 var yeniPuan = eskiPuan + 5
                                 ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)

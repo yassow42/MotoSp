@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ParcaEkleActivity"></activity>
+        <activity android:name=".Activity.HomeActivity"></activity>
         <activity android:name=".Activity.ProfileSettingActivity" />
         <activity android:name=".Activity.ProfileActivity" />
         <activity android:name=".Activity.LoginActivity">
@@ -23,10 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.HomeActivity" />
+        <activity android:name=".Activity.MotorActivity" />
         <activity android:name=".Activity.BayiActivity" />
         <activity android:name=".Activity.ModelDetayiActivity" />
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

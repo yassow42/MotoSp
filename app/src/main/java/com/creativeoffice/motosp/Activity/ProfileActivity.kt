@@ -21,8 +21,7 @@ import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
 
-    private val ACTIVITY_NO = 2
-    private val TAG = "HomeActivity"
+    private val ACTIVITY_NO = 3
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
