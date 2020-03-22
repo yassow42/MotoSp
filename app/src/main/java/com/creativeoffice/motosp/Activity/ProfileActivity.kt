@@ -31,7 +31,8 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         mAuth = FirebaseAuth.getInstance()
-        //  mAuth.signOut()
+
+
         setupAuthListener()
         setupNavigationView()
         kullaniciVerileriniGetir()
