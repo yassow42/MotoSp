@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
+    android:layout_margin="2dp"
     android:background="@drawable/bg_bayi_detay">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="6dp"
         android:orientation="vertical"
-        android:padding="5dp"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,13 +49,34 @@
             android:textAlignment="center"
             android:textColor="@color/beyaz" />
 
-        <TextView
-            android:id="@+id/tvYildiz"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:padding="5dp"
-            android:text="TextView"
-            android:textColor="@color/beyaz" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvAdreseGit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="Adrese Git"
+                android:textAlignment="center"
+                android:textColor="@color/beyaz"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvAra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="Ara"
+                android:textAlignment="center"
+                android:textColor="@color/beyaz"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,8 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/bg_dialog_tumlayout"
+    android:padding="3dp">
 
     <TextView
         android:id="@+id/textView3"
@@ -11,6 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Yorumun"
+        android:textColor="@color/siyah"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,15 +24,45 @@
     <EditText
         android:id="@+id/edYorum"
         android:layout_width="0dp"
+
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_edit_text"
+        android:ems="10"
+        android:padding="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvGonder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/tvIptal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:padding="8dp"
+        android:text="İptal"
+        android:textColor="@color/siyah"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvGonder"
+        app:layout_constraintEnd_toStartOf="@+id/tvGonder"
+        app:layout_constraintTop_toTopOf="@+id/tvGonder" />
+
+    <TextView
+        android:id="@+id/tvGonder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        android:text="Gönder"
+        android:textColor="@color/siyah"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

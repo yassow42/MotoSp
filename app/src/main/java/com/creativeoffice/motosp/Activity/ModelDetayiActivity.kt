@@ -15,6 +15,7 @@ import com.creativeoffice.motosp.Adapter.YakitAdapter
 import com.creativeoffice.motosp.Adapter.YorumAdapter
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.Datalar.Users
+import com.creativeoffice.motosp.Datalar.YorumlarData
 import com.creativeoffice.motosp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -58,7 +59,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     }
 
-    private fun initVeri() {
+    private fun initVeri(rec: String) {
 
         //Kullanıcı Verilerini getirdik
         FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -114,9 +115,12 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                 detay_yakitTuk.text = ort
 
-                if (ilkSetupOldumu == false) {
+                if (rec == "yorum") {
                     setupYorumlarRecyclerView()
-                    ilkSetupOldumu = true
+                } else if (rec == "parca") {
+                    setupParcalarRecyclerView()
+                } else if (rec == "yakit") {
+                    setupYakitRecyclerView()
                 }
 
 
@@ -182,43 +186,42 @@ class ModelDetayiActivity : AppCompatActivity() {
             var view: View = inflater.inflate(R.layout.dialog_yorum, null)
 
             builder.setView(view)
-            builder.setNegativeButton("İptal", object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    dialog!!.dismiss()
-                }
-
-            })
-            builder.setPositiveButton("Gönder", object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    var yorum = view.edYorum.text.toString()
-                    if (yorum.length > 5) {
-                        FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onCancelled(p0: DatabaseError) {
-                            }
-
-                            override fun onDataChange(p0: DataSnapshot) {
-                                val key = ref.child("tum_motorlar").child(model.toString()).child("yorumlar").push().key
-                                kullaniciAdi = p0.child("user_name").value.toString()
-                                var yorumlar = ModelDetaylariData.Yorumlar(kullaniciAdi, yorum, null, key, model, userID)
-                                ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).setValue(yorumlar)
-                                ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).child("tarih").setValue(ServerValue.TIMESTAMP)
-                                //+5 yorum puan ekleme
-
-
-                                var eskiPuan = gelenUsers.user_details!!.puan!!.toInt()
-                                var yeniPuan = eskiPuan + 5
-                                ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
-                                initVeri()
-                                setupYorumlarRecyclerView()
-                            }
-                        })
-                    }
-                }
-            })
-
             var dialog: Dialog = builder.create()
+            view.tvIptal.setOnClickListener {
+                dialog!!.dismiss()
+            }
+            view.tvGonder.setOnClickListener {
+                var yorum = view.edYorum.text.toString()
+                if (yorum.length > 5) {
+                    FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot) {
+                            val key = ref.child("tum_motorlar").child(model.toString()).child("yorumlar").push().key
+                            kullaniciAdi = p0.child("user_name").value.toString()
+                            var yorumlar = ModelDetaylariData.Yorumlar(kullaniciAdi, yorum, null, key, model, userID)
+                            ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).setValue(yorumlar)
+                            ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).child("tarih").setValue(ServerValue.TIMESTAMP)
+                            //+5 yorum puan ekleme
+
+                            var sonYorum = YorumlarData(marka, model, kullaniciAdi, null, yorum)
+                            ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).setValue(sonYorum)
+                            ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).child("yorum_zaman").setValue(ServerValue.TIMESTAMP)
+
+
+                            var eskiPuan = gelenUsers.user_details!!.puan!!.toInt()
+                            var yeniPuan = eskiPuan + 3
+                            ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+                            initVeri("yorum")
+                            dialog.dismiss()
+                        }
+                    })
+                }
+
+            }
             dialog.show()
-            
+
         }
 
 
@@ -253,8 +256,8 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                             var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaYorum, parcaModel, kullaniciAdi, parcaKey, marka, model)
                             FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").child(parcaKey.toString()).setValue(parcaVerisi)
-                            initVeri()
-                            setupParcalarRecyclerView()
+                            initVeri("parca")
+                            dialog!!.dismiss()
                         }
                     })
                 }
@@ -264,7 +267,6 @@ class ModelDetayiActivity : AppCompatActivity() {
 
 
         }
-
 
         tvYakitTukEkle.setOnClickListener {
 
@@ -288,8 +290,8 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                     var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
                     FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString()).setValue(yakitVerisi)
-                    initVeri()
-                    setupYakitRecyclerView()
+                    initVeri("yakit")
+
                 }
             })
 
@@ -306,10 +308,10 @@ class ModelDetayiActivity : AppCompatActivity() {
         rcYorumlar.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, true)
         yorumAdapter = YorumAdapter(this@ModelDetayiActivity, yorumListesi, userID)
         yorumAdapter.notifyDataSetChanged()
-        rcYorumlar.setItemViewCacheSize(20)
+        //  rcYorumlar.setItemViewCacheSize(20)
         rcYorumlar.setHasFixedSize(true)
         rcYorumlar.adapter = yorumAdapter
-        rcYorumlar.refreshDrawableState()
+        // rcYorumlar.refreshDrawableState()
 
     }
 
@@ -354,6 +356,10 @@ class ModelDetayiActivity : AppCompatActivity() {
         var yakitTuk = intent.getStringExtra("YakitTuk")
         var tanitim = intent.getStringExtra("tanitim")
 
+
+        if (yakitTuk == "null" || yakitTuk.isNullOrEmpty()) {
+            detay_yakitTuk.visibility = View.GONE
+        }
         if (tanitim == "" || tanitim.isNullOrEmpty()) {
             tvTanitim2.visibility = View.GONE
         }
@@ -405,7 +411,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        initVeri()
+        initVeri("yorum")
 
     }
 

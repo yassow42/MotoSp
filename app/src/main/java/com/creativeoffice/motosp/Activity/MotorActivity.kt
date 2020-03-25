@@ -3,6 +3,7 @@ package com.creativeoffice.motosp.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Adapter.MarkaModelAdapter
 import com.creativeoffice.motosp.Datalar.EventBusDataEvents
@@ -13,7 +14,6 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_motor.*
 
 
-import kotlinx.android.synthetic.main.activity_main.bottomNavigationView
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
@@ -37,7 +37,7 @@ class MotorActivity : AppCompatActivity() {
     }
 
     private fun markaModelGetir() {
-        myRef.child("tum_motorlar")//.child("Honda")
+        myRef.child("tum_motorlar")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                 }
@@ -46,7 +46,10 @@ class MotorActivity : AppCompatActivity() {
                     if (p0.hasChildren()) {
                         for (ds in p0.children) {
                             var modeller = ds.getValue(ModelDetaylariData::class.java)!!
-                            tumModeller.add(modeller)
+                         //   if (modeller.marka =="Honda"){
+                                tumModeller.add(modeller)
+                        //    }
+
 
                         }
 
@@ -61,8 +64,8 @@ class MotorActivity : AppCompatActivity() {
 
 
     private fun setupRecyclerView() {
-        rvModelListesi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        // rvModelListesi.layoutManager = LinearLayoutManager(context!!.applicationContext, LinearLayoutManager.VERTICAL, false)
+        //rvModelListesi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        rvModelListesi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val markaAdapter = MarkaModelAdapter(this.applicationContext, tumModeller)
         rvModelListesi.adapter = markaAdapter
         rvModelListesi.setHasFixedSize(true)

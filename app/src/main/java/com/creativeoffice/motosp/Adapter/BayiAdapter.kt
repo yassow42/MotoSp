@@ -56,6 +56,20 @@ class BayiAdapter(val myContext: Context, val bayilerList: ArrayList<BayilerData
                 myContext.startActivity(arama)
 
             }
+            view.tvAra.setOnClickListener {
+                val arama = Intent(Intent.ACTION_DIAL)//Bu kod satırımız bizi rehbere telefon numarası ile yönlendiri.
+                arama.data = Uri.parse("tel:" + bayilerList[position].numara.toString())
+                myContext.startActivity(arama)
+            }
+            view.tvAdreseGit.setOnClickListener {
+                val adres = bayilerList[position].adres
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("google.navigation:q=an " + adres.toString())
+
+                )
+                myContext.startActivity(intent)
+            }
 
             view.tvAdres.setOnClickListener {
                 val adres = bayilerList[position].adres

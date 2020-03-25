@@ -97,8 +97,6 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var detay_devir = tumLayout.detay_devir
         var detay_agirlik = tumLayout.detay_agirlik
         var detay_kapasite = tumLayout.detay_yakitKap
-        var detay_tuketimi = tumLayout.detay_yakitTuk
-
         var imgMotoripi = tumLayout.imgMotorTipi
 
 
@@ -118,7 +116,6 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
             detay_agirlik.text = oAnkiModel.agirlik
             detay_kapasite.text = oAnkiModel.yakitkap
-            detay_tuketimi.text = oAnkiModel.yakitTuk
 
             var currentSecond = 0f
 

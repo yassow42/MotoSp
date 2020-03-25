@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
 
     android:layout_margin="3dp"
-    android:background="@drawable/bg1">
+    android:background="@drawable/bg_tek_model_list">
 
     <TextView
         android:id="@+id/userName"

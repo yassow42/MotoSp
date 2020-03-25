@@ -1,33 +1,37 @@
 package com.creativeoffice.motosp.Activity
 
 import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
+import com.creativeoffice.motosp.Adapter.SonMotorYorumAdapter
 import com.creativeoffice.motosp.Adapter.YeniAcilanKonuAdapter
-import com.creativeoffice.motosp.Datalar.EventBusDataEvents
+import com.creativeoffice.motosp.Adapter.YorumAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
+import com.creativeoffice.motosp.Datalar.YorumlarData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_main.bottomNavigationView
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
-import org.greenrobot.eventbus.EventBus
-import kotlin.math.log
 
 class HomeActivity : AppCompatActivity() {
 
-    lateinit var konuList: ArrayList<ForumKonuData>
+    lateinit var konularList: ArrayList<ForumKonuData>
+    lateinit var cevapYazilanKonuList: ArrayList<ForumKonuData>
+    lateinit var sonYorumlarList: ArrayList<YorumlarData>
+    lateinit var tumModeller: ArrayList<ModelDetaylariData>
+
+
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
@@ -38,7 +42,10 @@ class HomeActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
         val userID = mAuth.currentUser!!.uid
-        konuList = ArrayList()
+        konularList = ArrayList()
+        cevapYazilanKonuList = ArrayList()
+        sonYorumlarList = ArrayList()
+        tumModeller = ArrayList()
 
         initVeri()
         initBtn(userID)
@@ -81,22 +88,22 @@ class HomeActivity : AppCompatActivity() {
                         ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
                         //konu acılma zaaman verisi
                         ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
-                            setupRecyclerViewForumKonu()
+                            setupRecyclerViewForumKonu(cevapYazilanKonuList)
                         }
 
                         //ilk olarak konuyu acanı son cevaba kaydedıyoruz...
-                        var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID,konuKey.toString())
+                        var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID, konuKey.toString())
                         ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
                         ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
                         //cevaba da eklıyruz kı ılk gorunsun
                         var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
-                        var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, null, userID,konuKey.toString())
+                        var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, null, userID, konuKey.toString())
                         ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
                         ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
-                        setupRecyclerViewForumKonu()
-                       dialog.dismiss()
+                        setupRecyclerViewForumKonu(cevapYazilanKonuList)
+                        dialog.dismiss()
 
                     }
                 })
@@ -105,94 +112,141 @@ class HomeActivity : AppCompatActivity() {
 
             dialog.show()
         }
+
+        tvTumKonular.setOnClickListener {
+
+            setupRecyclerViewForumKonu(konularList)
+            rcForum.layoutParams.height = MATCH_PARENT
+
+        }
     }
 
 
     private fun initVeri() {
-        FirebaseDatabase.getInstance().reference.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
+        val ref = FirebaseDatabase.getInstance().reference
+        ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.hasChildren()) {
+                    var yeniKonuList = ArrayList<ForumKonuData>()
+                    yeniKonuList = ArrayList()
 
+                    var gelenKonu: ForumKonuData
+                    for (i in p0.children) {
+                        gelenKonu = i.getValue(ForumKonuData::class.java)!!
+                        konularList.add(gelenKonu)
+
+                    }
+                    konularList.sortByDescending { it.son_cevap_zamani }
+                    if (konularList.size > 4) {
+                        cevapYazilanKonuList.add(konularList[0])
+                        cevapYazilanKonuList.add(konularList[1])
+                        cevapYazilanKonuList.add(konularList[2])
+                        cevapYazilanKonuList.add(konularList[3])
+                        cevapYazilanKonuList.add(konularList[4])
+                        yeniKonuList.add(konularList[0])
+                        yeniKonuList.add(konularList[1])
+                        yeniKonuList.add(konularList[2])
+                        yeniKonuList.add(konularList[3])
+                        yeniKonuList.add(konularList[4])
+                    } else if (konularList.size > 3) {
+                        cevapYazilanKonuList.add(konularList[0])
+                        cevapYazilanKonuList.add(konularList[1])
+                        cevapYazilanKonuList.add(konularList[2])
+                        cevapYazilanKonuList.add(konularList[3])
+                        yeniKonuList.add(konularList[0])
+                        yeniKonuList.add(konularList[1])
+                        yeniKonuList.add(konularList[2])
+                        yeniKonuList.add(konularList[3])
+                    } else if (konularList.size > 2) {
+                        cevapYazilanKonuList.add(konularList[0])
+                        cevapYazilanKonuList.add(konularList[1])
+                        cevapYazilanKonuList.add(konularList[2])
+                        yeniKonuList.add(konularList[0])
+                        yeniKonuList.add(konularList[1])
+                        yeniKonuList.add(konularList[2])
+                    } else if (konularList.size > 1) {
+                        cevapYazilanKonuList.add(konularList[0])
+                        cevapYazilanKonuList.add(konularList[1])
+                        yeniKonuList.add(konularList[0])
+                        yeniKonuList.add(konularList[1])
+                    } else if (konularList.size > 0) {
+                        cevapYazilanKonuList.add(konularList[0])
+                        yeniKonuList.add(konularList[0])
+                    }
+
+                    yeniKonuList.sortByDescending { it.acilma_zamani }
+                    cevapYazilanKonuList.sortByDescending { it.son_cevap_zamani }
+
+                    setupRecyclerViewForumKonu(cevapYazilanKonuList)
+                    setupRecyclerViewYeniKonu(yeniKonuList)
+                }
+            }
+        })
+
+        ref.child("tum_motorlar").child("yorumlar_son").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.hasChildren()) {
+                    for (ds in p0.children){
+                        var gelenVeri = ds.getValue(YorumlarData::class.java)!!
+                        sonYorumlarList.add(gelenVeri)
+
+                    }
+                setupRecyclerViewSonYorum()
+                }
+            }
+
+
+        })
+        ref.child("tum_motorlar")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-
-                    if (p0.hasChildren()){
-
-                        var yeniKonuList = ArrayList<ForumKonuData>()
-                        yeniKonuList = ArrayList()
-
-                        var gelenKonu :ForumKonuData
-                        for (i in p0.children) {
-                            gelenKonu = i.getValue(ForumKonuData::class.java)!!
-                            konuList.add(gelenKonu)
-
-                        }
-                        konuList.sortByDescending { it.son_cevap_zamani }
-                        Log.e("sda",konuList.size.toString())
-
-
-
-                        if (konuList.size>4){
-                            yeniKonuList.add(konuList[0])
-                            yeniKonuList.add(konuList[1])
-                            yeniKonuList.add(konuList[2])
-                            yeniKonuList.add(konuList[3])
-                            yeniKonuList.add(konuList[4])
-                        }else if (konuList.size>3){
-                            yeniKonuList.add(konuList[0])
-                            yeniKonuList.add(konuList[1])
-                            yeniKonuList.add(konuList[2])
-                            yeniKonuList.add(konuList[3])
-                        }else if (konuList.size>2){
-                            yeniKonuList.add(konuList[0])
-                            yeniKonuList.add(konuList[1])
-                            yeniKonuList.add(konuList[2])
-                        }else if (konuList.size>1){
-                            yeniKonuList.add(konuList[0])
-                            yeniKonuList.add(konuList[1])
-                        }else if (konuList.size>0){
-                            yeniKonuList.add(konuList[0])
+                    if (p0.hasChildren()) {
+                        for (ds in p0.children) {
+                            var modeller = ds.getValue(ModelDetaylariData::class.java)!!
+                            tumModeller.add(modeller)
                         }
 
-                        yeniKonuList.sortByDescending { it.acilma_zamani }
-
-
-                        setupRecyclerViewForumKonu()
-                        setupRecyclerViewYeniKonu(yeniKonuList)
                     }
 
-
                 }
-
-
             })
-
 
     }
 
-    private fun setupRecyclerViewForumKonu() {
+    private fun setupRecyclerViewForumKonu(gonderilenKonuList: ArrayList<ForumKonuData>) {
         // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         rcForum.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val ForumKonuAdapter = ForumKonuBasliklariAdapter(this, konuList)
-
-
+        val ForumKonuAdapter = ForumKonuBasliklariAdapter(this, gonderilenKonuList)
+        ForumKonuAdapter.notifyDataSetChanged()
         rcForum.adapter = ForumKonuAdapter
         rcForum.setItemViewCacheSize(20)
-
-
     }
 
     private fun setupRecyclerViewYeniKonu(yeniKonuList: ArrayList<ForumKonuData>) {
         // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         rcYeniKonular.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val yeniKonuAdapter = YeniAcilanKonuAdapter(this, yeniKonuList)
-
-
         rcYeniKonular.adapter = yeniKonuAdapter
         rcYeniKonular.setItemViewCacheSize(20)
-
-
     }
+
+    private fun setupRecyclerViewSonYorum() {
+        // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        rcSonModelMesajlari.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val yeniKonuAdapter = SonMotorYorumAdapter(this, sonYorumlarList,tumModeller)
+        rcSonModelMesajlari.adapter = yeniKonuAdapter
+        rcSonModelMesajlari.setItemViewCacheSize(20)
+    }
+
 
     fun setupNavigationView() {
 
@@ -202,8 +256,6 @@ class HomeActivity : AppCompatActivity() {
         var menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
     }
-
-
 
 
 }

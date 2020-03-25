@@ -12,5 +12,15 @@
         android:startColor="#CB0236B8"
         android:type="linear" />
 
+    <corners
+
+        android:bottomRightRadius="15dp"
+        android:topRightRadius="20dp"
+        android:topLeftRadius="15dp"
+        />
+
+    <stroke
+        android:color="@color/beyaz"
+        android:width="2dp"/>
 
 </shape>

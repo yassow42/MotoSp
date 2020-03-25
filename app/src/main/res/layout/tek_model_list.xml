@@ -6,38 +6,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="@drawable/bg1"
-    android:padding="3dp">
-
-    <TextView
-        android:id="@+id/tvMarka"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        android:textColor="#E8EEF2"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:transitionName="trans_marka"
-        app:layout_constraintEnd_toEndOf="@+id/tvModel"
-        app:layout_constraintStart_toStartOf="@+id/tvModel"
-        app:layout_constraintTop_toBottomOf="@+id/tvModel" />
+    android:layout_margin="2dp"
+    android:background="@drawable/bg_tek_model_list"
+    android:padding="2dp">
 
     <TextView
         android:id="@+id/tvModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textColor="#E8EEF2"
-        android:textSize="13sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMarka"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="TextView"
+        android:textColor="#E8EEF2"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:transitionName="trans_marka"
+        app:layout_constraintEnd_toEndOf="@+id/tvModel"
+        app:layout_constraintStart_toStartOf="@+id/tvModel"
+        app:layout_constraintTop_toBottomOf="@+id/tvModel" />
+
+    <ImageView
+        android:id="@+id/imgMotorTipi"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="38dp"
+        android:background="@drawable/ic_scooter"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMarka"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tvModel"
+        app:layout_constraintTop_toTopOf="@+id/tvModel" />
 
     <View
         android:id="@+id/view"
@@ -81,15 +93,17 @@
         android:id="@+id/ytTekModelList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
         android:focusable="auto"
         android:padding="5dp"
+        app:color="@color/mavi"
+        app:fontSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTanitim"
-        app:showFullScreenButton = "false"
-        app:color="@color/mavi"
-        app:fontSize = "10sp">
+        app:showFullScreenButton="false">
 
     </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
 
@@ -327,32 +341,6 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="6dp"
-                    android:background="@drawable/ic_yakit" />
-
-                <TextView
-                    android:id="@+id/detay_yakitTuk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:text="TextView"
-                    android:textColor="@color/beyaz"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
 
         </LinearLayout>
     </HorizontalScrollView>
@@ -366,7 +354,7 @@
         android:layout_marginEnd="32dp"
         android:background="@drawable/text_background"
         android:gravity="center"
-        android:text="Yorum Yap"
+        android:text="Yorumları Gör"
         android:textAllCaps="false"
         android:textColor="@color/beyaz"
         android:textStyle="bold"
@@ -377,43 +365,34 @@
 
     <TextView
         android:id="@+id/tvTanitim"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:maxWidth="300dp"
+        android:maxWidth="250dp"
         android:maxLines="2"
         android:text="TextView"
+        android:textAlignment="center"
         android:textColor="@color/beyaz"
-        android:textSize="11sp"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="@+id/imgMotorTipi"
         app:layout_constraintStart_toStartOf="@+id/tvModel"
         app:layout_constraintTop_toBottomOf="@+id/tvMarka" />
 
     <TextView
         android:id="@+id/tvTanitim2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:maxWidth="300dp"
+        android:maxWidth="250dp"
         android:text="sadfsafas"
+        android:textAlignment="center"
         android:textColor="@color/beyaz"
         android:textSize="10sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <ImageView
-        android:id="@+id/imgMotorTipi"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/ic_scooter"
-        app:layout_constraintBottom_toBottomOf="@+id/tvModel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/tvModel"
-        app:layout_constraintTop_toTopOf="@+id/tvModel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

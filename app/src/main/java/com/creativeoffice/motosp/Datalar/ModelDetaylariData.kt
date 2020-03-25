@@ -21,6 +21,8 @@ class ModelDetaylariData {
     var yy_parcalar: HashMap<String, Parcalar>? = null
     var yy_yakit_verileri: HashMap<String, YakitTuketimi>? = null
 
+
+
     constructor()
       constructor(
         marka: String?,
@@ -63,6 +65,8 @@ class ModelDetaylariData {
         val yorum_yapilan_model: String? = null,
         val yorum_yapan_kisi: String? = null
     )
+
+
 
     data class Parcalar(
         val parca_ismi: String? = null,

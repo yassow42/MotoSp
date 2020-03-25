@@ -6,20 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@drawable/bg1">
+    android:background="@drawable/bg_yorum_parca">
 
     <TextView
         android:id="@+id/tvParcaismi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:text="ismi"
-        android:textColor="@color/beyaz"
+        android:textColor="@color/siyah"
         app:layout_constraintBottom_toTopOf="@+id/tvParcaModelYili"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toEndOf="@+id/tvParcauser"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tvParcauser" />
 
     <TextView
         android:id="@+id/tvParcaModelYili"
@@ -27,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="model yılı"
-        android:textColor="@color/beyaz"
+        android:textColor="@color/siyah"
         app:layout_constraintEnd_toEndOf="@+id/tvParcaismi"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="@+id/tvParcaismi"
@@ -37,29 +36,28 @@
         android:id="@+id/tvParcaYorumu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="4dp"
         android:text="uygunluk"
-        android:textColor="@color/beyaz"
+        android:textAlignment="center"
+        android:textColor="@color/siyah"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toEndOf="@+id/tvParcauser"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvParcaModelYili" />
 
     <TextView
         android:id="@+id/tvParcauser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:background="@drawable/beyaz_bg"
-        android:padding="3dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:padding="8dp"
         android:text="TextView"
         android:textColor="@color/mavi"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/tvParcaYorumu"
+        android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvParcaismi" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

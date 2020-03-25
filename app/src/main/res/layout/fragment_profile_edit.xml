@@ -101,7 +101,7 @@
 
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_profile"
+               android:background="@mipmap/ic_profile"
                 app:civ_border_color="@color/siyah"
                 app:civ_border_width="3dp"
                 app:layout_constraintEnd_toEndOf="parent"

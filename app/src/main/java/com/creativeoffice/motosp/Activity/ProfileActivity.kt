@@ -66,6 +66,8 @@ class ProfileActivity : AppCompatActivity() {
                     if (imgURL != "default") {
                         Picasso.get().load(imgURL).into(circleProfileImage)
                         mProgressBarActivityProfile.visibility = View.GONE
+                    }else{
+                        mProgressBarActivityProfile.visibility = View.GONE
                     }
 
 
@@ -101,7 +103,7 @@ class ProfileActivity : AppCompatActivity() {
                                 detay_silindirhacmi.text = silindir
                                 detay_tork.text = tork
                                 detay_yakitKap.text = yakitKap
-                                detay_yakitTuk.text = yakitTuk
+                              //  detay_yakitTuk.text = yakitTuk
 
 
                             }
