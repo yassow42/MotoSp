@@ -23,6 +23,7 @@
         android:maxLines="2"
         android:text="TextView"
         android:textColor="@color/mavi"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

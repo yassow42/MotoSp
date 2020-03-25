@@ -55,6 +55,7 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
                     }).create()
 
                 alert.show()
+
             }
 
             return@setOnLongClickListener true

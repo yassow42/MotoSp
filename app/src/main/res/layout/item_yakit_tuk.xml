@@ -5,6 +5,7 @@
     android:id="@+id/yakitCL"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:background="@drawable/bg1">
 
     <TextView
@@ -12,8 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/beyaz_bg"
         android:padding="3dp"
         android:text="UserName"
@@ -28,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:text="değer"
+        android:text="deger"
         android:textColor="@color/beyaz"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvModel"

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#CB0236B8</color>
     <color name="colorPrimaryDark">#CB0236B8</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#000000</color>
     <color name="siyah">#000000</color>
     <color name="mavi">#CB0236B8</color>
     <color name="kirmizi">#FF0000</color>

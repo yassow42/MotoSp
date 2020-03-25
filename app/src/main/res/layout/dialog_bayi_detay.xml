@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:background="@drawable/bg_bayi_detay">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvBayiAdi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:text="Bayi Ado"
+            android:textAlignment="center"
+            android:textColor="@color/beyaz"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvNumara"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:padding="5dp"
+            android:text="numaradsa"
+            android:textAlignment="center"
+            android:textColor="@color/beyaz" />
+
+        <TextView
+            android:id="@+id/tvAdres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:padding="5dp"
+            android:text="adresss"
+            android:textAlignment="center"
+            android:textColor="@color/beyaz" />
+
+        <TextView
+            android:id="@+id/tvYildiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:padding="5dp"
+            android:text="TextView"
+            android:textColor="@color/beyaz" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

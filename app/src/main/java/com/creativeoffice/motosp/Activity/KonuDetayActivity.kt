@@ -52,6 +52,7 @@ class KonuDetayActivity : AppCompatActivity() {
             var view: View = inflater.inflate(R.layout.dialog_cevap_yaz, null)
 
             builder.setView(view)
+            builder.setTitle("Yorumun...")
             builder.setNegativeButton("İptal", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     dialog!!.dismiss()
@@ -76,7 +77,7 @@ class KonuDetayActivity : AppCompatActivity() {
                             var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
                             var cevapYazan = p0.value.toString()
                             //ilk olarak cevap vereni son cevap olarak kaydediyruz.
-                            var soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID)
+                            var soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID,konuKey.toString())
                             ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
                             ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
@@ -85,7 +86,7 @@ class KonuDetayActivity : AppCompatActivity() {
 
                             //cevaba da eklıyruz
 
-                            var cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID)
+                            var cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID,konuKey.toString())
                             ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
                             ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
                                 .addOnCompleteListener {
@@ -123,7 +124,6 @@ class KonuDetayActivity : AppCompatActivity() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    Log.e("sad", p0.children.toString())
                     if (p0.hasChildren()) {
                         for (i in p0.children) {
                             var gelenKonu = i.getValue(ForumKonuData.cevaplar::class.java)
@@ -143,7 +143,7 @@ class KonuDetayActivity : AppCompatActivity() {
     private fun setupRecyclerViewCevap() {
         rcCevaplar.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         //   rcBayi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val ForumKonuAdapter = CevaplarAdapter(this, cevapList)
+        val ForumKonuAdapter = CevaplarAdapter(this, cevapList,userID)
 
         rcCevaplar.setHasFixedSize(true)
         rcCevaplar.adapter = ForumKonuAdapter

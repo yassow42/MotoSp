@@ -1,9 +1,11 @@
 package com.creativeoffice.motosp.Activity
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Adapter.MarkaModelAdapter
+import com.creativeoffice.motosp.Datalar.EventBusDataEvents
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
@@ -12,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_motor.*
 
 
 import kotlinx.android.synthetic.main.activity_main.bottomNavigationView
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 
 class MotorActivity : AppCompatActivity() {
@@ -19,15 +23,17 @@ class MotorActivity : AppCompatActivity() {
     private val TAG = "MotorActivity"
 
     lateinit var tumModeller: ArrayList<ModelDetaylariData>
+
     var myRef = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_motor)
 
-        tumModeller = ArrayList()
+
 
         setupNavigationView()
+
     }
 
     private fun markaModelGetir() {
@@ -44,7 +50,9 @@ class MotorActivity : AppCompatActivity() {
 
                         }
 
-                     //   tumModeller.sortBy { it.marka }
+                        //tumModeller.sortBy { it.marka }
+                        //rastgele sıralama.shuffle
+                        // tumModeller.shuffle()
                     }
                     setupRecyclerView()
                 }
@@ -57,7 +65,8 @@ class MotorActivity : AppCompatActivity() {
         // rvModelListesi.layoutManager = LinearLayoutManager(context!!.applicationContext, LinearLayoutManager.VERTICAL, false)
         val markaAdapter = MarkaModelAdapter(this.applicationContext, tumModeller)
         rvModelListesi.adapter = markaAdapter
-        rvModelListesi.setItemViewCacheSize(20)
+        rvModelListesi.setHasFixedSize(true)
+        //rvModelListesi.setItemViewCacheSize(20)
 
 
     }
@@ -71,10 +80,18 @@ class MotorActivity : AppCompatActivity() {
         menuItem.setChecked(true)
     }
 
+
+
+
     override fun onStart() {
-        markaModelGetir()
+
+        tumModeller = ArrayList()
+
+         markaModelGetir()
         super.onStart()
     }
+
+
 
 
 }

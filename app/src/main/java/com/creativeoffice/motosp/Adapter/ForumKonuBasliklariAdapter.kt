@@ -67,6 +67,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
         var tvZamanCevap = itemView.tvZamanCevap
         var tvSonYazan = itemView.tvSonYazan
         var tumLayout = itemView.clKonuBasliklari
+        var cevapSayisi = itemView.tvCevapSayisi
 
 
 
@@ -77,7 +78,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
 
 
             //foruma soncevap yazan verisi
-            FirebaseDatabase.getInstance().reference.child("Forum").child(forumKonuData.konu_key.toString()).child("son_cevap")
+            FirebaseDatabase.getInstance().reference.child("Forum").child(forumKonuData.konu_key.toString())
                 .addListenerForSingleValueEvent(object : ValueEventListener1 {
                     override fun onCancelled(p0: DatabaseError) {
 
@@ -85,10 +86,13 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
 
                     override fun onDataChange(p0: DataSnapshot) {
                         if (p0.hasChildren()) {
-                            var gelenData = p0.getValue(ForumKonuData.son_cevap::class.java)!!
+                            var gelenData = p0.child("son_cevap").getValue(ForumKonuData.son_cevap::class.java)!!
                             var cevapZamani = gelenData.cevap_zamani
                             tvZamanCevap.text = formatDate(cevapZamani).toString()
                             tvSonYazan.text = gelenData.cevap_yazan
+
+                           var sayi = p0.child("cevaplar").childrenCount
+                            cevapSayisi.text = "Cevaplar: " +sayi.toString()
 
                         } else {
                             tvZamanCevap.text = ""

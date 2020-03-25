@@ -17,4 +17,8 @@
         android:topLeftRadius="7dp"
         />
 
+    <stroke
+        android:color="@color/beyaz"
+        android:width="2dp"/>
+
 </shape>

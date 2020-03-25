@@ -17,7 +17,7 @@
         android:layout_marginEnd="8dp"
         android:text="Ankara"
         android:textColor="@color/beyaz"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 

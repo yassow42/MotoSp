@@ -36,7 +36,6 @@ class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.il
         holder.setData(ilceList[position], myContext)
 
         var bayiList = ArrayList<BayilerData.BayiDetaylari>()
-        bayiList = ArrayList()
         holder.initVeri(bayiList)
         holder.setupBayiRecyclerView(bayiList)
 
@@ -67,13 +66,13 @@ class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.il
 
     inner class IlceHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tumLayoutIlce = itemView.clTumLayoutIlce
-        var ilceİsmi = itemView.tvIlceAdi
+        var ilceIsmi = itemView.tvIlceAdi
         var rcBayiler = itemView.rcBayiler
 
 
         fun setData(oankiSehir: BayilerData.ilcelerData, myContext: Context) {
 
-            ilceİsmi.text = oankiSehir.ilceAdi
+            ilceIsmi.text = oankiSehir.ilceAdi
 
 
         }
@@ -88,7 +87,7 @@ class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.il
 
 
                         for (bayiler in p0.children) {
-                            var gelendata = BayilerData.BayiDetaylari(bayiler.key, null, null, ilceList[position].sehirAdi, ilceList[position].ilceAdi, null)
+                            var gelendata = bayiler.getValue(BayilerData.BayiDetaylari::class.java)!!
                             bayiList.add(gelendata)
                         }
 

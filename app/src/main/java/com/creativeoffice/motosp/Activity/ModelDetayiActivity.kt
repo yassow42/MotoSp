@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_model_detayi.*
 import kotlinx.android.synthetic.main.activity_parca_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_yakit_tuketim.view.*
 import kotlinx.android.synthetic.main.dialog_yorum.view.*
+import java.text.DecimalFormat
 
 
 class ModelDetayiActivity : AppCompatActivity() {
@@ -30,6 +31,7 @@ class ModelDetayiActivity : AppCompatActivity() {
     var marka: String? = null
     var model: String? = null
     var userID: String? = null
+    var ort: String? = null
     var kullaniciAdi: String? = null
 
     var ilkSetupOldumu: Boolean? = null
@@ -68,7 +70,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             }
         })
         //MotorVeri listesi
-        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).addValueEventListener(object : ValueEventListener {
+        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
@@ -95,10 +97,22 @@ class ModelDetayiActivity : AppCompatActivity() {
                 parcaListesi.sortBy { it.parca_uyum_model_yili } //sortby tarihe göre sıralar
 
                 val yakitHashMap = model.yy_yakit_verileri ?: return
+
+
+
+
                 for (i in yakitHashMap.values) {
                     yakitListesi.add(i)
                 }
                 yakitListesi.sortBy { it.yakitTuk }
+
+                //yakitin ortalamasını alıyoruz.
+                var yakitGirdiSayisi = p0.child("yy_yakit_verileri").childrenCount
+                var form = DecimalFormat("0.0")
+                var ortalama = yakitListesi.map { it -> it?.yakitTuk!! }.average()
+                ort = form.format(ortalama).toString() + " lt /100 km"
+
+                detay_yakitTuk.text = ort
 
                 if (ilkSetupOldumu == false) {
                     setupYorumlarRecyclerView()
@@ -110,6 +124,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
 
         })
+        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ort)
 
 
     }
@@ -193,6 +208,7 @@ class ModelDetayiActivity : AppCompatActivity() {
                                 var eskiPuan = gelenUsers.user_details!!.puan!!.toInt()
                                 var yeniPuan = eskiPuan + 5
                                 ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+                                initVeri()
                                 setupYorumlarRecyclerView()
                             }
                         })
@@ -202,7 +218,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
             var dialog: Dialog = builder.create()
             dialog.show()
-            setupYorumlarRecyclerView()
+            
         }
 
 
@@ -237,6 +253,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                             var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaYorum, parcaModel, kullaniciAdi, parcaKey, marka, model)
                             FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").child(parcaKey.toString()).setValue(parcaVerisi)
+                            initVeri()
                             setupParcalarRecyclerView()
                         }
                     })
@@ -271,6 +288,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                     var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
                     FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString()).setValue(yakitVerisi)
+                    initVeri()
                     setupYakitRecyclerView()
                 }
             })

@@ -41,7 +41,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
 
-        p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol_yari))
+      //  p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol_yari))
 
         //  p0.tvModel.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme))
 

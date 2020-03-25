@@ -12,12 +12,12 @@ class ForumKonuData(
 ) {
 
     data class son_cevap(
-        var cevap: String? = null, var cevap_key: String? = null, var cevap_yazan: String? = null, var cevap_zamani: Long? = null,var cevap_yazan_key:String?=null
+        var cevap: String? = null, var cevap_key: String? = null, var cevap_yazan: String? = null, var cevap_zamani: Long? = null,var cevap_yazan_key:String?=null,var cevap_yazilan_key:String?=null
 
     )
     data class cevaplar(
 
-        var cevap: String? = null, var cevap_key: String? = null, var cevap_yazan: String? = null, var cevap_zamani: Long? = null,var cevap_yazan_key:String?=null
+        var cevap: String? = null, var cevap_key: String? = null, var cevap_yazan: String? = null, var cevap_zamani: Long? = null,var cevap_yazan_key:String?=null,var cevap_yazilan_key:String?=null
     )
 
 }

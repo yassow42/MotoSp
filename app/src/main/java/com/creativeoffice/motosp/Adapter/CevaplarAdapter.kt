@@ -1,9 +1,17 @@
 package com.creativeoffice.motosp.Adapter
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
+import android.view.View.inflate
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
@@ -12,12 +20,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
 import kotlinx.android.synthetic.main.item_cevaplar.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonuData.cevaplar>) : RecyclerView.Adapter<CevaplarAdapter.ForumCevapHolder>() {
+class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonuData.cevaplar>, var userID: String?) : RecyclerView.Adapter<CevaplarAdapter.ForumCevapHolder>() {
 
 
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ForumCevapHolder {
@@ -41,6 +50,72 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
 
         holder.setData(gelenItem, myContext)
 
+        holder.tumLayout.setOnLongClickListener {
+
+            if (gelenItem.cevap_yazan_key.equals(userID)) {
+
+                val popup = PopupMenu(myContext, holder.tumLayout)
+                popup.inflate(R.menu.popup_menu)
+                popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.popDüzenle -> {
+                            var builder: AlertDialog.Builder = AlertDialog.Builder(this.myContext)
+
+                            var view: View = inflate(myContext, R.layout.dialog_konu_cevap_duzenle, null)
+
+                            view.etKonuCevabi.setText(gelenItem.cevap.toString())
+                            builder.setView(view)
+
+                            var dialog: Dialog = builder.create()
+                            view.btnKaydet.setOnClickListener {
+                                var yeniCevap = view.etKonuCevabi.text
+                                FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).child("cevaplar").child(gelenItem.cevap_key.toString())
+                                    .child("cevap").setValue(yeniCevap.toString()).addOnCompleteListener {
+                                        Toast.makeText(myContext,"Cevanın Güncelleniyor :) Biraz Bekle ", Toast.LENGTH_SHORT).show()
+                                    }
+                                dialog.dismiss()
+
+                            }
+
+                            view.btnIptal.setOnClickListener {
+
+                                dialog.dismiss()
+                            }
+                            dialog.show()
+                        }
+
+                        R.id.popSil -> {
+                            var alert = AlertDialog.Builder(myContext)
+                                .setTitle("Yorumu Sil")
+                                .setMessage("Emin Misiniz ?")
+                                .setPositiveButton("Sil", object : DialogInterface.OnClickListener {
+                                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                                        FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).child("cevaplar")
+                                            .child(gelenItem.cevap_key.toString()).removeValue()
+                                    }
+
+                                })
+                                .setNegativeButton("İptal", object : DialogInterface.OnClickListener {
+                                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                                        p0!!.dismiss()
+                                    }
+                                }).create()
+
+                            alert.show()
+                        }
+                    }
+                    return@OnMenuItemClickListener true
+                })
+
+                popup.show()
+
+
+            }
+
+
+            return@setOnLongClickListener true
+        }
+
 
     }
 
@@ -51,6 +126,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
         var cevap = itemView.tvCevap
         var imgProfile = itemView.circleProfileImage
         var kullanilanMotor = itemView.tvKullanilanMotor
+        var tumLayout = itemView.tumLayout
 
 
         var ref = FirebaseDatabase.getInstance().reference

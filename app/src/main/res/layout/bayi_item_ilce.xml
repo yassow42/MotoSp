@@ -8,54 +8,17 @@
     android:layout_margin="5dp"
     android:layout_marginLeft="5dp"
     android:layout_marginBottom="5dp"
+    android:background="@drawable/bg_bayi_detay"
     android:padding="5dp">
-
-    <View
-        android:id="@+id/altview"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginBottom="16dp"
-        android:background="@color/beyaz"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/sagview"
-        app:layout_constraintStart_toStartOf="@+id/solview7"
-        app:layout_constraintTop_toBottomOf="@+id/rcBayiler" />
-
-    <View
-        android:id="@+id/ustView"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/beyaz"
-        app:layout_constraintEnd_toEndOf="@+id/sagview"
-        app:layout_constraintStart_toStartOf="@+id/solview7"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/sagview"
-        android:layout_width="2dp"
-        android:layout_height="0dp"
-        android:background="@color/beyaz"
-        app:layout_constraintBottom_toBottomOf="@+id/altview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ustView" />
-
-    <View
-        android:id="@+id/solview7"
-        android:layout_width="2dp"
-        android:layout_height="0dp"
-        android:background="@color/beyaz"
-        app:layout_constraintBottom_toBottomOf="@+id/altview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ustView"
-        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tvIlceAdi"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="5dp"
         android:gravity="center"
         android:minWidth="100dp"
         android:padding="3dp"
@@ -63,19 +26,20 @@
         android:textColor="@color/beyaz"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/rcBayiler"
-        app:layout_constraintStart_toStartOf="@+id/rcBayiler"
-        app:layout_constraintTop_toBottomOf="@+id/ustView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcBayiler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/altview"
-        app:layout_constraintEnd_toStartOf="@+id/sagview"
-        app:layout_constraintStart_toEndOf="@+id/solview7"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvIlceAdi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
