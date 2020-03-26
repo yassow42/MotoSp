@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.Subscribe
 
 
 class MotorActivity : AppCompatActivity() {
-    private val ACTIVITY_NO = 1
+    private val ACTIVITY_NO = 2
     private val TAG = "MotorActivity"
 
     lateinit var tumModeller: ArrayList<ModelDetaylariData>

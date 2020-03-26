@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.KonuDetayActivity"></activity>
+        <activity android:name=".Activity.SizdenGelenlerActivity"></activity>
+        <activity android:name=".Activity.KonuDetayActivity" />
         <activity android:name=".Activity.HomeActivity" />
         <activity android:name=".Activity.ProfileSettingActivity" />
         <activity android:name=".Activity.ProfileActivity" />

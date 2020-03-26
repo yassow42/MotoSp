@@ -3,13 +3,10 @@ package com.creativeoffice.motosp.utils
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
+import com.creativeoffice.motosp.Activity.*
 
 
-import com.creativeoffice.motosp.Activity.BayiActivity
-import com.creativeoffice.motosp.Activity.HomeActivity
 import com.creativeoffice.motosp.R
-import com.creativeoffice.motosp.Activity.MotorActivity
-import com.creativeoffice.motosp.Activity.ProfileActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 
@@ -41,6 +38,13 @@ class BottomnavigationViewHelper {
 
                                 context.startActivity(intent)
                                 return true
+                            }
+                            R.id.ic_sosyal->{
+                                val intent = Intent(context, SizdenGelenlerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+                                context.startActivity(intent)
+                                return true
+
                             }
 
                             R.id.ic_motortanitim->{

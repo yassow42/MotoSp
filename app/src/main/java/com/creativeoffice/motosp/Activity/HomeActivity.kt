@@ -10,11 +10,9 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
-import com.creativeoffice.motosp.Adapter.SonMotorYorumAdapter
-import com.creativeoffice.motosp.Adapter.YeniAcilanKonuAdapter
-import com.creativeoffice.motosp.Adapter.YorumAdapter
+import com.creativeoffice.motosp.Adapter.*
 import com.creativeoffice.motosp.Datalar.ForumKonuData
+import com.creativeoffice.motosp.Datalar.HaberlerData
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.Datalar.YorumlarData
 import com.creativeoffice.motosp.R
@@ -30,6 +28,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var cevapYazilanKonuList: ArrayList<ForumKonuData>
     lateinit var sonYorumlarList: ArrayList<YorumlarData>
     lateinit var tumModeller: ArrayList<ModelDetaylariData>
+    lateinit var tumHaberler: ArrayList<HaberlerData>
 
 
     lateinit var mAuth: FirebaseAuth
@@ -46,6 +45,7 @@ class HomeActivity : AppCompatActivity() {
         cevapYazilanKonuList = ArrayList()
         sonYorumlarList = ArrayList()
         tumModeller = ArrayList()
+        tumHaberler = ArrayList()
 
         initVeri()
         initBtn(userID)
@@ -186,39 +186,50 @@ class HomeActivity : AppCompatActivity() {
 
         ref.child("tum_motorlar").child("yorumlar_son").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-
                 if (p0.hasChildren()) {
-                    for (ds in p0.children){
+                    for (ds in p0.children) {
                         var gelenVeri = ds.getValue(YorumlarData::class.java)!!
                         sonYorumlarList.add(gelenVeri)
 
                     }
-                setupRecyclerViewSonYorum()
+                    setupRecyclerViewSonYorum()
                 }
             }
 
 
         })
-        ref.child("tum_motorlar")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
+        ref.child("tum_motorlar").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
 
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.hasChildren()) {
-                        for (ds in p0.children) {
-                            var modeller = ds.getValue(ModelDetaylariData::class.java)!!
-                            tumModeller.add(modeller)
-                        }
-
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.hasChildren()) {
+                    for (ds in p0.children) {
+                        var modeller = ds.getValue(ModelDetaylariData::class.java)!!
+                        tumModeller.add(modeller)
                     }
-
                 }
-            })
+            }
+        })
+
+        ref.child("Haberler").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.hasChildren()) {
+                    for (ds in p0.children) {
+                        var haberler = ds.getValue(HaberlerData::class.java)!!
+                        tumHaberler.add(haberler)
+                    }
+                    setupRecyclerViewHaberler()
+                }
+
+            }
+        })
 
     }
 
@@ -242,10 +253,21 @@ class HomeActivity : AppCompatActivity() {
     private fun setupRecyclerViewSonYorum() {
         // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         rcSonModelMesajlari.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val yeniKonuAdapter = SonMotorYorumAdapter(this, sonYorumlarList,tumModeller)
+        val yeniKonuAdapter = SonMotorYorumAdapter(this, sonYorumlarList, tumModeller)
         rcSonModelMesajlari.adapter = yeniKonuAdapter
         rcSonModelMesajlari.setItemViewCacheSize(20)
     }
+
+    private fun setupRecyclerViewHaberler() {
+        // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        rcHaber.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val haberlerAdapter = HaberAdapter(this, tumHaberler)
+        rcHaber.adapter = haberlerAdapter
+        rcHaber.setItemViewCacheSize(20)
+    }
+
+
+
 
 
     fun setupNavigationView() {

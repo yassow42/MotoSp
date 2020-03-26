@@ -41,10 +41,10 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
 
-        //  p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol_yari))
+          p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
 
-     //   p0.tvModel.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol_yari))
-        p0.imgMotoripi.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+      //     p0.tvModel.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
+     //   p0.imgMotoripi.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
 
         p0.setData(tumModeller.get(p1), myContext)
 
@@ -84,6 +84,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var youTubePlayer = tumLayout.ytTekModelList
         var tvTanitim = tumLayout.tvTanitim
         var tvTanitim2 = tumLayout.tvTanitim2
+        var tvGoruldu = tumLayout.tvGoruldu
 
         var scrollView = tumLayout.scrollView
         var yorumlariGor = tumLayout.yorumlariGor
@@ -116,6 +117,11 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
             detay_agirlik.text = oAnkiModel.agirlik
             detay_kapasite.text = oAnkiModel.yakitkap
+            tvGoruldu.text = oAnkiModel.goruntulenme_sayisi.toString()
+
+            if (oAnkiModel.goruntulenme_sayisi.toString() == "null"){
+                tvGoruldu.text = "1"
+            }
 
             var currentSecond = 0f
 

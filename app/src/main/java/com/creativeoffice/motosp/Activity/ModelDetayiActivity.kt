@@ -55,11 +55,12 @@ class ModelDetayiActivity : AppCompatActivity() {
         Log.e("sad", ilkSetupOldumu.toString())
         init()
         verileriGetir()
-
+        goruntulenmeSayisi()
 
     }
 
     private fun initVeri(rec: String) {
+
 
         //Kullanıcı Verilerini getirdik
         FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -77,12 +78,12 @@ class ModelDetayiActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                val model = p0.getValue(ModelDetaylariData::class.java) ?: return //Cok onemli
+                var modellerinVerisi = p0.getValue(ModelDetaylariData::class.java) ?: return //Cok onemli
                 yorumListesi.clear()
                 parcaListesi.clear()
                 yakitListesi.clear()
 
-                val yorumHashMap = model.yorumlar ?: return
+                val yorumHashMap = modellerinVerisi.yorumlar ?: return
                 yorumListesi = ArrayList()
                 for (i in yorumHashMap.values) {
                     yorumListesi.add(i)
@@ -90,14 +91,14 @@ class ModelDetayiActivity : AppCompatActivity() {
                 yorumListesi.sortBy { it.tarih } //sortby tarihe göre sıralar
 
 
-                val parcaHashMap = model.yy_parcalar ?: return
+                val parcaHashMap = modellerinVerisi.yy_parcalar ?: return
                 parcaListesi = ArrayList()
                 for (i in parcaHashMap.values) {
                     parcaListesi.add(i)
                 }
                 parcaListesi.sortBy { it.parca_uyum_model_yili } //sortby tarihe göre sıralar
 
-                val yakitHashMap = model.yy_yakit_verileri ?: return
+                val yakitHashMap = modellerinVerisi.yy_yakit_verileri ?: return
 
 
 
@@ -133,6 +134,32 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     }
 
+
+    private fun goruntulenmeSayisi() {
+        val ref = FirebaseDatabase.getInstance().reference
+        ref.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.value.toString() != "null"){
+                    var eskiPuan = p0.value.toString().toInt()
+                    Log.e("sad", eskiPuan.toString())
+                    var yeniPuan = eskiPuan + 1
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(yeniPuan)
+
+                }else if(p0.value.toString() == "null"){
+
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(1)
+                }
+
+            }
+
+
+        })
+
+    }
 
     //butontıklamalarının hepsi burada
     private fun init() {
@@ -414,6 +441,8 @@ class ModelDetayiActivity : AppCompatActivity() {
         initVeri("yorum")
 
     }
+
+
 
 
 }

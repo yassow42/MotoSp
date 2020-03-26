@@ -16,15 +16,15 @@ class ModelDetaylariData {
     var tork: String? = null
     var yakitTuk: String? = null
     var yakitkap: String? = null
+    var goruntulenme_sayisi: Int? = null
 
     var yorumlar: HashMap<String, Yorumlar>? = null
     var yy_parcalar: HashMap<String, Parcalar>? = null
     var yy_yakit_verileri: HashMap<String, YakitTuketimi>? = null
 
 
-
     constructor()
-      constructor(
+    constructor(
         marka: String?,
         model: String?,
         agirlik: String?,
@@ -37,7 +37,8 @@ class ModelDetaylariData {
         tanitim: String?,
         tork: String?,
         yakitTuk: String?,
-        yakitkap: String?
+        yakitkap: String?,
+        goruntulenme_sayisi: Int?
     ) {
         this.marka = marka
         this.model = model
@@ -52,9 +53,9 @@ class ModelDetaylariData {
         this.tork = tork
         this.yakitTuk = yakitTuk
         this.yakitkap = yakitkap
+        this.goruntulenme_sayisi = goruntulenme_sayisi
 
     }
-
 
 
     data class Yorumlar(
@@ -67,19 +68,18 @@ class ModelDetaylariData {
     )
 
 
-
     data class Parcalar(
         val parca_ismi: String? = null,
         val parca_model_yorumu: String? = null,
         val parca_uyum_model_yili: String? = null,
         val kullanici_adi: String? = null,
-        val parca_key:String?=null,
-        val marka:String?=null,
-        val model:String?=null
+        val parca_key: String? = null,
+        val marka: String? = null,
+        val model: String? = null
     )
 
     data class YakitTuketimi(
-        val yakitTuk: Float?=null,
+        val yakitTuk: Float? = null,
         val kullanici_adi: String? = null,
         val motor_yili: String? = null
     )
