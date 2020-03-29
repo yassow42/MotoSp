@@ -1,16 +1,18 @@
 package com.creativeoffice.motosp.Activity
 
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.creativeoffice.motosp.Adapter.*
+import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
+import com.creativeoffice.motosp.Adapter.HaberAdapter
+import com.creativeoffice.motosp.Adapter.SonMotorYorumAdapter
+import com.creativeoffice.motosp.Adapter.YeniAcilanKonuAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.Datalar.HaberlerData
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
@@ -20,6 +22,7 @@ import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.dialog_haber_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
 
 class HomeActivity : AppCompatActivity() {
@@ -54,6 +57,40 @@ class HomeActivity : AppCompatActivity() {
 
     private fun initBtn(userID: String) {
 
+        imgHaberEkle.setOnClickListener {
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var inflater: LayoutInflater = layoutInflater
+            var view: View = inflater.inflate(R.layout.dialog_haber_ekle, null)
+
+            builder.setView(view)
+            var dialog: Dialog = builder.create()
+
+            view.btnGonder.setOnClickListener {
+                var ref = FirebaseDatabase.getInstance().reference
+
+                var haberBaslik = view.etBaslik.text.toString()
+                var haberIcerik = view.etIcerik.text.toString()
+                var haberVideo = view.etVideo.text.toString()
+
+                var haberKey = ref.child("Haberler").push().key
+
+                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey)
+
+                ref.child("Haberler").child(haberKey.toString()).setValue(haberData).addOnCompleteListener {
+                    ref.child("Haberler").child(haberKey.toString()).child("haber_eklenme_zamani").setValue(ServerValue.TIMESTAMP)
+                    dialog.dismiss()
+                }.addOnFailureListener{
+                    Toast.makeText(this,"Haber eklenmedi",Toast.LENGTH_LONG).show()
+                }
+            }
+
+
+            dialog.show()
+
+        }
+
+
+
         imgPlus.setOnClickListener {
 
             var builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -64,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
             var dialog: Dialog = builder.create()
 
             view.tvIptal.setOnClickListener {
-                dialog!!.dismiss()
+                dialog.dismiss()
             }
 
             view.tvGonder.setOnClickListener {
@@ -117,6 +154,7 @@ class HomeActivity : AppCompatActivity() {
 
             setupRecyclerViewForumKonu(konularList)
             rcForum.layoutParams.height = MATCH_PARENT
+
 
         }
     }
@@ -225,6 +263,7 @@ class HomeActivity : AppCompatActivity() {
                         var haberler = ds.getValue(HaberlerData::class.java)!!
                         tumHaberler.add(haberler)
                     }
+                    tumHaberler.sortByDescending { it.haber_eklenme_zamani }
                     setupRecyclerViewHaberler()
                 }
 
@@ -240,6 +279,7 @@ class HomeActivity : AppCompatActivity() {
         ForumKonuAdapter.notifyDataSetChanged()
         rcForum.adapter = ForumKonuAdapter
         rcForum.setItemViewCacheSize(20)
+
     }
 
     private fun setupRecyclerViewYeniKonu(yeniKonuList: ArrayList<ForumKonuData>) {
@@ -263,11 +303,12 @@ class HomeActivity : AppCompatActivity() {
         rcHaber.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val haberlerAdapter = HaberAdapter(this, tumHaberler)
         rcHaber.adapter = haberlerAdapter
-        rcHaber.setItemViewCacheSize(20)
+
+        ar_indicator_haber.attachTo(rcHaber, true)
+        ar_indicator_haber.isScrubbingEnabled = true
+
+
     }
-
-
-
 
 
     fun setupNavigationView() {

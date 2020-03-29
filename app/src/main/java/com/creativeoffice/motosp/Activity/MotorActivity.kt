@@ -34,11 +34,11 @@ class MotorActivity : AppCompatActivity() {
 
         setupNavigationView()
 
+
     }
 
     private fun markaModelGetir() {
-        myRef.child("tum_motorlar")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+        myRef.child("tum_motorlar").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                 }
 
@@ -46,9 +46,9 @@ class MotorActivity : AppCompatActivity() {
                     if (p0.hasChildren()) {
                         for (ds in p0.children) {
                             var modeller = ds.getValue(ModelDetaylariData::class.java)!!
-                         //   if (modeller.marka =="Honda"){
-                                tumModeller.add(modeller)
-                        //    }
+                            //   if (modeller.marka =="Honda"){
+                            tumModeller.add(modeller)
+                            //    }
 
 
                         }
@@ -56,8 +56,9 @@ class MotorActivity : AppCompatActivity() {
                         //tumModeller.sortBy { it.marka }
                         //rastgele sıralama.shuffle
                         // tumModeller.shuffle()
+                        setupRecyclerView()
                     }
-                    setupRecyclerView()
+
                 }
             })
     }
@@ -68,11 +69,12 @@ class MotorActivity : AppCompatActivity() {
         rvModelListesi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val markaAdapter = MarkaModelAdapter(this.applicationContext, tumModeller)
         rvModelListesi.adapter = markaAdapter
-        rvModelListesi.setHasFixedSize(true)
-        //rvModelListesi.setItemViewCacheSize(20)
 
+      //  rvModelListesi.setHasFixedSize(true)
+       // ar_indicator_motor.attachTo(rvModelListesi, true)
 
     }
+
 
     fun setupNavigationView() {
 
@@ -84,17 +86,13 @@ class MotorActivity : AppCompatActivity() {
     }
 
 
-
-
     override fun onStart() {
 
         tumModeller = ArrayList()
 
-         markaModelGetir()
+        markaModelGetir()
         super.onStart()
     }
-
-
 
 
 }

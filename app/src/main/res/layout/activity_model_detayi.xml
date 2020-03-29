@@ -374,7 +374,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:padding="8dp"
-                                android:text="TextView"
+                                android:text="12.5 /100km"
                                 android:textColor="@color/beyaz"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
@@ -423,6 +423,26 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcYorumlar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvYakitTukEkle" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcParca"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvYakitTukEkle" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcYakit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

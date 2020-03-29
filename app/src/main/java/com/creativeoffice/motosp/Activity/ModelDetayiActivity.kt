@@ -32,7 +32,8 @@ class ModelDetayiActivity : AppCompatActivity() {
     var marka: String? = null
     var model: String? = null
     var userID: String? = null
-    var ort: String? = null
+
+    //  var ort: String? = null
     var kullaniciAdi: String? = null
 
     var ilkSetupOldumu: Boolean? = null
@@ -52,8 +53,10 @@ class ModelDetayiActivity : AppCompatActivity() {
 
         userID = FirebaseAuth.getInstance().currentUser!!.uid
         ilkSetupOldumu = false
-        Log.e("sad", ilkSetupOldumu.toString())
+
         init()
+        setupYorumlarRecyclerView()
+        initVeri("")
         verileriGetir()
         goruntulenmeSayisi()
 
@@ -112,9 +115,15 @@ class ModelDetayiActivity : AppCompatActivity() {
                 var yakitGirdiSayisi = p0.child("yy_yakit_verileri").childrenCount
                 var form = DecimalFormat("0.0")
                 var ortalama = yakitListesi.map { it -> it?.yakitTuk!! }.average()
-                ort = form.format(ortalama).toString() + " lt /100 km"
+                var ort = form.format(ortalama).toString() + " lt /100 km"
 
-                detay_yakitTuk.text = ort
+
+
+                FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ort).addOnCompleteListener {
+                    detay_yakitTuk.text = ort
+                }
+
+
 
                 if (rec == "yorum") {
                     setupYorumlarRecyclerView()
@@ -122,6 +131,8 @@ class ModelDetayiActivity : AppCompatActivity() {
                     setupParcalarRecyclerView()
                 } else if (rec == "yakit") {
                     setupYakitRecyclerView()
+                } else {
+                    setupYorumlarRecyclerView()
                 }
 
 
@@ -129,35 +140,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
 
         })
-        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ort)
 
-
-    }
-
-
-    private fun goruntulenmeSayisi() {
-        val ref = FirebaseDatabase.getInstance().reference
-        ref.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                if (p0.value.toString() != "null"){
-                    var eskiPuan = p0.value.toString().toInt()
-                    Log.e("sad", eskiPuan.toString())
-                    var yeniPuan = eskiPuan + 1
-                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(yeniPuan)
-
-                }else if(p0.value.toString() == "null"){
-
-                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(1)
-                }
-
-            }
-
-
-        })
 
     }
 
@@ -168,7 +151,9 @@ class ModelDetayiActivity : AppCompatActivity() {
         tvParcaEkle.visibility = View.GONE
         tvYakitTukEkle.visibility = View.GONE
 
+
         imgYorum.setBackgroundResource(R.drawable.ic_yorum_mavi)
+
 
         imgYorum.setOnClickListener {
             imgYorum.setBackgroundResource(R.drawable.ic_yorum_mavi)
@@ -178,6 +163,11 @@ class ModelDetayiActivity : AppCompatActivity() {
             tvYorumYap.visibility = View.VISIBLE
             tvParcaEkle.visibility = View.GONE
             tvYakitTukEkle.visibility = View.GONE
+
+            rcYorumlar.visibility = View.VISIBLE
+            rcParca.visibility = View.GONE
+            rcYakit.visibility = View.GONE
+
 
             setupYorumlarRecyclerView()
         }
@@ -190,6 +180,10 @@ class ModelDetayiActivity : AppCompatActivity() {
             tvParcaEkle.visibility = View.VISIBLE
             tvYakitTukEkle.visibility = View.GONE
 
+            rcYorumlar.visibility = View.GONE
+            rcParca.visibility = View.VISIBLE
+            rcYakit.visibility = View.GONE
+
             setupParcalarRecyclerView()
         }
         imgYakitTuk.setOnClickListener {
@@ -200,6 +194,11 @@ class ModelDetayiActivity : AppCompatActivity() {
             tvYorumYap.visibility = View.GONE
             tvParcaEkle.visibility = View.GONE
             tvYakitTukEkle.visibility = View.VISIBLE
+
+            rcYorumlar.visibility = View.GONE
+            rcParca.visibility = View.GONE
+            rcYakit.visibility = View.VISIBLE
+
             setupYakitRecyclerView()
 
         }
@@ -322,10 +321,37 @@ class ModelDetayiActivity : AppCompatActivity() {
                 }
             })
 
+            initVeri("yakit")
             var dialog: Dialog = builder.create()
             dialog.show()
 
         }
+
+    }
+
+    private fun goruntulenmeSayisi() {
+        val ref = FirebaseDatabase.getInstance().reference
+        ref.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.value.toString() != "null") {
+                    var eskiPuan = p0.value.toString().toInt()
+
+                    var yeniPuan = eskiPuan + 1
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(yeniPuan)
+
+                } else if (p0.value.toString() == "null") {
+
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(1)
+                }
+
+            }
+
+
+        })
 
     }
 
@@ -345,24 +371,24 @@ class ModelDetayiActivity : AppCompatActivity() {
     fun setupParcalarRecyclerView() {
 
 
-        rcYorumlar.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, true)
+        rcParca.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, true)
         parcaAdapter = ParcaAdapter(this@ModelDetayiActivity, parcaListesi, userID)
         parcaAdapter.notifyDataSetChanged()
-        rcYorumlar.setHasFixedSize(true)
-        rcYorumlar.adapter = parcaAdapter
-        rcYorumlar.refreshDrawableState()
+        rcParca.setHasFixedSize(true)
+        rcParca.adapter = parcaAdapter
+        rcParca.refreshDrawableState()
 
 
     }
 
     fun setupYakitRecyclerView() {
 
-        rcYorumlar.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, false)
+        rcYakit.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, false)
         yakitAdapter = YakitAdapter(this@ModelDetayiActivity, yakitListesi, userID)
         yakitAdapter.notifyDataSetChanged()
-        rcYorumlar.setHasFixedSize(true)
-        rcYorumlar.adapter = yakitAdapter
-        rcYorumlar.refreshDrawableState()
+        rcYakit.setHasFixedSize(true)
+        rcYakit.adapter = yakitAdapter
+        rcYakit.refreshDrawableState()
 
     }
 
@@ -384,9 +410,6 @@ class ModelDetayiActivity : AppCompatActivity() {
         var tanitim = intent.getStringExtra("tanitim")
 
 
-        if (yakitTuk == "null" || yakitTuk.isNullOrEmpty()) {
-            detay_yakitTuk.visibility = View.GONE
-        }
         if (tanitim == "" || tanitim.isNullOrEmpty()) {
             tvTanitim2.visibility = View.GONE
         }
@@ -441,8 +464,6 @@ class ModelDetayiActivity : AppCompatActivity() {
         initVeri("yorum")
 
     }
-
-
 
 
 }

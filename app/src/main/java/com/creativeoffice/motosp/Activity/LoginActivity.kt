@@ -11,7 +11,10 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -30,30 +33,50 @@ class LoginActivity : AppCompatActivity() {
             var kullaniciAdi = etKullaniciAdiLogin.text.toString()
             var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
             var kullaniciSifre = etSifreLogin.text.toString()
+            var userNameKullanimi = true
+            FirebaseDatabase.getInstance().reference.child("users").addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+                }
+                override fun onDataChange(p0: DataSnapshot) {
+                    for (ds in p0.children){
+                        var gelenKullanicilar = ds.getValue(Users::class.java)
+                        if (gelenKullanicilar!!.user_name.equals(kullaniciAdi)){
+                            userNameKullanimi = true
+                            break
+                        }else{
+                            userNameKullanimi = false
+                        }
+                    }
 
-            mAuth.createUserWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                override fun onComplete(p0: Task<AuthResult>) {
-                    if (p0!!.isSuccessful) {
-
-                        var userID = mAuth.currentUser!!.uid.toString()
-                        var user_detail = UserDetails(1,"","Honda","Activa S","default")
-                        var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,user_detail)
-                        FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
-
-                    } else {
-                        mAuth.currentUser!!.delete() .addOnCompleteListener(object : OnCompleteListener<Void> {
-                            override fun onComplete(p0: Task<Void>) {
+                    if (userNameKullanimi==true){
+                        Toast.makeText(this@LoginActivity,"Kullanıcı Adı Kullanımdadır.", Toast.LENGTH_LONG).show()
+                    }else{
+                        mAuth.createUserWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                            override fun onComplete(p0: Task<AuthResult>) {
                                 if (p0!!.isSuccessful) {
-                                    Toast.makeText(this@LoginActivity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
+
+                                    var userID = mAuth.currentUser!!.uid.toString()
+                                    var user_detail = UserDetails(1,"","Honda","Activa S","default")
+                                    var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,user_detail)
+                                    FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
+
+                                } else {
+                                    mAuth.currentUser!!.delete() .addOnCompleteListener(object : OnCompleteListener<Void> {
+                                        override fun onComplete(p0: Task<Void>) {
+                                            if (p0!!.isSuccessful) {
+                                                Toast.makeText(this@LoginActivity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    })
                                 }
                             }
-
                         })
                     }
                 }
-
             })
         }
+
+
         btnLogin.setOnClickListener {
             var kullaniciAdi = etKullaniciAdiLogin.text.toString()
             var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"

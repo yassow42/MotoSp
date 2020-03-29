@@ -1,24 +1,30 @@
 package com.creativeoffice.motosp.Adapter
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.inflate
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Datalar.HaberlerData
 import com.creativeoffice.motosp.R
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.dialog_haber_detay.view.*
 import kotlinx.android.synthetic.main.item_haber.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HaberAdapter(val context: Context, var haberler: ArrayList<HaberlerData>) : RecyclerView.Adapter<HaberAdapter.HaberHolder>() {
+class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>) : RecyclerView.Adapter<HaberAdapter.HaberHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HaberHolder {
-        return HaberHolder(LayoutInflater.from(context).inflate(R.layout.item_haber, parent, false))
+        return HaberHolder(LayoutInflater.from(myContext).inflate(R.layout.item_haber, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -29,7 +35,8 @@ class HaberAdapter(val context: Context, var haberler: ArrayList<HaberlerData>) 
     override fun onBindViewHolder(holder: HaberHolder, position: Int) {
 
         Picasso.get().load(makeImagePath(haberler[position].haber_video.toString())).into(holder.img)
-        Log.e("sad",makeImagePath(haberler[position].haber_video.toString()))
+
+
 
         holder.setData(haberler[position])
     }
@@ -38,14 +45,50 @@ class HaberAdapter(val context: Context, var haberler: ArrayList<HaberlerData>) 
     inner class HaberHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var img = itemView.imageView7
         var haberBaslik = itemView.tvHaberBasligi
+        var tumLayout = itemView.tumLayout
 
         fun setData(haberler: HaberlerData?) {
             haberBaslik.text = haberler!!.haber_baslik
 
+
+
+
+            tumLayout.setOnClickListener {
+                var builder: AlertDialog.Builder = AlertDialog.Builder(myContext)
+
+                var viewDialog: View = inflate(myContext, R.layout.dialog_haber_detay, null)
+                Log.e("sadd", haberler.haber_baslik.toString())
+
+             viewDialog.tvHaberBaslik.text = haberler.haber_baslik.toString()
+             viewDialog.tvHaberIcerik.text = haberler.haber_icerik.toString()
+
+
+                var currentSecond = 0f
+                viewDialog.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        youTubePlayer.cueVideo(haberler.haber_video.toString(), 0f)
+                    }
+
+                    override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                        currentSecond = second
+                    }
+                })
+
+                viewDialog.youtubePlayer.display
+                viewDialog.youtubePlayer.getPlayerUiController().showVideoTitle(false)
+                builder.setView(viewDialog)
+
+
+                var dialog: Dialog = builder.create()
+                dialog.show()
+
+
+            }
+
+
         }
 
     }
-
 
 
     val YOUTUBE = "https://www.youtube.com/watch?v="
