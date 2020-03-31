@@ -28,9 +28,9 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
         viewHolder.scrollView.visibility = View.GONE
         viewHolder.tvDetaylariGizle.visibility = View.GONE
-        viewHolder.ytTekModelList.visibility = View.GONE
+     //   viewHolder.ytTekModelList.visibility = View.GONE
         viewHolder.yorumlariGor.visibility = View.GONE
-        viewHolder.tvTanitim2.visibility = View.GONE
+       // viewHolder.tvTanitim2.visibility = View.GONE
 
         return MyViewHolder(viewHolder, myContext)
     }
@@ -65,6 +65,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             intent.putExtra("YakitKap", tumModeller.get(p1).yakitkap.toString())
             intent.putExtra("YakitTuk", tumModeller.get(p1).yakitTuk.toString())
             intent.putExtra("tanitim", tumModeller.get(p1).tanitim.toString())
+            intent.putExtra("video", tumModeller.get(p1).motorVideo.toString())
 
 
             myContext.startActivity(intent)
@@ -81,7 +82,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var tvModel = tumLayout.tvModel
         var tvDetaylariGoster = tumLayout.tvDetaylariGoster
         var tvDetaylariGizle = tumLayout.tvDetaylariGizle
-        var youTubePlayer = tumLayout.ytTekModelList
+      //  var youTubePlayer = tumLayout.ytTekModelList
         var tvTanitim = tumLayout.tvTanitim
         var tvTanitim2 = tumLayout.tvTanitim2
         var tvGoruldu = tumLayout.tvGoruldu
@@ -124,7 +125,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             }
 
             var currentSecond = 0f
-
+/*
             youTubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
                 override fun onReady(youTubePlayer: YouTubePlayer) {
                     youTubePlayer.cueVideo(youTubeUrl.toString(), 0f)
@@ -134,7 +135,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                     currentSecond = second
                 }
             })
-
+*/
             if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
                 tvTanitim.visibility = View.GONE
                 tvTanitim2.visibility = View.GONE
@@ -146,28 +147,30 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                 scrollView.visibility = View.VISIBLE
                 tvDetaylariGoster.visibility = View.GONE
                 tvDetaylariGizle.visibility = View.VISIBLE
-                youTubePlayer.visibility = View.VISIBLE
                 yorumlariGor.visibility = View.VISIBLE
+
+                /*
+                youTubePlayer.visibility = View.VISIBLE
                 youTubePlayer!!.getPlayerUiController().setVideoTitle(oAnkiModel.marka + " " + oAnkiModel.model)
                 youTubePlayer.enableBackgroundPlayback(false)
-
                 youTubePlayer!!.getPlayerUiController().showYouTubeButton(false)
                 youTubePlayer!!.getPlayerUiController().showMenuButton(false)
-
                 youTubePlayer!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma))
-                scrollView!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+                */
 
+                scrollView!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+/*
                 tvMarka!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.kaybolma_sol))
                 tvModel!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.kaybolma_sol))
                 imgMotoripi!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.kaybolma_sag))
+*/
 
 
-
-                tvMarka.visibility = View.GONE
-                tvModel.visibility = View.GONE
+          //      tvMarka.visibility = View.GONE
+          //      tvModel.visibility = View.GONE
                 tvTanitim2.visibility = View.VISIBLE
-                tvTanitim.visibility = View.GONE
-                imgMotoripi.visibility = View.GONE
+            //    tvTanitim.visibility = View.GONE
+            //    imgMotoripi.visibility = View.GONE
 
 
             }
@@ -182,7 +185,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                 scrollView.visibility = View.GONE
                 tvDetaylariGoster.visibility = View.VISIBLE
                 tvDetaylariGizle.visibility = View.GONE
-                youTubePlayer.visibility = View.GONE
+          //      youTubePlayer.visibility = View.GONE
                 yorumlariGor.visibility = View.GONE
 
                 tvMarka.visibility = View.VISIBLE

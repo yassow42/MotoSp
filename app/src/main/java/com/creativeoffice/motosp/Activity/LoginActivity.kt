@@ -1,8 +1,12 @@
 package com.creativeoffice.motosp.Activity
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import com.creativeoffice.motosp.Datalar.UserDetails
 import com.creativeoffice.motosp.Datalar.Users
@@ -16,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.dialog_register.view.*
 
 class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
@@ -30,51 +35,80 @@ class LoginActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         btnRegister.setOnClickListener {
-            var kullaniciAdi = etKullaniciAdiLogin.text.toString()
-            var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
-            var kullaniciSifre = etSifreLogin.text.toString()
-            var userNameKullanimi = true
-            FirebaseDatabase.getInstance().reference.child("users").addListenerForSingleValueEvent(object :ValueEventListener{
-                override fun onCancelled(p0: DatabaseError) {
-                }
-                override fun onDataChange(p0: DataSnapshot) {
-                    for (ds in p0.children){
-                        var gelenKullanicilar = ds.getValue(Users::class.java)
-                        if (gelenKullanicilar!!.user_name.equals(kullaniciAdi)){
-                            userNameKullanimi = true
-                            break
-                        }else{
-                            userNameKullanimi = false
-                        }
-                    }
 
-                    if (userNameKullanimi==true){
-                        Toast.makeText(this@LoginActivity,"Kullanıcı Adı Kullanımdadır.", Toast.LENGTH_LONG).show()
-                    }else{
-                        mAuth.createUserWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                            override fun onComplete(p0: Task<AuthResult>) {
-                                if (p0!!.isSuccessful) {
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var inflater: LayoutInflater = layoutInflater
+            var view: View = inflater.inflate(R.layout.dialog_register, null)
 
-                                    var userID = mAuth.currentUser!!.uid.toString()
-                                    var user_detail = UserDetails(1,"","Honda","Activa S","default")
-                                    var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,user_detail)
-                                    FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
+            builder.setView(view)
+            var dialog: Dialog = builder.create()
 
-                                } else {
-                                    mAuth.currentUser!!.delete() .addOnCompleteListener(object : OnCompleteListener<Void> {
-                                        override fun onComplete(p0: Task<Void>) {
-                                            if (p0!!.isSuccessful) {
-                                                Toast.makeText(this@LoginActivity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
-                                            }
-                                        }
-                                    })
-                                }
-                            }
-                        })
-                    }
-                }
-            })
-        }
+           view.btnRegisterAlertDialog.setOnClickListener {
+               var kullaniciAdi = view.etKullaniciAdiLoginAlertDialog.text.toString()
+               var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
+               var kullaniciSifre = view.etSifreLoginAlertDialog.text.toString()
+               var userNameKullanimi = true
+               FirebaseDatabase.getInstance().reference.child("users").addListenerForSingleValueEvent(object :ValueEventListener{
+                   override fun onCancelled(p0: DatabaseError) {
+                   }
+                   override fun onDataChange(p0: DataSnapshot) {
+                       for (ds in p0.children){
+                           var gelenKullanicilar = ds.getValue(Users::class.java)
+                           if (gelenKullanicilar!!.user_name.equals(kullaniciAdi)){
+                               userNameKullanimi = true
+                               break
+                           }else{
+                               userNameKullanimi = false
+                           }
+                       }
+
+                       if (userNameKullanimi==true){
+                           Toast.makeText(this@LoginActivity,"Kullanıcı Adı Kullanımdadır.", Toast.LENGTH_LONG).show()
+                       }else{
+                           mAuth.createUserWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                               override fun onComplete(p0: Task<AuthResult>) {
+                                   if (p0!!.isSuccessful) {
+
+                                       var userID = mAuth.currentUser!!.uid.toString()
+                                       var user_detail = UserDetails(1,"","Honda","Activa S","default")
+                                       var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,user_detail)
+                                       FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
+
+                                   } else {
+                                       mAuth.currentUser!!.delete() .addOnCompleteListener(object : OnCompleteListener<Void> {
+                                           override fun onComplete(p0: Task<Void>) {
+                                               if (p0!!.isSuccessful) {
+                                                   Toast.makeText(this@LoginActivity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
+                                               }
+                                           }
+                                       })
+                                   }
+                               }
+                           })
+                       }
+                   }
+               })
+           }
+
+
+
+            dialog.show()
+           }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         btnLogin.setOnClickListener {

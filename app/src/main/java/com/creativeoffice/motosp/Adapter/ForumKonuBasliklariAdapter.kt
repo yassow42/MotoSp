@@ -111,7 +111,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
         fun formatDate(miliSecond: Long?): String? {
             if (miliSecond == null) return "0"
             val date = Date(miliSecond)
-            val sdf = SimpleDateFormat("EEE, MMM d, ''yy", Locale("tr"))
+            val sdf = SimpleDateFormat("hh:mm MMM d", Locale("tr"))
             return sdf.format(date)
 
         }

@@ -6,9 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
+    android:layout_margin="5dp"
     android:background="@drawable/bg_tek_model_list"
-    android:padding="2dp">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/tvModel"
@@ -89,30 +89,11 @@
         app:layout_constraintStart_toStartOf="@+id/tvDetaylariGoster"
         app:layout_constraintTop_toBottomOf="@+id/tvDetaylariGoster" />
 
-    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-        android:id="@+id/ytTekModelList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="10dp"
-        android:focusable="auto"
-        android:padding="5dp"
-        app:color="@color/mavi"
-        app:fontSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTanitim"
-        app:showFullScreenButton="false">
-
-    </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
-
     <HorizontalScrollView
         android:id="@+id/scrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="6dp"
         android:layout_marginEnd="4dp"
         android:fadingEdge="horizontal|vertical"
         android:overScrollMode="ifContentScrolls"
@@ -121,7 +102,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ytTekModelList">
+        app:layout_constraintTop_toBottomOf="@+id/tvTanitim">
 
         <LinearLayout
             android:id="@+id/modelDetayLL"

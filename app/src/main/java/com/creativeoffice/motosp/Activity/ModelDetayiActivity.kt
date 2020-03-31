@@ -19,6 +19,8 @@ import com.creativeoffice.motosp.Datalar.YorumlarData
 import com.creativeoffice.motosp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
 import kotlinx.android.synthetic.main.activity_model_detayi.*
 import kotlinx.android.synthetic.main.activity_parca_ekle.view.*
@@ -408,6 +410,19 @@ class ModelDetayiActivity : AppCompatActivity() {
         var yakitKap = intent.getStringExtra("YakitKap")
         var yakitTuk = intent.getStringExtra("YakitTuk")
         var tanitim = intent.getStringExtra("tanitim")
+        var video = intent.getStringExtra("video")
+
+        var currentSecond = 0f
+
+        ytTekModelList.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
+                    youTubePlayer.cueVideo(video.toString(), 0f)
+                }
+
+                override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                    currentSecond = second
+                }
+            })
 
 
         if (tanitim == "" || tanitim.isNullOrEmpty()) {

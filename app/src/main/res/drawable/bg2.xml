@@ -7,8 +7,8 @@
 
 
         android:endColor="#FAA8201A"
-        android:centerColor="#F22E3663"
-        android:startColor="@color/mavi"
+        android:centerColor="#F23E4987"
+        android:startColor="#CB1443B8"
         android:type="linear" />
 
 </shape>

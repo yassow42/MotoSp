@@ -70,7 +70,7 @@ class YeniAcilanKonuAdapter(val myContext: Context, val yeniKonuList: ArrayList<
         fun formatDate(miliSecond: Long?): String? {
             if (miliSecond == null) return "0"
             val date = Date(miliSecond)
-            val sdf = SimpleDateFormat("EEE, MMM d, ''yy", Locale("tr"))
+            val sdf = SimpleDateFormat("EEE, d MMM", Locale("tr"))
             return sdf.format(date)
 
         }

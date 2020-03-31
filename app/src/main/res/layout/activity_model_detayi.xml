@@ -28,7 +28,7 @@
                 android:id="@+id/view2"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/beyaz"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -385,19 +385,32 @@
 
             </HorizontalScrollView>
 
-            <TextView
-                android:id="@+id/tvTanitim2"
-                android:layout_width="wrap_content"
+
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                android:id="@+id/ytTekModelList"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="32dp"
-                android:text="@string/motor_tanitim"
-                android:textColor="@color/beyaz"
-                android:textSize="10sp"
+                android:focusable="auto"
+                app:color="@color/mavi"
+                app:fontSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
+                app:layout_constraintTop_toBottomOf="@+id/scrollView"
+                app:showFullScreenButton="false"/>
+
+            <TextView
+                android:id="@+id/tvTanitim2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/motor_tanitim"
+                android:textColor="@color/beyaz"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/ytTekModelList"
+                app:layout_constraintStart_toStartOf="@+id/ytTekModelList"
+                app:layout_constraintTop_toBottomOf="@+id/ytTekModelList" />
 
             <ImageView
                 android:id="@+id/imgMotorTipi"
