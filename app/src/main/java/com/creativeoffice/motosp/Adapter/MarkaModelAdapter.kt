@@ -103,7 +103,6 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             setupModelFotolari(oAnkiModel)
             setupModelYazilari(oAnkiModel)
 
-
             if (oAnkiModel.goruntulenme_sayisi.toString() == "null") {
                 tvGoruldu.text = "1"
             }
