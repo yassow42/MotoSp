@@ -143,7 +143,6 @@ class ProfileEditFragment : Fragment() {
                     override fun onNothingSelected(p0: AdapterView<*>?) {
 
                     }
-
                     override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, p2: Int, p3: Long) {
                         secilenMarka = spinnerMarka.selectedItem.toString()
                         if (secilenMarka != "Marka seçiniz") {
