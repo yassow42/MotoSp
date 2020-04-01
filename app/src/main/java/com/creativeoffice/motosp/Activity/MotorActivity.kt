@@ -86,6 +86,8 @@ class MotorActivity : AppCompatActivity() {
                         }
                     })
 
+                } else if ( position ==0){
+                    setupRecyclerView()
                 }
             }
         }

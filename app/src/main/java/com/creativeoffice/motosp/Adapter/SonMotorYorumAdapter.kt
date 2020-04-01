@@ -46,6 +46,7 @@ class SonMotorYorumAdapter(val myContext: Context, val sonYorumlar: ArrayList<Yo
             intent.putExtra("YakitTuk", tumModeller.get(p1).yakitTuk.toString())
             intent.putExtra("tanitim", tumModeller.get(p1).tanitim.toString())
             intent.putExtra("video", tumModeller.get(p1).motorVideo.toString())
+            intent.putExtra("fiyat", tumModeller.get(p1).fiyat.toString())
 
 
             myContext.startActivity(intent)

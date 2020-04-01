@@ -17,10 +17,13 @@ class ModelDetaylariData {
     var yakitTuk: String? = null
     var yakitkap: String? = null
     var goruntulenme_sayisi: Int? = null
+    var fiyat: String? = null
+    var ortYildiz: String? = null
 
     var yorumlar: HashMap<String, Yorumlar>? = null
     var yy_parcalar: HashMap<String, Parcalar>? = null
     var yy_yakit_verileri: HashMap<String, YakitTuketimi>? = null
+    var yildizlar: HashMap<String, Yildizlar>? = null
 
 
     constructor()
@@ -38,7 +41,9 @@ class ModelDetaylariData {
         tork: String?,
         yakitTuk: String?,
         yakitkap: String?,
-        goruntulenme_sayisi: Int?
+        goruntulenme_sayisi: Int?,
+        fiyat: String?,
+        ortYildiz: String?
     ) {
         this.marka = marka
         this.model = model
@@ -54,7 +59,8 @@ class ModelDetaylariData {
         this.yakitTuk = yakitTuk
         this.yakitkap = yakitkap
         this.goruntulenme_sayisi = goruntulenme_sayisi
-
+        this.fiyat = fiyat
+        this.ortYildiz = ortYildiz
     }
 
 
@@ -82,6 +88,10 @@ class ModelDetaylariData {
         val yakitTuk: Float? = null,
         val kullanici_adi: String? = null,
         val motor_yili: String? = null
+    )
+
+    data class Yildizlar(
+        val yildiz:Float?=null
     )
 
 

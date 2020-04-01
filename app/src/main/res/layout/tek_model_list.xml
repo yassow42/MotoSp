@@ -364,7 +364,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="32dp"
         android:maxWidth="250dp"
         android:text="sadfsafas"
@@ -378,8 +378,8 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/ic_eye"
@@ -398,5 +398,27 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintEnd_toStartOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+    <ImageView
+        android:id="@+id/imgStar"
+        android:layout_width="12sp"
+        android:layout_height="12sp"
+        android:background="@drawable/ic_star"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDetaylariGizle"
+        app:layout_constraintTop_toBottomOf="@+id/yorumlariGor"
+        app:srcCompat="@drawable/ic_star"
+        tools:layout_editor_absoluteX="5dp" />
+
+    <TextView
+        android:id="@+id/tvYildiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textColor="@color/beyaz"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgStar"
+        app:layout_constraintStart_toEndOf="@+id/imgStar"
+        app:layout_constraintTop_toTopOf="@+id/imgStar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

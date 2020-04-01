@@ -11,12 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.Activity.ModelDetayiActivity
 import com.creativeoffice.motosp.R
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import kotlinx.android.synthetic.main.tek_model_list.view.*
 
 
@@ -28,9 +22,9 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
         viewHolder.scrollView.visibility = View.GONE
         viewHolder.tvDetaylariGizle.visibility = View.GONE
-     //   viewHolder.ytTekModelList.visibility = View.GONE
+        //   viewHolder.ytTekModelList.visibility = View.GONE
         viewHolder.yorumlariGor.visibility = View.GONE
-       // viewHolder.tvTanitim2.visibility = View.GONE
+        viewHolder.tvTanitim2.visibility = View.GONE
 
         return MyViewHolder(viewHolder, myContext)
     }
@@ -41,10 +35,10 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
 
-          p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
+        p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
 
-      //     p0.tvModel.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
-     //   p0.imgMotoripi.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+        //     p0.tvModel.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
+        //   p0.imgMotoripi.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
 
         p0.setData(tumModeller.get(p1), myContext)
 
@@ -66,7 +60,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             intent.putExtra("YakitTuk", tumModeller.get(p1).yakitTuk.toString())
             intent.putExtra("tanitim", tumModeller.get(p1).tanitim.toString())
             intent.putExtra("video", tumModeller.get(p1).motorVideo.toString())
-
+            intent.putExtra("fiyat", tumModeller.get(p1).fiyat.toString())
 
             myContext.startActivity(intent)
 
@@ -82,10 +76,12 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var tvModel = tumLayout.tvModel
         var tvDetaylariGoster = tumLayout.tvDetaylariGoster
         var tvDetaylariGizle = tumLayout.tvDetaylariGizle
-      //  var youTubePlayer = tumLayout.ytTekModelList
+
+        //  var youTubePlayer = tumLayout.ytTekModelList
         var tvTanitim = tumLayout.tvTanitim
         var tvTanitim2 = tumLayout.tvTanitim2
         var tvGoruldu = tumLayout.tvGoruldu
+        var tvYildiz = tumLayout.tvYildiz
 
         var scrollView = tumLayout.scrollView
         var yorumlariGor = tumLayout.yorumlariGor
@@ -100,10 +96,72 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var detay_agirlik = tumLayout.detay_agirlik
         var detay_kapasite = tumLayout.detay_yakitKap
         var imgMotoripi = tumLayout.imgMotorTipi
+        var imgStar = tumLayout.imgStar
 
 
         fun setData(oAnkiModel: ModelDetaylariData, myContext: Context) {
-            val youTubeUrl = oAnkiModel.motorVideo
+            setupModelFotolari(oAnkiModel)
+            setupModelYazilari(oAnkiModel)
+
+
+            if (oAnkiModel.goruntulenme_sayisi.toString() == "null") {
+                tvGoruldu.text = "1"
+            }
+            if (oAnkiModel.ortYildiz.toString() == "null") {
+                tvYildiz.visibility = View.GONE
+                imgStar.visibility= View.GONE
+            }
+            if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
+                tvTanitim.visibility = View.GONE
+                tvTanitim2.visibility = View.GONE
+            }
+
+
+            tvDetaylariGoster.setOnClickListener {
+
+                scrollView.visibility = View.VISIBLE
+                tvDetaylariGoster.visibility = View.GONE
+                tvDetaylariGizle.visibility = View.VISIBLE
+                yorumlariGor.visibility = View.VISIBLE
+                tvTanitim2.visibility = View.VISIBLE
+                if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
+                    tvTanitim.visibility = View.GONE
+                    tvTanitim2.visibility = View.GONE
+                }
+
+                scrollView!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+
+
+            }
+
+            tvDetaylariGizle.setOnClickListener {
+                tvMarka!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+                tvModel!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+                imgMotoripi!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sag))
+                tvTanitim2!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.kaybolma_sag))
+
+
+                scrollView.visibility = View.GONE
+                tvDetaylariGoster.visibility = View.VISIBLE
+                tvDetaylariGizle.visibility = View.GONE
+                //      youTubePlayer.visibility = View.GONE
+                yorumlariGor.visibility = View.GONE
+
+                tvMarka.visibility = View.VISIBLE
+                tvModel.visibility = View.VISIBLE
+                tvTanitim2.visibility = View.GONE
+                tvTanitim.visibility = View.VISIBLE
+                imgMotoripi.visibility = View.VISIBLE
+
+            }
+
+
+
+
+
+        }
+
+        private fun setupModelYazilari(oAnkiModel: ModelDetaylariData) {
             tvMarka.text = oAnkiModel.marka.toString()
             tvModel.text = oAnkiModel.model.toString()
             tvTanitim.text = oAnkiModel.tanitim.toString()
@@ -119,83 +177,11 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             detay_agirlik.text = oAnkiModel.agirlik
             detay_kapasite.text = oAnkiModel.yakitkap
             tvGoruldu.text = oAnkiModel.goruntulenme_sayisi.toString()
+            tvYildiz.text = oAnkiModel.ortYildiz.toString()
 
-            if (oAnkiModel.goruntulenme_sayisi.toString() == "null"){
-                tvGoruldu.text = "1"
-            }
+        }
 
-            var currentSecond = 0f
-/*
-            youTubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    youTubePlayer.cueVideo(youTubeUrl.toString(), 0f)
-                }
-
-                override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-                    currentSecond = second
-                }
-            })
-*/
-            if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
-                tvTanitim.visibility = View.GONE
-                tvTanitim2.visibility = View.GONE
-            }
-
-
-            tvDetaylariGoster.setOnClickListener {
-
-                scrollView.visibility = View.VISIBLE
-                tvDetaylariGoster.visibility = View.GONE
-                tvDetaylariGizle.visibility = View.VISIBLE
-                yorumlariGor.visibility = View.VISIBLE
-
-                /*
-                youTubePlayer.visibility = View.VISIBLE
-                youTubePlayer!!.getPlayerUiController().setVideoTitle(oAnkiModel.marka + " " + oAnkiModel.model)
-                youTubePlayer.enableBackgroundPlayback(false)
-                youTubePlayer!!.getPlayerUiController().showYouTubeButton(false)
-                youTubePlayer!!.getPlayerUiController().showMenuButton(false)
-                youTubePlayer!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma))
-                */
-
-                scrollView!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
-/*
-                tvMarka!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.kaybolma_sol))
-                tvModel!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.kaybolma_sol))
-                imgMotoripi!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.kaybolma_sag))
-*/
-
-
-          //      tvMarka.visibility = View.GONE
-          //      tvModel.visibility = View.GONE
-                tvTanitim2.visibility = View.VISIBLE
-            //    tvTanitim.visibility = View.GONE
-            //    imgMotoripi.visibility = View.GONE
-
-
-            }
-
-            tvDetaylariGizle.setOnClickListener {
-                tvMarka!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
-                tvModel!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
-                imgMotoripi!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sag))
-                tvTanitim2!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.kaybolma_sag))
-
-
-                scrollView.visibility = View.GONE
-                tvDetaylariGoster.visibility = View.VISIBLE
-                tvDetaylariGizle.visibility = View.GONE
-          //      youTubePlayer.visibility = View.GONE
-                yorumlariGor.visibility = View.GONE
-
-                tvMarka.visibility = View.VISIBLE
-                tvModel.visibility = View.VISIBLE
-                tvTanitim2.visibility = View.GONE
-                tvTanitim.visibility = View.VISIBLE
-                imgMotoripi.visibility = View.VISIBLE
-
-            }
-
+        private fun setupModelFotolari(oAnkiModel: ModelDetaylariData) {
             if (oAnkiModel.kategori == "Scooter") {
                 imgMotoripi.setBackgroundResource(R.drawable.ic_scooter)
             } else if (oAnkiModel.kategori == "Sport" || oAnkiModel.kategori == "Racing") {
@@ -210,9 +196,8 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             } else if (oAnkiModel.kategori == "Chopper") {
                 imgMotoripi.setBackgroundResource(R.drawable.ic_chopper)
             }
-
-
         }
+
 
     }
 

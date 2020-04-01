@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.RatingBar
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.ParcaAdapter
@@ -48,6 +50,7 @@ class ModelDetayiActivity : AppCompatActivity() {
     var parcaListesi = ArrayList<ModelDetaylariData.Parcalar>()
     var yorumListesi = ArrayList<ModelDetaylariData.Yorumlar>()
     var yakitListesi = ArrayList<ModelDetaylariData.YakitTuketimi>()
+    var yildizListesi = ArrayList<ModelDetaylariData.Yildizlar>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +64,7 @@ class ModelDetayiActivity : AppCompatActivity() {
         initVeri("")
         verileriGetir()
         goruntulenmeSayisi()
+
 
     }
 
@@ -88,6 +92,7 @@ class ModelDetayiActivity : AppCompatActivity() {
                 parcaListesi.clear()
                 yakitListesi.clear()
 
+
                 val yorumHashMap = modellerinVerisi.yorumlar ?: return
                 yorumListesi = ArrayList()
                 for (i in yorumHashMap.values) {
@@ -104,10 +109,6 @@ class ModelDetayiActivity : AppCompatActivity() {
                 parcaListesi.sortBy { it.parca_uyum_model_yili } //sortby tarihe göre sıralar
 
                 val yakitHashMap = modellerinVerisi.yy_yakit_verileri ?: return
-
-
-
-
                 for (i in yakitHashMap.values) {
                     yakitListesi.add(i)
                 }
@@ -116,14 +117,33 @@ class ModelDetayiActivity : AppCompatActivity() {
                 //yakitin ortalamasını alıyoruz.
                 var yakitGirdiSayisi = p0.child("yy_yakit_verileri").childrenCount
                 var form = DecimalFormat("0.0")
-                var ortalama = yakitListesi.map { it -> it?.yakitTuk!! }.average()
-                var ort = form.format(ortalama).toString() + " lt /100 km"
+                var ortalamaYakit = yakitListesi.map { it -> it?.yakitTuk!! }.average()
+                var ortYakitString = form.format(ortalamaYakit).toString() + " lt /100 km"
 
 
-
-                FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ort).addOnCompleteListener {
-                    detay_yakitTuk.text = ort
+                FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ortYakitString).addOnCompleteListener {
+                    detay_yakitTuk.text = ortYakitString
                 }
+
+                yildizListesi.clear()
+                if (!modellerinVerisi.yildizlar.isNullOrEmpty()) {
+                    val yildizHashMap = modellerinVerisi.yildizlar ?: return
+                    for (i in yildizHashMap.values) {
+                        yildizListesi.add(i)
+                    }
+                    var ortalamaYildiz = yildizListesi.map { it -> it?.yildiz!! }.average()
+
+
+                    Log.e("sad", ortalamaYildiz.toString())
+                    rbMotor.rating = ortalamaYildiz.toFloat()
+
+
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("ortYildiz").setValue(form.format(ortalamaYildiz).toString())
+                }
+
+
+
+
 
 
 
@@ -152,9 +172,20 @@ class ModelDetayiActivity : AppCompatActivity() {
         val ref = FirebaseDatabase.getInstance().reference
         tvParcaEkle.visibility = View.GONE
         tvYakitTukEkle.visibility = View.GONE
-
-
         imgYorum.setBackgroundResource(R.drawable.ic_yorum_mavi)
+
+        var yildiz = ModelDetaylariData.Yildizlar()
+        rbMotor.onRatingBarChangeListener = object : RatingBar.OnRatingBarChangeListener {
+            override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
+                yildiz = ModelDetaylariData.Yildizlar(ratingBar!!.rating)
+            }
+        }
+        imgRating.setOnClickListener {
+            Log.e("saa", "burada")
+            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yildizlar").child(userID.toString()).setValue(yildiz)
+
+        }
+
 
 
         imgYorum.setOnClickListener {
@@ -205,7 +236,6 @@ class ModelDetayiActivity : AppCompatActivity() {
 
         }
 
-
         tvYorumYap.setOnClickListener {
 
 
@@ -251,8 +281,6 @@ class ModelDetayiActivity : AppCompatActivity() {
             dialog.show()
 
         }
-
-
         tvParcaEkle.setOnClickListener {
 
             var builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -295,7 +323,6 @@ class ModelDetayiActivity : AppCompatActivity() {
 
 
         }
-
         tvYakitTukEkle.setOnClickListener {
 
             var builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -411,18 +438,26 @@ class ModelDetayiActivity : AppCompatActivity() {
         var yakitTuk = intent.getStringExtra("YakitTuk")
         var tanitim = intent.getStringExtra("tanitim")
         var video = intent.getStringExtra("video")
+        var fiyat = intent.getStringExtra("fiyat")
+
+        tvFiyat.visibility = View.GONE
+        if (fiyat != "null" && !fiyat.isNullOrEmpty()) {
+            tvFiyat.text = "Ortalama Fiyat: " + fiyat
+            tvFiyat.visibility = View.VISIBLE
+        }
+
 
         var currentSecond = 0f
 
         ytTekModelList.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    youTubePlayer.cueVideo(video.toString(), 0f)
-                }
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                youTubePlayer.cueVideo(video.toString(), 0f)
+            }
 
-                override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-                    currentSecond = second
-                }
-            })
+            override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                currentSecond = second
+            }
+        })
 
 
         if (tanitim == "" || tanitim.isNullOrEmpty()) {
