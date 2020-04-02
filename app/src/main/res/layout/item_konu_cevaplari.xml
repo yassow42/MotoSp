@@ -5,7 +5,6 @@
     android:id="@+id/tumLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
     android:padding="1dp">
 
 
@@ -14,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bg4"
         android:padding="3dp"
@@ -24,13 +23,13 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleProfileImage"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginStart="8dp"
             android:src="@drawable/ic_profile"
             app:civ_border_color="@color/siyah"
             app:civ_border_width="3dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvCevapZamani"
+            app:layout_constraintBottom_toBottomOf="@+id/tvKullanilanMotor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvUserName"></de.hdodenhof.circleimageview.CircleImageView>
 
@@ -42,6 +41,7 @@
             android:layout_marginTop="4dp"
             android:text="UserName"
             android:textColor="@color/beyaz"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/circleProfileImage"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,6 +53,7 @@
             android:layout_marginBottom="4dp"
             android:text="Honda CBR1000RR"
             android:textColor="@color/beyaz"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tvUserName"
             app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
@@ -63,7 +64,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="1dp"
         android:background="@drawable/bg_cevap"
         android:padding="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -76,7 +76,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:text="TextView"
             android:textColor="@color/siyah"

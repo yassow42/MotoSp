@@ -4,9 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.View.inflate
 import android.view.ViewGroup
@@ -21,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
-import kotlinx.android.synthetic.main.item_cevaplar.view.*
+import kotlinx.android.synthetic.main.item_konu_cevaplari.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,7 +29,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
 
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ForumCevapHolder {
 
-        val view = LayoutInflater.from(myContext).inflate(R.layout.item_cevaplar, p0, false)
+        val view = LayoutInflater.from(myContext).inflate(R.layout.item_konu_cevaplari, p0, false)
 
 
 

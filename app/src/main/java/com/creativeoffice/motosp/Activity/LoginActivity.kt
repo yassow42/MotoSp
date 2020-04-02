@@ -43,57 +43,58 @@ class LoginActivity : AppCompatActivity() {
             builder.setView(view)
             var dialog: Dialog = builder.create()
 
-           view.btnRegisterAlertDialog.setOnClickListener {
-               var kullaniciAdi = view.etKullaniciAdiLoginAlertDialog.text.toString()
-               var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
-               var kullaniciSifre = view.etSifreLoginAlertDialog.text.toString()
-               var userNameKullanimi = true
-               FirebaseDatabase.getInstance().reference.child("users").addListenerForSingleValueEvent(object :ValueEventListener{
-                   override fun onCancelled(p0: DatabaseError) {
-                   }
-                   override fun onDataChange(p0: DataSnapshot) {
-                       for (ds in p0.children){
-                           var gelenKullanicilar = ds.getValue(Users::class.java)
-                           if (gelenKullanicilar!!.user_name.equals(kullaniciAdi)){
-                               userNameKullanimi = true
-                               break
-                           }else{
-                               userNameKullanimi = false
-                           }
-                       }
+            view.btnRegisterAlertDialog.setOnClickListener {
+                var kullaniciAdi = view.etKullaniciAdiLoginAlertDialog.text.toString()
+                var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
+                var kullaniciSifre = view.etSifreLoginAlertDialog.text.toString()
+                var userNameKullanimi = false
+                FirebaseDatabase.getInstance().reference.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                    }
 
-                       if (userNameKullanimi==true){
-                           Toast.makeText(this@LoginActivity,"Kullanıcı Adı Kullanımdadır.", Toast.LENGTH_LONG).show()
-                       }else{
-                           mAuth.createUserWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                               override fun onComplete(p0: Task<AuthResult>) {
-                                   if (p0!!.isSuccessful) {
+                    override fun onDataChange(p0: DataSnapshot) {
+                        for (ds in p0.children) {
+                            var gelenKullanicilar = ds.getValue(Users::class.java)
+                            if (gelenKullanicilar!!.user_name.equals(kullaniciAdi)) {
+                                userNameKullanimi = true
+                                break
+                            } else {
+                                userNameKullanimi = false
+                            }
+                        }
 
-                                       var userID = mAuth.currentUser!!.uid.toString()
-                                       var user_detail = UserDetails(1,"","Honda","Activa S","default")
-                                       var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,user_detail)
-                                       FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
+                        if (userNameKullanimi == true) {
+                            Toast.makeText(this@LoginActivity, "Kullanıcı Adı Kullanımdadır.", Toast.LENGTH_LONG).show()
+                        } else {
+                            mAuth.createUserWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                                override fun onComplete(p0: Task<AuthResult>) {
+                                    if (p0!!.isSuccessful) {
 
-                                   } else {
-                                       mAuth.currentUser!!.delete() .addOnCompleteListener(object : OnCompleteListener<Void> {
-                                           override fun onComplete(p0: Task<Void>) {
-                                               if (p0!!.isSuccessful) {
-                                                   Toast.makeText(this@LoginActivity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
-                                               }
-                                           }
-                                       })
-                                   }
-                               }
-                           })
-                       }
-                   }
-               })
-           }
+                                        var userID = mAuth.currentUser!!.uid.toString()
+                                        var user_detail = UserDetails(1, "", "Honda", "Activa S", "default",null)
+                                        var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID, user_detail)
+                                        FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
+
+                                    } else {
+                                        mAuth.currentUser!!.delete().addOnCompleteListener(object : OnCompleteListener<Void> {
+                                            override fun onComplete(p0: Task<Void>) {
+                                                if (p0!!.isSuccessful) {
+                                                    Toast.makeText(this@LoginActivity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+            }
 
 
 
             dialog.show()
-           }
+        }
 
 
 
@@ -154,8 +155,6 @@ class LoginActivity : AppCompatActivity() {
         mAuth.addAuthStateListener(mAuthListener)
         super.onStart()
     }
-
-
 
 
     override fun onStop() {

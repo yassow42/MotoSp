@@ -10,6 +10,7 @@ import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.ProfileEditFragment
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
+import com.creativeoffice.motosp.utils.TimeAgo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -58,9 +59,11 @@ class ProfileActivity : AppCompatActivity() {
                     var marka = p0.child("user_details").child("kullanilan_motor_marka").value.toString()
                     var model = p0.child("user_details").child("kullanilan_motor_model").value.toString()
                     var puan = p0.child("user_details").child("puan").value.toString()
+                    var sonAktif = p0.child("user_details").child("son_aktiflik_zamani").value.toString().toLong()
                     tvPuan.text = puan
                     tvMarkaProfile.text = marka
                     tvModelProfile.text = model
+                    tvSonAktif.text = "Son Çevrimiçi: "+ TimeAgo.getTimeAgoComments(sonAktif)
 
                     var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                     if (imgURL != "default") {

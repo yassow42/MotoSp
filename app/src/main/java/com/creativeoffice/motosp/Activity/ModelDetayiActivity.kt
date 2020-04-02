@@ -69,6 +69,12 @@ class ModelDetayiActivity : AppCompatActivity() {
     }
 
     private fun initVeri(rec: String) {
+        yorumListesi.clear()
+        parcaListesi.clear()
+        yakitListesi.clear()
+        yildizListesi.clear()
+
+
 
 
         //Kullanıcı Verilerini getirdik
@@ -88,9 +94,24 @@ class ModelDetayiActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 var modellerinVerisi = p0.getValue(ModelDetaylariData::class.java) ?: return //Cok onemli
-                yorumListesi.clear()
-                parcaListesi.clear()
-                yakitListesi.clear()
+
+
+                var form = DecimalFormat("0.0")
+                val yildizHashMap = modellerinVerisi.yildizlar ?: return
+                for (i in yildizHashMap.values) {
+                    yildizListesi.add(i)
+                }
+
+                var ortalamaYildiz = yildizListesi.map { it -> it?.yildiz!! }.average()
+                tvYildizKisi.text = "("+ yildizListesi.size.toString() + ")"
+                Log.e("sad", yildizListesi.size.toString())
+                rbMotor.rating = ortalamaYildiz.toFloat()
+                FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("ortYildiz").setValue(form.format(ortalamaYildiz).toString())
+
+
+
+
+
 
 
                 val yorumHashMap = modellerinVerisi.yorumlar ?: return
@@ -116,7 +137,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                 //yakitin ortalamasını alıyoruz.
                 var yakitGirdiSayisi = p0.child("yy_yakit_verileri").childrenCount
-                var form = DecimalFormat("0.0")
+
                 var ortalamaYakit = yakitListesi.map { it -> it?.yakitTuk!! }.average()
                 var ortYakitString = form.format(ortalamaYakit).toString() + " lt /100 km"
 
@@ -124,28 +145,6 @@ class ModelDetayiActivity : AppCompatActivity() {
                 FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ortYakitString).addOnCompleteListener {
                     detay_yakitTuk.text = ortYakitString
                 }
-
-                yildizListesi.clear()
-                if (!modellerinVerisi.yildizlar.isNullOrEmpty()) {
-                    val yildizHashMap = modellerinVerisi.yildizlar ?: return
-                    for (i in yildizHashMap.values) {
-                        yildizListesi.add(i)
-                    }
-                    var ortalamaYildiz = yildizListesi.map { it -> it?.yildiz!! }.average()
-
-
-                    Log.e("sad", ortalamaYildiz.toString())
-                    rbMotor.rating = ortalamaYildiz.toFloat()
-
-
-                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("ortYildiz").setValue(form.format(ortalamaYildiz).toString())
-                }
-
-
-
-
-
-
 
                 if (rec == "yorum") {
                     setupYorumlarRecyclerView()
@@ -159,10 +158,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
 
             }
-
-
         })
-
 
     }
 
@@ -181,8 +177,10 @@ class ModelDetayiActivity : AppCompatActivity() {
             }
         }
         imgRating.setOnClickListener {
-            Log.e("saa", "burada")
-            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yildizlar").child(userID.toString()).setValue(yildiz)
+
+            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yildizlar").child(userID.toString()).setValue(yildiz).addOnCompleteListener {
+                Toast.makeText(this,"Oylanamanız kaydedildi...",Toast.LENGTH_LONG).show()
+            }
 
         }
 
@@ -250,7 +248,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             }
             view.tvGonder.setOnClickListener {
                 var yorum = view.edYorum.text.toString()
-                if (yorum.length > 5) {
+                if (yorum.length > 4) {
                     FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(p0: DatabaseError) {
                         }
@@ -265,7 +263,9 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                             var sonYorum = YorumlarData(marka, model, kullaniciAdi, null, yorum)
                             ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).setValue(sonYorum)
-                            ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).child("yorum_zaman").setValue(ServerValue.TIMESTAMP)
+                            ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).child("yorum_zaman").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
+                                Toast.makeText(this@ModelDetayiActivity,"Yorumun gönderildi",Toast.LENGTH_LONG).show()
+                            }
 
 
                             var eskiPuan = gelenUsers.user_details!!.puan!!.toInt()
@@ -275,6 +275,8 @@ class ModelDetayiActivity : AppCompatActivity() {
                             dialog.dismiss()
                         }
                     })
+                }else{
+                    Toast.makeText(this@ModelDetayiActivity,"Yorumun çok kısa değil mi? ",Toast.LENGTH_LONG).show()
                 }
 
             }

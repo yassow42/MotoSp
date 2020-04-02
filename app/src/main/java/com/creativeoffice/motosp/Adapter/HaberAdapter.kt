@@ -45,11 +45,12 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
     inner class HaberHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var img = itemView.imageView7
         var haberBaslik = itemView.tvHaberBasligi
+        var haberAltBaslik = itemView.tvAltBaslik
         var tumLayout = itemView.tumLayout
 
         fun setData(haberler: HaberlerData?) {
             haberBaslik.text = haberler!!.haber_baslik
-
+            haberAltBaslik.text = haberler!!.haber_altbaslik
 
 
 

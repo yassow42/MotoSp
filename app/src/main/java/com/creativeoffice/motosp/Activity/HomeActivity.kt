@@ -41,6 +41,12 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        if (FirebaseDatabase.getInstance().reference == null){
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        }
+
+       FirebaseDatabase.getInstance().reference.keepSynced(true)
+
 
         mAuth = FirebaseAuth.getInstance()
         val userID = mAuth.currentUser!!.uid
@@ -50,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
         tumModeller = ArrayList()
         tumHaberler = ArrayList()
 
-        initVeri()
+        initVeri(userID)
         initBtn(userID)
         setupNavigationView()
     }
@@ -69,12 +75,13 @@ class HomeActivity : AppCompatActivity() {
                 var ref = FirebaseDatabase.getInstance().reference
 
                 var haberBaslik = view.etBaslik.text.toString()
+                var haberAltBaslik = view.etAltBaslik.text.toString()
                 var haberIcerik = view.etIcerik.text.toString()
                 var haberVideo = view.etVideo.text.toString()
 
                 var haberKey = ref.child("Haberler").push().key
 
-                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey)
+                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey,haberAltBaslik)
 
                 ref.child("Haberler").child(haberKey.toString()).setValue(haberData).addOnCompleteListener {
                     ref.child("Haberler").child(haberKey.toString()).child("haber_eklenme_zamani").setValue(ServerValue.TIMESTAMP)
@@ -160,8 +167,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    private fun initVeri() {
+    private fun initVeri(userID: String) {
         val ref = FirebaseDatabase.getInstance().reference
+        //son aktiviteyi kaydetme
+        ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
@@ -319,6 +328,8 @@ class HomeActivity : AppCompatActivity() {
         var menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
     }
+
+
 
 
 }

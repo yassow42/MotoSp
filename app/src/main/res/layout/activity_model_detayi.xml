@@ -373,12 +373,14 @@
                         android:id="@+id/rbMotor"
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
-                        android:layout_marginStart="24dp"
                         android:layout_weight="1"
+                        android:backgroundTintMode="screen"
+                        android:drawingCacheQuality="auto"
                         android:numStars="5"
+                        android:progressTint="#E6ED09"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/imgRating"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tvYildizKisi"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
@@ -391,6 +393,17 @@
                         android:background="@android:drawable/ic_menu_send"
                         app:layout_constraintBottom_toBottomOf="@+id/rbMotor"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/rbMotor" />
+
+                    <TextView
+                        android:id="@+id/tvYildizKisi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="(3)"
+                        android:textColor="@color/beyaz"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/rbMotor" />
 
 

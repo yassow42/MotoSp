@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
@@ -45,7 +46,10 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
                     .setMessage("Emin Misiniz ?")
                     .setPositiveButton("Sil", object : DialogInterface.OnClickListener {
                         override fun onClick(p0: DialogInterface?, p1: Int) {
-                            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(currentItem.yorum_yapilan_model.toString()).child("yorumlar").child(currentItem.yorum_key.toString()).removeValue()
+                            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(currentItem.yorum_yapilan_model.toString()).child("yorumlar").child(currentItem.yorum_key.toString())
+                                .removeValue().addOnCompleteListener {
+                                    Toast.makeText(myContext,"Yorumun silindi.",Toast.LENGTH_LONG).show()
+                                }
                         }
 
                     })

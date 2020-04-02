@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/bg_tek_model_list">
+    android:background="@drawable/bg_yorum_parca">
 
     <TextView
         android:id="@+id/tvUserName"
@@ -15,13 +15,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/beyaz_bg"
         android:paddingLeft="8dp"
         android:paddingTop="5dp"
         android:paddingRight="8dp"
         android:paddingBottom="5dp"
         android:text="UserName"
-        android:textColor="@color/mavi"
+        android:textColor="@color/siyah"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:text="deger"
-        android:textColor="@color/beyaz"
+        android:textColor="@color/siyah"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvModel"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +48,7 @@
         android:layout_marginEnd="16dp"
         android:maxLines="1"
         android:text="@string/model"
-        android:textColor="@color/beyaz"
+        android:textColor="@color/siyah"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
         app:layout_constraintEnd_toStartOf="@+id/tvYakitDegeri"

@@ -20,12 +20,13 @@
         android:id="@+id/etIcerik"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Haber İçerik"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etBaslik" />
+        app:layout_constraintTop_toBottomOf="@+id/etAltBaslik" />
 
     <EditText
         android:id="@+id/etVideo"
@@ -47,5 +48,16 @@
         app:layout_constraintEnd_toEndOf="@+id/etVideo"
         app:layout_constraintStart_toStartOf="@+id/etVideo"
         app:layout_constraintTop_toBottomOf="@+id/etVideo" />
+
+    <EditText
+        android:id="@+id/etAltBaslik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="altbaslik"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/etBaslik"
+        app:layout_constraintStart_toStartOf="@+id/etBaslik"
+        app:layout_constraintTop_toBottomOf="@+id/etBaslik" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

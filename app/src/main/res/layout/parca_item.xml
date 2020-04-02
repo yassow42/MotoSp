@@ -57,7 +57,7 @@
         android:padding="8dp"
         android:text="TextView"
         android:textColor="@color/mavi"
-        android:textStyle="normal"
+        android:textStyle="normal|bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

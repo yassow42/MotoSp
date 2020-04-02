@@ -107,9 +107,11 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                 tvGoruldu.text = "1"
             }
             if (oAnkiModel.ortYildiz.toString() == "null") {
-                tvYildiz.visibility = View.GONE
-                imgStar.visibility= View.GONE
+               tvYildiz.visibility = View.GONE
+               imgStar.visibility= View.GONE
             }
+
+
             if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
                 tvTanitim.visibility = View.GONE
                 tvTanitim2.visibility = View.GONE
