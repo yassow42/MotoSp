@@ -17,6 +17,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_konu_detay.*
 import kotlinx.android.synthetic.main.dialog_cevap_yaz.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class KonuDetayActivity : AppCompatActivity() {
     lateinit var cevapList: ArrayList<ForumKonuData.cevaplar>
@@ -33,11 +36,11 @@ class KonuDetayActivity : AppCompatActivity() {
 
         var konuBasligi = intent.getStringExtra("konuBasligi")
         var userName = intent.getStringExtra("userName")
-        var tarih = intent.getStringExtra("tarih")
+
         var konuKey = intent.getStringExtra("konuKey")
 
         tvKonuBasligi.text = konuBasligi.toString()
-        tvZaman.text = tarih
+
         tvUserName.text = userName
 
         initBtn(konuKey)
@@ -117,15 +120,15 @@ class KonuDetayActivity : AppCompatActivity() {
         cevapList.clear()
 
 
-        FirebaseDatabase.getInstance().reference.child("Forum").child(konuKey.toString()).child("cevaplar")
+        FirebaseDatabase.getInstance().reference.child("Forum").child(konuKey.toString())
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
 
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.hasChildren()) {
-                        for (i in p0.children) {
+                    if (p0.child("cevaplar").hasChildren()) {
+                        for (i in p0.child("cevaplar").children) {
                             var gelenKonu = i.getValue(ForumKonuData.cevaplar::class.java)
                             cevapList.add(gelenKonu!!)
                         }
@@ -134,12 +137,23 @@ class KonuDetayActivity : AppCompatActivity() {
                         setupRecyclerViewCevap()
                     }
 
+                   val tarih = p0.child("acilma_zamani").value
+
+                    tvZaman.text = formatDate(tarih.toString().toLong()).toString()
+
+
                 }
 
 
             })
     }
+   private fun formatDate(miliSecond: Long?): String? {
+        if (miliSecond == null) return "0"
+        val date = Date(miliSecond)
+        val sdf = SimpleDateFormat("h:mm E MM/dd ", Locale("tr"))
+        return sdf.format(date)
 
+    }
     private fun setupRecyclerViewCevap() {
         rcCevaplar.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         //   rcBayi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

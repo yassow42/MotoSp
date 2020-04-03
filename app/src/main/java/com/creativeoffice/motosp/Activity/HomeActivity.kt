@@ -1,6 +1,7 @@
 package com.creativeoffice.motosp.Activity
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,9 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.dialog_haber_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity() {
 
@@ -130,10 +134,14 @@ class HomeActivity : AppCompatActivity() {
 
                         //son cevap ekliyoruzkı sıralayabılelım.
                         ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
-                        //konu acılma zaaman verisi
-                        ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
-                            setupRecyclerViewForumKonu(cevapYazilanKonuList)
-                        }
+                      ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
+
+                          val intent = Intent(this@HomeActivity, KonuDetayActivity::class.java)//.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                          intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
+                          intent.putExtra("userName", konuData.konuyu_acan.toString())
+                          intent.putExtra("konuKey", konuData.konu_key)
+                          startActivity(intent)
+                      }
 
                         //ilk olarak konuyu acanı son cevaba kaydedıyoruz...
                         var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID, konuKey.toString())
@@ -146,8 +154,10 @@ class HomeActivity : AppCompatActivity() {
                         ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
                         ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
-                        setupRecyclerViewForumKonu(cevapYazilanKonuList)
                         dialog.dismiss()
+
+
+
 
                     }
                 })
@@ -165,7 +175,13 @@ class HomeActivity : AppCompatActivity() {
 
         }
     }
+    private  fun formatDate(miliSecond: Long?): String? {
+        if (miliSecond == null) return "0"
+        val date = Date(miliSecond)
+        val sdf = SimpleDateFormat(" d MMM hh:mm ", Locale("tr"))
+        return sdf.format(date)
 
+    }
 
     private fun initVeri(userID: String) {
         val ref = FirebaseDatabase.getInstance().reference

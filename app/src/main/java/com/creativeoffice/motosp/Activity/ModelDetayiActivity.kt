@@ -39,6 +39,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     //  var ort: String? = null
     var kullaniciAdi: String? = null
+    var kullaniciKendiPuan: Int? = null
 
     var ilkSetupOldumu: Boolean? = null
 
@@ -61,7 +62,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
         init()
         setupYorumlarRecyclerView()
-        initVeri("")
+        initVeri("yorum")
         verileriGetir()
         goruntulenmeSayisi()
 
@@ -74,20 +75,22 @@ class ModelDetayiActivity : AppCompatActivity() {
         yakitListesi.clear()
         yildizListesi.clear()
 
+        var ref = FirebaseDatabase.getInstance().reference
 
-
-
-        //Kullanıcı Verilerini getirdik
-        FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
+        ////kullanıcı adı
+        ref.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
 
             override fun onDataChange(p0: DataSnapshot) {
-                gelenUsers = p0.getValue(Users::class.java)!!
-                // kullaniciAdi = gelenUsers.user_name.toString()
+                kullaniciAdi = p0.child("user_name").value.toString()
+                kullaniciKendiPuan = p0.child("user_details").child("puan").value.toString().toInt()
             }
+
         })
-        //MotorVeri listesi
-        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+
+        //MotorVeri listesi yorumlar yakıt vs.
+        ref.child("tum_motorlar").child(model.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
@@ -103,15 +106,10 @@ class ModelDetayiActivity : AppCompatActivity() {
                 }
 
                 var ortalamaYildiz = yildizListesi.map { it -> it?.yildiz!! }.average()
-                tvYildizKisi.text = "("+ yildizListesi.size.toString() + ")"
+                tvYildizKisi.text = "(" + yildizListesi.size.toString() + ")"
                 Log.e("sad", yildizListesi.size.toString())
                 rbMotor.rating = ortalamaYildiz.toFloat()
                 FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("ortYildiz").setValue(form.format(ortalamaYildiz).toString())
-
-
-
-
-
 
 
                 val yorumHashMap = modellerinVerisi.yorumlar ?: return
@@ -156,6 +154,7 @@ class ModelDetayiActivity : AppCompatActivity() {
                     setupYorumlarRecyclerView()
                 }
 
+                setupYorumlarRecyclerView()
 
             }
         })
@@ -176,16 +175,14 @@ class ModelDetayiActivity : AppCompatActivity() {
                 yildiz = ModelDetaylariData.Yildizlar(ratingBar!!.rating)
             }
         }
+
         imgRating.setOnClickListener {
 
             FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yildizlar").child(userID.toString()).setValue(yildiz).addOnCompleteListener {
-                Toast.makeText(this,"Oylanamanız kaydedildi...",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Oylanamanız kaydedildi...", Toast.LENGTH_LONG).show()
             }
 
         }
-
-
-
         imgYorum.setOnClickListener {
             imgYorum.setBackgroundResource(R.drawable.ic_yorum_mavi)
             imgYedek.setBackgroundResource(R.drawable.ic_yedekparca)
@@ -233,7 +230,6 @@ class ModelDetayiActivity : AppCompatActivity() {
             setupYakitRecyclerView()
 
         }
-
         tvYorumYap.setOnClickListener {
 
 
@@ -249,34 +245,28 @@ class ModelDetayiActivity : AppCompatActivity() {
             view.tvGonder.setOnClickListener {
                 var yorum = view.edYorum.text.toString()
                 if (yorum.length > 4) {
-                    FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError) {
-                        }
 
-                        override fun onDataChange(p0: DataSnapshot) {
-                            val key = ref.child("tum_motorlar").child(model.toString()).child("yorumlar").push().key
-                            kullaniciAdi = p0.child("user_name").value.toString()
-                            var yorumlar = ModelDetaylariData.Yorumlar(kullaniciAdi, yorum, null, key, model, userID)
-                            ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).setValue(yorumlar)
-                            ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).child("tarih").setValue(ServerValue.TIMESTAMP)
-                            //+5 yorum puan ekleme
+                    val key = ref.child("tum_motorlar").child(model.toString()).child("yorumlar").push().key
+                    var yorumlar = ModelDetaylariData.Yorumlar(kullaniciAdi, yorum, null, key, model, userID)
+                    ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).setValue(yorumlar)
+                    ref.child("tum_motorlar").child(model.toString()).child("yorumlar").child(key.toString()).child("tarih").setValue(ServerValue.TIMESTAMP)
+                    //+5 yorum puan ekleme
 
-                            var sonYorum = YorumlarData(marka, model, kullaniciAdi, null, yorum)
-                            ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).setValue(sonYorum)
-                            ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).child("yorum_zaman").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
-                                Toast.makeText(this@ModelDetayiActivity,"Yorumun gönderildi",Toast.LENGTH_LONG).show()
-                            }
+                    var sonYorum = YorumlarData(marka, model, kullaniciAdi, null, yorum)
+                    ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).setValue(sonYorum)
+                    ref.child("tum_motorlar").child("yorumlar_son").child(model.toString()).child("yorum_zaman").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
+                        Toast.makeText(this@ModelDetayiActivity, "Yorumun gönderildi", Toast.LENGTH_LONG).show()
+                    }
 
 
-                            var eskiPuan = gelenUsers.user_details!!.puan!!.toInt()
-                            var yeniPuan = eskiPuan + 3
-                            ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
-                            initVeri("yorum")
-                            dialog.dismiss()
-                        }
-                    })
-                }else{
-                    Toast.makeText(this@ModelDetayiActivity,"Yorumun çok kısa değil mi? ",Toast.LENGTH_LONG).show()
+                    var yeniPuan = kullaniciKendiPuan!! + 3
+                    ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+                    initVeri("yorum")
+                    dialog.dismiss()
+
+
+                } else {
+                    Toast.makeText(this@ModelDetayiActivity, "Yorumun çok kısa değil mi? ", Toast.LENGTH_LONG).show()
                 }
 
             }
@@ -302,22 +292,20 @@ class ModelDetayiActivity : AppCompatActivity() {
                     var parcaIsmi = view.etParcaİsmi.text.toString()
                     var parcaModel = view.etParcaModelYili.text.toString()
                     var parcaYorum = view.etParcaUygunlugu.text.toString()
-                    FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError) {
-                        }
-
-                        override fun onDataChange(p0: DataSnapshot) {
-                            kullaniciAdi = p0.child("user_name").value.toString()
-
-                            var parcaKey = FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").push().key
 
 
-                            var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaYorum, parcaModel, kullaniciAdi, parcaKey, marka, model)
-                            FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").child(parcaKey.toString()).setValue(parcaVerisi)
-                            initVeri("parca")
-                            dialog!!.dismiss()
-                        }
-                    })
+                    var parcaKey = FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").push().key
+
+
+                    var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaYorum, parcaModel, kullaniciAdi, parcaKey, marka, model)
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").child(parcaKey.toString()).setValue(parcaVerisi)
+
+
+                    var yeniPuan = kullaniciKendiPuan!! + 10
+                    ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+                    initVeri("parca")
+                    dialog!!.dismiss()
+
                 }
             })
             var dialog: Dialog = builder.create()
@@ -343,14 +331,16 @@ class ModelDetayiActivity : AppCompatActivity() {
                     var gelenYakit = view.etYakitVerisi.text.toString().toFloat()
                     var motorYili = view.etModelYili.text.toString()
 
-                    kullaniciAdi = gelenUsers.user_name.toString()
-
                     var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
                     FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString()).setValue(yakitVerisi)
                     initVeri("yakit")
 
+                    var yeniPuan = kullaniciKendiPuan!! + 5
+                    ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+
                 }
             })
+
 
             initVeri("yakit")
             var dialog: Dialog = builder.create()
@@ -401,14 +391,12 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     fun setupParcalarRecyclerView() {
 
-
         rcParca.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, true)
         parcaAdapter = ParcaAdapter(this@ModelDetayiActivity, parcaListesi, userID)
         parcaAdapter.notifyDataSetChanged()
         rcParca.setHasFixedSize(true)
         rcParca.adapter = parcaAdapter
         rcParca.refreshDrawableState()
-
 
     }
 
