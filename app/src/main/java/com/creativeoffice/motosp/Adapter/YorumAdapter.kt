@@ -3,13 +3,17 @@ package com.creativeoffice.motosp.Adapter
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.creativeoffice.motosp.Activity.GidilenProfilActivity
+import com.creativeoffice.motosp.Activity.ProfileActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
 import com.google.firebase.database.DataSnapshot
@@ -34,21 +38,22 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
     override fun onBindViewHolder(p0: YorumHolder, p1: Int) {
         val currentItem = yorumlar.get(p1)
         p0.setData(currentItem)
-       p0.yorumCL.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme_anti))
+        p0.yorumCL.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme_anti))
 
         p0.itemView.setOnLongClickListener {
 
             var yorumUserID = currentItem.yorum_yapan_kisi.toString()
-            if (yorumUserID.equals(userID)){
+            if (yorumUserID.equals(userID)) {
 
                 var alert = AlertDialog.Builder(myContext)
                     .setTitle("Yorumu Sil")
                     .setMessage("Emin Misiniz ?")
                     .setPositiveButton("Sil", object : DialogInterface.OnClickListener {
-                        override fun onClick(p0: DialogInterface?, p1: Int) {
+                        override fun onClick(p0: DialogInterface?, p5: Int) {
                             FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(currentItem.yorum_yapilan_model.toString()).child("yorumlar").child(currentItem.yorum_key.toString())
                                 .removeValue().addOnCompleteListener {
-                                    Toast.makeText(myContext,"Yorumun silindi.",Toast.LENGTH_LONG).show()
+                                    Toast.makeText(myContext, "Yorumun silindi.", Toast.LENGTH_LONG).show()
+                                    yorumlar.remove(yorumlar.get(p1))
                                 }
                         }
 
@@ -64,6 +69,24 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
 
             return@setOnLongClickListener true
         }
+        p0.yorumCL.setOnClickListener {
+
+
+            if (userID.equals(yorumlar.get(p1).yorum_yapan_kisi.toString())) {
+
+                val intent = Intent(myContext, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                myContext.startActivity(intent)
+            }else{
+                val intent = Intent(myContext, GidilenProfilActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                intent.putExtra("gidilenUserID", yorumlar.get(p1).yorum_yapan_kisi.toString())
+                myContext.startActivity(intent)
+            }
+
+
+
+
+        }
+
     }
 
     inner class YorumHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

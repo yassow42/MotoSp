@@ -1,15 +1,12 @@
 package com.creativeoffice.motosp.Activity
 
-
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
-import com.creativeoffice.motosp.ProfileEditFragment
 import com.creativeoffice.motosp.R
-import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
 import com.creativeoffice.motosp.utils.TimeAgo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -17,38 +14,27 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_gidilen_profil.*
 
-
-class ProfileActivity : AppCompatActivity() {
-
-    private val ACTIVITY_NO = 3
-    lateinit var mAuth: FirebaseAuth
-    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+class GidilenProfilActivity : AppCompatActivity() {
+    lateinit var gidilenUserID: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
+        setContentView(R.layout.activity_gidilen_profil)
 
-        mAuth = FirebaseAuth.getInstance()
+        gidilenUserID = intent.getStringExtra("gidilenUserID")
 
 
-        setupAuthListener()
-        setupNavigationView()
         kullaniciVerileriniGetir()
-        setupToolbar()
-
-        imgProfileSetting.setOnClickListener {
-            startActivity(Intent(this, ProfileSettingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-        }
 
     }
 
 
     private fun kullaniciVerileriniGetir() {
-        var userID = mAuth.currentUser!!.uid
-        FirebaseDatabase.getInstance().reference.child("users").child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
+
+        FirebaseDatabase.getInstance().reference.child("users").child(gidilenUserID).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 
@@ -63,12 +49,13 @@ class ProfileActivity : AppCompatActivity() {
                     tvPuan.text = puan
                     tvMarkaProfile.text = marka
                     tvModelProfile.text = model
+                    tvSonAktif.text = "Son Çevrimiçi: " + TimeAgo.getTimeAgoComments(sonAktif)
 
                     var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                     if (imgURL != "default") {
                         Picasso.get().load(imgURL).into(circleProfileImage)
                         mProgressBarActivityProfile.visibility = View.GONE
-                    }else{
+                    } else {
                         mProgressBarActivityProfile.visibility = View.GONE
                     }
 
@@ -105,7 +92,7 @@ class ProfileActivity : AppCompatActivity() {
                                 detay_silindirhacmi.text = silindir
                                 detay_tork.text = tork
                                 detay_yakitKap.text = yakitKap
-                              //  detay_yakitTuk.text = yakitTuk
+                                //  detay_yakitTuk.text = yakitTuk
 
 
                             }
@@ -114,73 +101,5 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    private fun setupToolbar() {
-
-        tvProfilDuzenleButton.setOnClickListener {
-            profileRoot.visibility = View.GONE
-            profileContainer.visibility = View.VISIBLE
-            bottomNavigationContainer.visibility = View.GONE
-            val transaction = supportFragmentManager.beginTransaction()
-
-            transaction.replace(R.id.profileContainer, ProfileEditFragment())
-            transaction.addToBackStack("profil eklendi")
-            transaction.commit()
-
-
-        }
-    }
-
-    override fun onBackPressed() {
-
-        profileRoot.visibility = View.VISIBLE
-        bottomNavigationContainer.visibility = View.VISIBLE
-
-        super.onBackPressed()
-    }
-
-    fun setupNavigationView() {
-
-        BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationContainer)
-        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationContainer) // Bottomnavhelper içinde setupNavigationda context ve nav istiyordu verdik...
-        var menu = bottomNavigationContainer.menu
-        var menuItem = menu.getItem(ACTIVITY_NO)
-        menuItem.setChecked(true)
-    }
-
-    private fun setupAuthListener() {
-        mAuthListener = object : FirebaseAuth.AuthStateListener {
-            override fun onAuthStateChanged(p0: FirebaseAuth) {
-                var user = FirebaseAuth.getInstance().currentUser
-                if (user == null) {
-                    var intent = Intent(this@ProfileActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    startActivity(intent)
-                    finish()
-                } else {
-
-                }
-
-
-            }
-
-        }
-    }
-
-    override fun onStart() {
-        mAuth.addAuthStateListener(mAuthListener)
-        super.onStart()
-    }
-
-    override fun onResume() {
-        setupNavigationView()
-        super.onResume()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener)
-        }
     }
 }

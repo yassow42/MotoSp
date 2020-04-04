@@ -385,7 +385,7 @@ class ModelDetayiActivity : AppCompatActivity() {
         //  rcYorumlar.setItemViewCacheSize(20)
         rcYorumlar.setHasFixedSize(true)
         rcYorumlar.adapter = yorumAdapter
-        // rcYorumlar.refreshDrawableState()
+        rcYorumlar.refreshDrawableState()
 
     }
 

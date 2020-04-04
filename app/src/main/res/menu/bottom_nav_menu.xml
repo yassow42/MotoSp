@@ -6,12 +6,6 @@
         android:icon="@drawable/ic_home"
         android:title="Forum" />
 
-    <item
-        android:id="@+id/ic_sosyal"
-        android:icon="@drawable/ic_forum"
-        android:title="Sizden Gelenler"
-        />
-
 
     <item
         android:id="@+id/ic_motortanitim"

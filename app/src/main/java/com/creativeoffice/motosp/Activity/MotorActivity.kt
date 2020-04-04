@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_motor.*
 
 
 class MotorActivity : AppCompatActivity() {
-    private val ACTIVITY_NO = 2
+    private val ACTIVITY_NO = 1
     private val TAG = "MotorActivity"
 
     lateinit var tumModeller: ArrayList<ModelDetaylariData>

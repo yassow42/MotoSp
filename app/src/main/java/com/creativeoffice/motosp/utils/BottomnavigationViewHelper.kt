@@ -39,13 +39,7 @@ class BottomnavigationViewHelper {
                                 context.startActivity(intent)
                                 return true
                             }
-                            R.id.ic_sosyal->{
-                                val intent = Intent(context, SizdenGelenlerActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
 
-                                context.startActivity(intent)
-                                return true
-
-                            }
 
                             R.id.ic_motortanitim->{
                                 val intent = Intent(context, MotorActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

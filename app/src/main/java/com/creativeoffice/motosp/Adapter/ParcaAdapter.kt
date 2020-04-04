@@ -48,8 +48,11 @@ class ParcaAdapter(val myContext: Context, val parcalar: ArrayList<ModelDetaylar
                             .setTitle("Parçayı Sil")
                             .setMessage("Emin Misiniz ?")
                             .setPositiveButton("Sil", object : DialogInterface.OnClickListener {
-                                override fun onClick(p0: DialogInterface?, p1: Int) {
-                                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(oAnkiParca.model.toString()).child("yy_parcalar").child(oAnkiParca.parca_key.toString()).removeValue()
+                                override fun onClick(p0: DialogInterface?, p5: Int) {
+                                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(oAnkiParca.model.toString()).child("yy_parcalar")
+                                        .child(oAnkiParca.parca_key.toString()).removeValue().addOnCompleteListener {
+                                            parcalar.remove(oAnkiParca)
+                                        }
                                 }
 
                             })
