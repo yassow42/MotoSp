@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.GidilenProfilActivity
+import com.creativeoffice.motosp.Activity.ModelDetayiActivity
 import com.creativeoffice.motosp.Activity.ProfileActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
@@ -48,6 +49,7 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
                                 .removeValue().addOnCompleteListener {
                                     Toast.makeText(myContext, "Yorumun silindi.", Toast.LENGTH_LONG).show()
                                     yorumlar.remove(yorumlar.get(position))
+
 
 
                                 }

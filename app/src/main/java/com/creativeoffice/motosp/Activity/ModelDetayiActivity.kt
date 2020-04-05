@@ -38,11 +38,10 @@ class ModelDetayiActivity : AppCompatActivity() {
     var model: String? = null
     var userID: String? = null
 
-    //  var ort: String? = null
+
     var kullaniciAdi: String? = null
     var kullaniciKendiPuan: Int? = null
 
-    var ilkSetupOldumu: Boolean? = null
 
     lateinit var gelenUsers: Users
     lateinit var yorumAdapter: YorumAdapter
@@ -59,23 +58,22 @@ class ModelDetayiActivity : AppCompatActivity() {
         setContentView(R.layout.activity_model_detayi)
 
         userID = FirebaseAuth.getInstance().currentUser!!.uid
-        ilkSetupOldumu = false
 
         init()
-        setupYorumlarRecyclerView()
-        initVeri("yorum")
+
         verileriGetir()
         goruntulenmeSayisi()
 
 
     }
 
-    public fun initVeri(rec: String) {
+    private fun initVeri(rec: String) {
         yorumListesi.clear()
         parcaListesi.clear()
         yakitListesi.clear()
         yildizListesi.clear()
 
+        Log.e("sad", "burada1")
         var ref = FirebaseDatabase.getInstance().reference
 
         ////kullanıcı adı
@@ -98,8 +96,10 @@ class ModelDetayiActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 var modellerinVerisi = p0.getValue(ModelDetaylariData::class.java) ?: return //Cok onemli
+                Log.e("sad", "burada2")
 
 
+                /////////////////////////////////////////////////////////////////////////**********************************************//////////////////////////////////////////////////////
                 var form = DecimalFormat("0.0")
                 val yildizHashMap = modellerinVerisi.yildizlar ?: return
                 for (i in yildizHashMap.values) {
@@ -108,10 +108,10 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                 var ortalamaYildiz = yildizListesi.map { it -> it?.yildiz!! }.average()
                 tvYildizKisi.text = "(" + yildizListesi.size.toString() + ")"
-                Log.e("sad", yildizListesi.size.toString())
                 rbMotor.rating = ortalamaYildiz.toFloat()
                 FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("ortYildiz").setValue(form.format(ortalamaYildiz).toString())
 
+/////////////////////////////////////////////////////////////////////////**********************************************//////////////////////////////////////////////////////
 
                 val yorumHashMap = modellerinVerisi.yorumlar ?: return
                 yorumListesi = ArrayList()
@@ -120,13 +120,21 @@ class ModelDetayiActivity : AppCompatActivity() {
                 }
                 yorumListesi.sortBy { it.tarih } //sortby tarihe göre sıralar
 
+
+                ////////////////////////////////////////////////////////*************************************///////////////////////////////////////////
                 val yakitHashMap = modellerinVerisi.yy_yakit_verileri ?: return
                 for (i in yakitHashMap.values) {
                     yakitListesi.add(i)
                 }
                 yakitListesi.sortBy { it.yakitTuk }
+                //yakitin ortalamasını alıyoruz.
+                var ortalamaYakit = yakitListesi.map { it -> it?.yakitTuk!! }.average()
+                var ortYakitString = form.format(ortalamaYakit).toString() + " lt /100 km"
+                FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ortYakitString).addOnCompleteListener {
+                    detay_yakitTuk.text = ortYakitString
+                }
 
-
+/////////////////////////////////////////////////////////////////////////**********************************************//////////////////////////////////////////////////////
                 val parcaHashMap = modellerinVerisi.yy_parcalar ?: return
                 parcaListesi = ArrayList()
                 for (i in parcaHashMap.values) {
@@ -136,16 +144,6 @@ class ModelDetayiActivity : AppCompatActivity() {
 
 
 
-                //yakitin ortalamasını alıyoruz.
-                var yakitGirdiSayisi = p0.child("yy_yakit_verileri").childrenCount
-
-                var ortalamaYakit = yakitListesi.map { it -> it?.yakitTuk!! }.average()
-                var ortYakitString = form.format(ortalamaYakit).toString() + " lt /100 km"
-
-
-                FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ortYakitString).addOnCompleteListener {
-                    detay_yakitTuk.text = ortYakitString
-                }
 
                 if (rec == "yorum") {
                     setupYorumlarRecyclerView()
@@ -153,8 +151,6 @@ class ModelDetayiActivity : AppCompatActivity() {
                     setupParcalarRecyclerView()
                 } else if (rec == "yakit") {
                     setupYakitRecyclerView()
-                } else {
-                    setupYorumlarRecyclerView()
                 }
 
 
@@ -373,18 +369,24 @@ class ModelDetayiActivity : AppCompatActivity() {
     }
 
 
-    fun setupYorumlarRecyclerView() {
+   fun setupYorumlarRecyclerView() {
+
 
         recyclerView.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, true)
         yorumAdapter = YorumAdapter(this@ModelDetayiActivity, yorumListesi, userID)
         recyclerView.adapter = yorumAdapter
+
+
     }
 
     fun setupParcalarRecyclerView() {
 
+
         recyclerView.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, true)
         parcaAdapter = ParcaAdapter(this@ModelDetayiActivity, parcaListesi, userID)
         recyclerView.adapter = parcaAdapter
+
+
     }
 
     fun setupYakitRecyclerView() {
