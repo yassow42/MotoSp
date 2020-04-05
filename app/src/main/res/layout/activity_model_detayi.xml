@@ -52,7 +52,7 @@
                 android:layout_height="45dp"
                 android:background="@color/beyaz"
                 android:visibility="visible"
-                app:layout_constraintEnd_toStartOf="@+id/imgYedek"
+                app:layout_constraintEnd_toStartOf="@+id/imgYakitTuk"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgYorum"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -64,10 +64,11 @@
                 android:background="@color/beyaz"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/view3"
-                app:layout_constraintEnd_toStartOf="@+id/imgYakitTuk"
+                app:layout_constraintEnd_toStartOf="@+id/imgYedek"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imgYedek"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintStart_toEndOf="@+id/imgYakitTuk"
+                app:layout_constraintTop_toBottomOf="@+id/view2"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/tvMarka"
@@ -425,6 +426,7 @@
                 android:id="@+id/ytTekModelList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:focusable="auto"
                 app:color="@color/mavi"
                 app:fontSize="10sp"
@@ -471,27 +473,7 @@
                 app:layout_constraintTop_toTopOf="@+id/tvModel" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcYorumlar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="6dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvYakitTukEkle" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcParca"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="6dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvYakitTukEkle" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcYakit"
+                android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -506,22 +488,22 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/ic_yorum"
-                app:layout_constraintBottom_toBottomOf="@+id/imgYedek"
+                app:layout_constraintBottom_toBottomOf="@+id/imgYakitTuk"
                 app:layout_constraintEnd_toStartOf="@+id/view4"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imgYedek" />
+                app:layout_constraintTop_toTopOf="@+id/imgYakitTuk" />
 
             <ImageView
                 android:id="@+id/imgYedek"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/ic_yedekparca"
-                app:layout_constraintBottom_toTopOf="@+id/view3"
-                app:layout_constraintEnd_toStartOf="@+id/view6"
+                app:layout_constraintBottom_toBottomOf="@+id/imgYakitTuk"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/view4"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintStart_toEndOf="@+id/view6"
+                app:layout_constraintTop_toTopOf="@+id/imgYakitTuk" />
 
             <TextView
                 android:id="@+id/tvParcaEkle"
@@ -542,11 +524,11 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/ic_yakit"
-                app:layout_constraintBottom_toBottomOf="@+id/imgYedek"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/view3"
+                app:layout_constraintEnd_toStartOf="@+id/view6"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/view6"
-                app:layout_constraintTop_toTopOf="@+id/imgYedek" />
+                app:layout_constraintStart_toEndOf="@+id/view4"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
 
             <TextView
                 android:id="@+id/tvYakitTukEkle"

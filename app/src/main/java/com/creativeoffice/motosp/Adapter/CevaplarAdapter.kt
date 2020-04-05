@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.inflate
@@ -11,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.creativeoffice.motosp.Activity.GidilenProfilActivity
+import com.creativeoffice.motosp.Activity.ProfileActivity
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
 import com.google.firebase.database.DataSnapshot
@@ -69,7 +72,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                                 var yeniCevap = view.etKonuCevabi.text
                                 FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).child("cevaplar").child(gelenItem.cevap_key.toString())
                                     .child("cevap").setValue(yeniCevap.toString()).addOnCompleteListener {
-                                        Toast.makeText(myContext,"Cevanın Güncelleniyor :) Biraz Bekle ", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(myContext, "Cevanın Güncelleniyor :) Biraz Bekle ", Toast.LENGTH_SHORT).show()
                                     }
                                 dialog.dismiss()
 
@@ -112,6 +115,34 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
 
 
             return@setOnLongClickListener true
+        }
+
+
+
+
+
+
+        holder.imgProfile.setOnClickListener {
+            if (userID.equals(cevapList.get(position).cevap_yazan_key.toString())) {
+
+                val intent = Intent(myContext, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                myContext.startActivity(intent)
+            } else {
+                val intent = Intent(myContext, GidilenProfilActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                intent.putExtra("gidilenUserID", cevapList.get(position).cevap_yazan_key.toString())
+                myContext.startActivity(intent)
+            }
+        }
+        holder.userName.setOnClickListener {
+            if (userID.equals(cevapList.get(position).cevap_yazan_key.toString())) {
+
+                val intent = Intent(myContext, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                myContext.startActivity(intent)
+            } else {
+                val intent = Intent(myContext, GidilenProfilActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                intent.putExtra("gidilenUserID", cevapList.get(position).cevap_yazan_key.toString())
+                myContext.startActivity(intent)
+            }
         }
 
 

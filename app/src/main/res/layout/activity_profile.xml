@@ -344,7 +344,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="@mipmap/ic_profile"
             app:civ_border_color="@color/beyaz"
             app:civ_border_width="3dp"

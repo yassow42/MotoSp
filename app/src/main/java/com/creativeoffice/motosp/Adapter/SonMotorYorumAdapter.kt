@@ -2,6 +2,7 @@ package com.creativeoffice.motosp.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,8 +34,12 @@ class SonMotorYorumAdapter(val myContext: Context, val sonYorumlar: ArrayList<Yo
 
         p0.tumLayout.setOnClickListener {
             val intent = Intent(myContext, ModelDetayiActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.putExtra("Marka", tumModeller.get(p1).marka.toString())
-            intent.putExtra("Model", tumModeller.get(p1).model.toString())
+
+
+
+            intent.putExtra("Marka", sonYorumlar[p1].yorum_marka.toString())
+            intent.putExtra("Model",  sonYorumlar[p1].yorum_model.toString())
+            /*
             intent.putExtra("Kategori", tumModeller.get(p1).kategori.toString())
             intent.putExtra("Silindir", tumModeller.get(p1).silindirHacmi.toString())
             intent.putExtra("Beygir", tumModeller.get(p1).beygir.toString())
@@ -47,7 +52,7 @@ class SonMotorYorumAdapter(val myContext: Context, val sonYorumlar: ArrayList<Yo
             intent.putExtra("tanitim", tumModeller.get(p1).tanitim.toString())
             intent.putExtra("video", tumModeller.get(p1).motorVideo.toString())
             intent.putExtra("fiyat", tumModeller.get(p1).fiyat.toString())
-
+*/
 
             myContext.startActivity(intent)
 

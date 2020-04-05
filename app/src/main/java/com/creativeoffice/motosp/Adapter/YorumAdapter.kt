@@ -8,19 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.GidilenProfilActivity
 import com.creativeoffice.motosp.Activity.ProfileActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.yorum_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,12 +29,12 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
         return yorumlar.size
     }
 
-    override fun onBindViewHolder(p0: YorumHolder, p1: Int) {
-        val currentItem = yorumlar.get(p1)
-        p0.setData(currentItem)
-        p0.yorumCL.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme_anti))
+    override fun onBindViewHolder(holder: YorumHolder, position: Int) {
+        val currentItem = yorumlar.get(position)
+        holder.setData(currentItem)
+        holder.yorumCL.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme_anti))
 
-        p0.itemView.setOnLongClickListener {
+        holder.itemView.setOnLongClickListener {
 
             var yorumUserID = currentItem.yorum_yapan_kisi.toString()
             if (yorumUserID.equals(userID)) {
@@ -53,7 +47,9 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
                             FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(currentItem.yorum_yapilan_model.toString()).child("yorumlar").child(currentItem.yorum_key.toString())
                                 .removeValue().addOnCompleteListener {
                                     Toast.makeText(myContext, "Yorumun silindi.", Toast.LENGTH_LONG).show()
-                                    yorumlar.remove(yorumlar.get(p1))
+                                    yorumlar.remove(yorumlar.get(position))
+
+
                                 }
                         }
 
@@ -69,16 +65,16 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
 
             return@setOnLongClickListener true
         }
-        p0.yorumCL.setOnClickListener {
+        holder.yorumCL.setOnClickListener {
 
 
-            if (userID.equals(yorumlar.get(p1).yorum_yapan_kisi.toString())) {
+            if (userID.equals(yorumlar.get(position).yorum_yapan_kisi.toString())) {
 
                 val intent = Intent(myContext, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 myContext.startActivity(intent)
             }else{
                 val intent = Intent(myContext, GidilenProfilActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                intent.putExtra("gidilenUserID", yorumlar.get(p1).yorum_yapan_kisi.toString())
+                intent.putExtra("gidilenUserID", yorumlar.get(position).yorum_yapan_kisi.toString())
                 myContext.startActivity(intent)
             }
 

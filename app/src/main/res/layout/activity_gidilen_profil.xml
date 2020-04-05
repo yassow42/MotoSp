@@ -373,7 +373,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Puanın:"
+            android:text="Puanı:"
             android:textColor="@color/beyaz"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvPuan"
