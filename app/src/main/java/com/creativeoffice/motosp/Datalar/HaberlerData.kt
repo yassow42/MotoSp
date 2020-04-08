@@ -18,4 +18,13 @@ class HaberlerData {
         this.haber_key = haber_key
         this.haber_altbaslik = haber_altbaslik
     }
+
+    data class Yorumlar(
+        val haber_key: String? = null,
+        val isim: String? = null,
+        val tarih: Long? = null,
+        val yorum: String? = null,
+        val yorum_key: String? = null,
+        val yorum_yapan_key: String? = null
+    )
 }

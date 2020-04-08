@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/edYorum"
+        android:id="@+id/etYorum"
         android:layout_width="0dp"
 
         android:layout_height="wrap_content"

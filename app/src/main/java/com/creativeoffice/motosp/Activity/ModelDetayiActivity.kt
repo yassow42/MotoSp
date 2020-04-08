@@ -12,7 +12,6 @@ import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Adapter.ParcaAdapter
 import com.creativeoffice.motosp.Adapter.YakitAdapter
 import com.creativeoffice.motosp.Adapter.YorumAdapter
@@ -235,7 +234,7 @@ class ModelDetayiActivity : AppCompatActivity() {
                 dialog!!.dismiss()
             }
             view.tvGonder.setOnClickListener {
-                var yorum = view.edYorum.text.toString()
+                var yorum = view.etYorum.text.toString()
                 if (yorum.length > 4) {
 
                     val key = ref.child("tum_motorlar").child(model.toString()).child("yorumlar").push().key
