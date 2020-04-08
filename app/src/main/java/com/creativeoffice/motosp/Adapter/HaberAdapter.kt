@@ -61,7 +61,7 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
                 var viewDialog: View = inflate(myContext, R.layout.dialog_haber_detay, null)
 
                 viewDialog.tvHaberBaslik.text = haberler.haber_baslik.toString()
-                viewDialog.tvHaberIcerik.text = haberler.haber_icerik.toString()
+                viewDialog.tvHaberIcerik.text = haberler.haber_altbaslik.toString()
 
                 var currentSecond = 0f
                 viewDialog.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {

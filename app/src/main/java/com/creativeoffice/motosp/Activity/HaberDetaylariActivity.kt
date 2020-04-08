@@ -82,8 +82,9 @@ class HaberDetaylariActivity : AppCompatActivity() {
             var yapılanYorum = HaberlerData.Yorumlar(haber_key, userName, null, etYorum.text.toString(), yorumKey, userID)
 
             ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).setValue(yapılanYorum).addOnCompleteListener {
-                ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).child("tarih").setValue(ServerValue.TIMESTAMP).addOnCompleteListener{
+                ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).child("tarih").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
                     setupRec()
+                    etYorum.text.clear()
                 }
             }
 
@@ -110,7 +111,7 @@ class HaberDetaylariActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                    yorumListesi.clear()
+                yorumListesi.clear()
                 if (p0.hasChildren()) {
 
                     for (ds in p0.children) {
@@ -173,7 +174,7 @@ class HaberDetaylariActivity : AppCompatActivity() {
 
     }
 
-    fun setupRec(){
+    fun setupRec() {
         FirebaseDatabase.getInstance().reference.child("Haberler").child(haber_key.toString()).child("yorumlar").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 

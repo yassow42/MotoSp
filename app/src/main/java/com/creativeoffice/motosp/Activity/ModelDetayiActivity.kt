@@ -63,18 +63,12 @@ class ModelDetayiActivity : AppCompatActivity() {
         verileriGetir()
         goruntulenmeSayisi()
 
-
+        yorumVerileri()
+        yildizVerisi()
     }
 
-    private fun initVeri(rec: String) {
-        yorumListesi.clear()
-        parcaListesi.clear()
-        yakitListesi.clear()
-        yildizListesi.clear()
-
-        Log.e("sad", "burada1")
+    private fun yorumVerileri() {
         var ref = FirebaseDatabase.getInstance().reference
-
         ////kullanıcı adı
         ref.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -87,16 +81,122 @@ class ModelDetayiActivity : AppCompatActivity() {
 
         })
 
-        //MotorVeri listesi yorumlar yakıt vs.
-        ref.child("tum_motorlar").child(model.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("tum_motorlar").child(model.toString()).child("yorumlar").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                yorumListesi.clear()
+                if (p0.hasChildren()) {
+                    for (ds in p0.children) {
+                        var gelenYorumlar = ds.getValue(ModelDetaylariData.Yorumlar::class.java)!!
+                        yorumListesi.add(gelenYorumlar)
+                    }
+                } else {
+                    yorumListesi.add(ModelDetaylariData.Yorumlar("Admin", "İlk Yorumu Yapmak İster Misin?", 1, "123", model, "Admin"))
+
+                }
+
+                setupYorumlarRecyclerView()
+
+            }
+        })
+    }
+
+    private fun parcaVerileri() {
+        var ref = FirebaseDatabase.getInstance().reference
+        ref.child("tum_motorlar").child(model.toString()).child("yy_parcalar").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                parcaListesi.clear()
+                if (p0.hasChildren()) {
+                    for (ds in p0.children) {
+                        var gelenYorumlar = ds.getValue(ModelDetaylariData.Parcalar::class.java)!!
+                        parcaListesi.add(gelenYorumlar)
+                    }
+                } else {
+                    parcaListesi.add(ModelDetaylariData.Parcalar("Parça İsmi", "İlk Parçayı Eklemek İster Misin?", "2020", "Admin", model, marka))
+
+                }
+
+                setupParcalarRecyclerView()
+
+            }
+        })
+    }
+
+    private fun yakitVerileri() {
+        var ref = FirebaseDatabase.getInstance().reference
+
+        //yakitVerileri
+        ref.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                yakitListesi.clear()
+                if (p0.hasChildren()) {
+                    for (ds in p0.children) {
+                        var gelenYorumlar = ds.getValue(ModelDetaylariData.YakitTuketimi::class.java)!!
+                        yakitListesi.add(gelenYorumlar)
+                    }
+                } else {
+                    yakitListesi.add(ModelDetaylariData.YakitTuketimi("0".toFloat(), "Admin", "2020"))
+
+                }
+
+                setupYakitRecyclerView()
+
+            }
+        })
+
+
+    }
+
+    private fun yildizVerisi() {
+        var ref = FirebaseDatabase.getInstance().reference
+        ref.child("tum_motorlar").child(model.toString()).child("yildizlar").addListenerForSingleValueEvent(object : com.google.firebase.database.ValueEventListener {
+            override fun onCancelled(p0: com.google.firebase.database.DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: com.google.firebase.database.DataSnapshot) {
+                yildizListesi.clear()
+                if (p0.hasChildren()) {
+                    for (ds in p0.children) {
+                        var gelenVeriler = ds.getValue(ModelDetaylariData.Yildizlar::class.java)!!
+                        yildizListesi.add(gelenVeriler)
+                    }
+                    var form = DecimalFormat("0.0")
+                    var ortalamaYildiz = yildizListesi.map { it -> it?.yildiz!! }.average()
+                    tvYildizKisi.text = "(" + yildizListesi.size.toString() + ")"
+                    rbMotor.rating = ortalamaYildiz.toFloat()
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("ortYildiz").setValue(form.format(ortalamaYildiz).toString())
+                }
+
+
+
+            }
+        })
+    }
+
+    private fun initVeri() {
+        var ref = FirebaseDatabase.getInstance().reference
+        ref.child("tum_motorlar").child(model.toString()).child("yildizlar").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
 
             override fun onDataChange(p0: DataSnapshot) {
                 var modellerinVerisi = p0.getValue(ModelDetaylariData::class.java) ?: return //Cok onemli
-                Log.e("sad", "burada2")
-
 
                 /////////////////////////////////////////////////////////////////////////**********************************************//////////////////////////////////////////////////////
                 var form = DecimalFormat("0.0")
@@ -109,48 +209,6 @@ class ModelDetayiActivity : AppCompatActivity() {
                 tvYildizKisi.text = "(" + yildizListesi.size.toString() + ")"
                 rbMotor.rating = ortalamaYildiz.toFloat()
                 FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("ortYildiz").setValue(form.format(ortalamaYildiz).toString())
-
-/////////////////////////////////////////////////////////////////////////**********************************************//////////////////////////////////////////////////////
-
-                val yorumHashMap = modellerinVerisi.yorumlar ?: return
-                yorumListesi = ArrayList()
-                for (i in yorumHashMap.values) {
-                    yorumListesi.add(i)
-                }
-                yorumListesi.sortBy { it.tarih } //sortby tarihe göre sıralar
-
-
-                ////////////////////////////////////////////////////////*************************************///////////////////////////////////////////
-                val yakitHashMap = modellerinVerisi.yy_yakit_verileri ?: return
-                for (i in yakitHashMap.values) {
-                    yakitListesi.add(i)
-                }
-                yakitListesi.sortBy { it.yakitTuk }
-                //yakitin ortalamasını alıyoruz.
-                var ortalamaYakit = yakitListesi.map { it -> it?.yakitTuk!! }.average()
-                var ortYakitString = form.format(ortalamaYakit).toString() + " lt /100 km"
-                FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ortYakitString).addOnCompleteListener {
-                    detay_yakitTuk.text = ortYakitString
-                }
-
-/////////////////////////////////////////////////////////////////////////**********************************************//////////////////////////////////////////////////////
-                val parcaHashMap = modellerinVerisi.yy_parcalar ?: return
-                parcaListesi = ArrayList()
-                for (i in parcaHashMap.values) {
-                    parcaListesi.add(i)
-                }
-                parcaListesi.sortBy { it.parca_uyum_model_yili } //sortby tarihe göre sıralar
-
-
-
-
-                if (rec == "yorum") {
-                    setupYorumlarRecyclerView()
-                } else if (rec == "parca") {
-                    setupParcalarRecyclerView()
-                } else if (rec == "yakit") {
-                    setupYakitRecyclerView()
-                }
 
 
             }
@@ -179,6 +237,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
             FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yildizlar").child(userID.toString()).setValue(yildiz).addOnCompleteListener {
                 Toast.makeText(this, "Oylanamanız kaydedildi...", Toast.LENGTH_LONG).show()
+
             }
 
         }
@@ -191,10 +250,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             tvParcaEkle.visibility = View.GONE
             tvYakitTukEkle.visibility = View.GONE
 
-
-
-
-            setupYorumlarRecyclerView()
+            yorumVerileri()
         }
         imgYedek.setOnClickListener {
             imgYedek.setBackgroundResource(R.drawable.ic_yedekparca_mavi)
@@ -206,7 +262,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             tvYakitTukEkle.visibility = View.GONE
 
 
-            setupParcalarRecyclerView()
+            parcaVerileri()
         }
         imgYakitTuk.setOnClickListener {
             imgYakitTuk.setBackgroundResource(R.drawable.ic_yakittuk_mavi)
@@ -217,8 +273,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             tvParcaEkle.visibility = View.GONE
             tvYakitTukEkle.visibility = View.VISIBLE
 
-
-            setupYakitRecyclerView()
+            yakitVerileri()
 
         }
         tvYorumYap.setOnClickListener {
@@ -252,8 +307,8 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                     var yeniPuan = kullaniciKendiPuan!! + 3
                     ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
-                    initVeri("yorum")
                     dialog.dismiss()
+                    yorumVerileri()
 
 
                 } else {
@@ -294,7 +349,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                     var yeniPuan = kullaniciKendiPuan!! + 10
                     ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
-                    initVeri("parca")
+                  parcaVerileri()
                     dialog!!.dismiss()
 
                 }
@@ -323,8 +378,11 @@ class ModelDetayiActivity : AppCompatActivity() {
                     var motorYili = view.etModelYili.text.toString()
 
                     var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
-                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString()).setValue(yakitVerisi)
-                    initVeri("yakit")
+                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString())
+                        .setValue(yakitVerisi).addOnCompleteListener {
+                            yakitVerileri()
+                        }
+
 
                     var yeniPuan = kullaniciKendiPuan!! + 5
                     ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
@@ -333,7 +391,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             })
 
 
-            initVeri("yakit")
+
             var dialog: Dialog = builder.create()
             dialog.show()
 
@@ -368,7 +426,7 @@ class ModelDetayiActivity : AppCompatActivity() {
     }
 
 
-   fun setupYorumlarRecyclerView() {
+    fun setupYorumlarRecyclerView() {
 
 
         recyclerView.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, true)
@@ -508,7 +566,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        initVeri("yorum")
+        yorumVerileri()
 
     }
 

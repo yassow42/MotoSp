@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EDEDED"
+    android:background="#F5F5F5"
     tools:context=".Activity.HaberDetaylariActivity">
 
 
@@ -33,8 +33,9 @@
                 android:id="@+id/tvHaberBaslik"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="7dp"
                 android:maxLines="1"
+                android:padding="3dp"
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="@color/kirmizi"
@@ -48,9 +49,10 @@
                 android:id="@+id/youtubePlayer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/tvHaberBaslik"
                 android:layout_marginTop="8dp"
-                >
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvHaberBaslik">
 
             </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
 
@@ -58,11 +60,11 @@
                 android:id="@+id/tvHaberAltBaslik"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:background="#D6D6D6"
                 android:gravity="center"
                 android:text="haber alt baslık"
                 android:textAlignment="center"
                 android:textColor="@color/siyah"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/youtubePlayer" />
@@ -72,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:text="icerik"
                 android:textColor="@color/siyah"
@@ -95,18 +97,21 @@
                 android:id="@+id/textView19"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="4dp"
                 android:text="Yorumlar"
+                android:textColor="@color/siyah"
                 app:layout_constraintStart_toStartOf="@+id/tvHaberIcerik"
-                app:layout_constraintTop_toBottomOf="@+id/tvHaberZamani" />
+                app:layout_constraintTop_toBottomOf="@+id/view7" />
 
             <EditText
                 android:id="@+id/etYorum"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:background="@drawable/bg_edit_text_siyah"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
@@ -125,6 +130,16 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etYorum" />
+
+            <View
+                android:id="@+id/view7"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/gri"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvHaberZamani" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

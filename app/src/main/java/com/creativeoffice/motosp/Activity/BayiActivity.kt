@@ -18,14 +18,14 @@ class BayiActivity : AppCompatActivity() {
 
     private val ACTIVITY_NO = 2
     var sehirList = ArrayList<BayilerData>()
-  //  var ilceList = ArrayList<BayilerData.ilcelerData>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bayi)
 
         sehirList = ArrayList()
-    //    ilceList = ArrayList()
+
 
 
 
@@ -55,7 +55,7 @@ class BayiActivity : AppCompatActivity() {
 
     private fun setupRecyclerViewSehir() {
           rcBayi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-     //   rcBayi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         val markaAdapter = SehirAdapter(this, sehirList)
 
         rcBayi.adapter = markaAdapter
