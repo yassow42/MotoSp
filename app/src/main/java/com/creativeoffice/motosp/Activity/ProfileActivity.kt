@@ -58,17 +58,47 @@ class ProfileActivity : AppCompatActivity() {
                     tvKullaniciAdi.text = p0.child("user_name").value.toString()
                     var marka = p0.child("user_details").child("kullanilan_motor_marka").value.toString()
                     var model = p0.child("user_details").child("kullanilan_motor_model").value.toString()
-                    var puan = p0.child("user_details").child("puan").value.toString()
-                    var sonAktif = p0.child("user_details").child("son_aktiflik_zamani").value.toString().toLong()
-                    tvPuan.text = puan
+                    var puan = p0.child("user_details").child("puan").value.toString().toInt()
+                    var unvan = p0.child("user_unvan").value.toString()
+
+                    tvUnvan.text = unvan
+                    tvPuan.text = puan.toString()
                     tvMarkaProfile.text = marka
                     tvModelProfile.text = model
+
+
+                    when(puan){
+
+                        in 480..1000 ->{
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Başkan")
+                        }
+                        in 240..479 ->{
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Hızlı")
+                        }
+                        in 120..239->{
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Hızlanan")
+                        }
+                        in 60..119->{
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Rölantı")
+                        }
+                        in 30..59->{
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Acemi")
+                        }
+                        in 15..29->{
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Yeni")
+                        }
+                        in 0..14->{
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Er")
+                        }
+                    }
+
+
 
                     var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                     if (imgURL != "default") {
                         Picasso.get().load(imgURL).into(circleProfileImage)
                         mProgressBarActivityProfile.visibility = View.GONE
-                    }else{
+                    } else {
                         mProgressBarActivityProfile.visibility = View.GONE
                     }
 
@@ -105,7 +135,7 @@ class ProfileActivity : AppCompatActivity() {
                                 detay_silindirhacmi.text = silindir
                                 detay_tork.text = tork
                                 detay_yakitKap.text = yakitKap
-                              //  detay_yakitTuk.text = yakitTuk
+                                //  detay_yakitTuk.text = yakitTuk
 
 
                             }

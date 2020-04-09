@@ -10,7 +10,10 @@
         android:id="@+id/tvKonuBasligi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:padding="5dp"
         android:text="Konu Basligi"
         android:textColor="@color/siyah"
         android:textSize="20sp"
@@ -45,9 +48,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="username"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgUser"
+        app:layout_constraintStart_toEndOf="@+id/imgUser"
+        app:layout_constraintTop_toTopOf="@+id/imgUser" />
 
     <TextView
         android:id="@+id/tvZaman"
@@ -59,7 +63,7 @@
         app:layout_constraintTop_toTopOf="@+id/tvUserName" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imgUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -76,6 +80,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@+id/imgUser" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

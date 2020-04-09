@@ -19,6 +19,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 import kotlinx.android.synthetic.main.fragment_profile_edit.view.*
 import kotlinx.android.synthetic.main.fragment_profile_edit.view.etUserBio
@@ -44,7 +45,7 @@ class ProfileEditFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val fragmentView = inflater.inflate(R.layout.fragment_profile_edit, container, false)
 
         mDatabaseRef = FirebaseDatabase.getInstance().reference
@@ -53,7 +54,6 @@ class ProfileEditFragment : Fragment() {
         userID = mAuth.currentUser!!.uid
 
 
-        //  setupKullaniciBilgileri(view)
         kullaniciBilgileriGuncelle(fragmentView)
 
 
@@ -81,6 +81,10 @@ class ProfileEditFragment : Fragment() {
                 dialogYukleniyor.show(activity!!.supportFragmentManager, "yukleniyorFragmenti")
                 dialogYukleniyor.isCancelable = false
 
+
+
+
+
                 FirebaseStorage.getInstance().reference.child("users").child(userID.toString()).child("profile_picture").putFile(profilPhotoUri!!) // burada fotografı kaydettik veritabanına.
                     .addOnSuccessListener { UploadTask ->
                         UploadTask.storage.downloadUrl.addOnSuccessListener { itUri ->
@@ -92,7 +96,7 @@ class ProfileEditFragment : Fragment() {
                                 .addOnCompleteListener { p0 ->
 
                                     if (p0.isSuccessful) {
-                                         dialogYukleniyor.dismiss()
+                                        dialogYukleniyor.dismiss()
 
 
                                     } else {
@@ -143,6 +147,7 @@ class ProfileEditFragment : Fragment() {
                     override fun onNothingSelected(p0: AdapterView<*>?) {
 
                     }
+
                     override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, p2: Int, p3: Long) {
                         secilenMarka = spinnerMarka.selectedItem.toString()
                         if (secilenMarka != "Marka seçiniz") {
@@ -191,12 +196,6 @@ class ProfileEditFragment : Fragment() {
                             Picasso.get().load(imgURL).into(circleEditProfileImage)
                             mProgresBarEdit.visibility = View.GONE
                         }
-
-
-
-                        //   spinnerMarka.setSelection(adapterMarka.getPosition(marka))
-                        //  spinnerModel.setSelection(adapterModel.getPosition(model))
-
 
                     }
 

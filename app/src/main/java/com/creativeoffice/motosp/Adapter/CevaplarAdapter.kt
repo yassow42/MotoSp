@@ -156,6 +156,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
         var imgProfile = itemView.circleProfileImage
         var kullanilanMotor = itemView.tvKullanilanMotor
         var tumLayout = itemView.tumLayout
+        var tvUnvan = itemView.tvUnvan
 
 
         var ref = FirebaseDatabase.getInstance().reference
@@ -180,6 +181,9 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                     var Marka = p0.child("user_details").child("kullanilan_motor_marka").value.toString()
                     var Model = p0.child("user_details").child("kullanilan_motor_model").value.toString()
                     kullanilanMotor.text = Marka.trim() + " " + Model.trim()
+
+                    val unvan = p0.child("user_unvan").value.toString()
+                    tvUnvan.text = unvan
                 }
             })
 

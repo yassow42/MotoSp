@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.HaberDetaylariActivity"></activity>
+        <activity android:name=".Activity.TumKonularActivity"></activity>
+        <activity android:name=".Activity.HaberDetaylariActivity" />
         <activity android:name=".Activity.GidilenProfilActivity" />
-        <activity android:name=".Activity.SizdenGelenlerActivity" />
         <activity android:name=".Activity.KonuDetayActivity" />
         <activity android:name=".Activity.HomeActivity" />
         <activity android:name=".Activity.ProfileSettingActivity" />

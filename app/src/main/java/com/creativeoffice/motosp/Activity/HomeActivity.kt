@@ -40,20 +40,21 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+    lateinit var userID: String
 
     private val ACTIVITY_NO = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        if (FirebaseDatabase.getInstance().reference == null){
+        if (FirebaseDatabase.getInstance().reference == null) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         }
 
-       FirebaseDatabase.getInstance().reference.keepSynced(true)
+        FirebaseDatabase.getInstance().reference.keepSynced(true)
 
 
         mAuth = FirebaseAuth.getInstance()
-        val userID = mAuth.currentUser!!.uid
+        userID = mAuth.currentUser!!.uid
         konularList = ArrayList()
         cevapYazilanKonuList = ArrayList()
         sonYorumlarList = ArrayList()
@@ -85,13 +86,13 @@ class HomeActivity : AppCompatActivity() {
 
                 var haberKey = ref.child("Haberler").push().key
 
-                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey,haberAltBaslik)
+                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey, haberAltBaslik)
 
                 ref.child("Haberler").child(haberKey.toString()).setValue(haberData).addOnCompleteListener {
                     ref.child("Haberler").child(haberKey.toString()).child("haber_eklenme_zamani").setValue(ServerValue.TIMESTAMP)
                     dialog.dismiss()
-                }.addOnFailureListener{
-                    Toast.makeText(this,"Haber eklenmedi",Toast.LENGTH_LONG).show()
+                }.addOnFailureListener {
+                    Toast.makeText(this, "Haber eklenmedi", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -134,14 +135,14 @@ class HomeActivity : AppCompatActivity() {
 
                         //son cevap ekliyoruzkı sıralayabılelım.
                         ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
-                      ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
+                        ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
 
-                          val intent = Intent(this@HomeActivity, KonuDetayActivity::class.java)//.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                          intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
-                          intent.putExtra("userName", konuData.konuyu_acan.toString())
-                          intent.putExtra("konuKey", konuData.konu_key)
-                          startActivity(intent)
-                      }
+                            val intent = Intent(this@HomeActivity, KonuDetayActivity::class.java)//.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
+                            intent.putExtra("userName", konuData.konuyu_acan.toString())
+                            intent.putExtra("konuKey", konuData.konu_key)
+                            startActivity(intent)
+                        }
 
                         //ilk olarak konuyu acanı son cevaba kaydedıyoruz...
                         var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID, konuKey.toString())
@@ -157,8 +158,6 @@ class HomeActivity : AppCompatActivity() {
                         dialog.dismiss()
 
 
-
-
                     }
                 })
             }
@@ -169,13 +168,19 @@ class HomeActivity : AppCompatActivity() {
 
         tvTumKonular.setOnClickListener {
 
+            /*
             setupRecyclerViewForumKonu(konularList)
             rcForum.layoutParams.height = MATCH_PARENT
+            */
+            val intent = Intent(this, TumKonularActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+            startActivity(intent)
 
 
         }
     }
-    private  fun formatDate(miliSecond: Long?): String? {
+
+    private fun formatDate(miliSecond: Long?): String? {
         if (miliSecond == null) return "0"
         val date = Date(miliSecond)
         val sdf = SimpleDateFormat(" d MMM hh:mm ", Locale("tr"))
@@ -186,7 +191,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initVeri(userID: String) {
         val ref = FirebaseDatabase.getInstance().reference
         //son aktiviteyi kaydetme
-        ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
+
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
@@ -206,7 +211,7 @@ class HomeActivity : AppCompatActivity() {
                         cevapYazilanKonuList.add(konularList[1])
                         cevapYazilanKonuList.add(konularList[2])
                         cevapYazilanKonuList.add(konularList[3])
-                        cevapYazilanKonuList.add(konularList[4])
+                        //    cevapYazilanKonuList.add(konularList[4])//son konu baslıklarının sayısını 5 ten 4 e dusurdum
                         yeniKonuList.add(konularList[0])
                         yeniKonuList.add(konularList[1])
                         yeniKonuList.add(konularList[2])
@@ -345,7 +350,9 @@ class HomeActivity : AppCompatActivity() {
         menuItem.setChecked(true)
     }
 
-
-
+    override fun onStart() {
+        FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
+        super.onStart()
+    }
 
 }

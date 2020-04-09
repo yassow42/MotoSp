@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -48,37 +49,42 @@ class LoginActivity : AppCompatActivity() {
                 var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
                 var kullaniciSifre = view.etSifreLoginAlertDialog.text.toString()
                 var userNameKullanimi = false
+
+
                 FirebaseDatabase.getInstance().reference.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
-                        for (ds in p0.children) {
-                            var gelenKullanicilar = ds.getValue(Users::class.java)
-                            if (gelenKullanicilar!!.user_name.equals(kullaniciAdi)) {
-                                userNameKullanimi = true
-                                break
-                            } else {
-                                userNameKullanimi = false
+
+                            for (ds in p0.children) {
+                                val gelenKullanicilar = ds.getValue(Users::class.java)!!
+                                if (gelenKullanicilar.user_name.equals(kullaniciAdi)) {
+                                    userNameKullanimi = true
+                                    break
+                                } else {
+                                    userNameKullanimi = false
+                                }
                             }
-                        }
+
 
                         if (userNameKullanimi == true) {
                             Toast.makeText(this@LoginActivity, "Kullanıcı Adı Kullanımdadır.", Toast.LENGTH_LONG).show()
                         } else {
                             mAuth.createUserWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
                                 override fun onComplete(p0: Task<AuthResult>) {
-                                    if (p0!!.isSuccessful) {
+                                    if (p0.isSuccessful) {
+                                        setupAuthListener()
 
                                         var userID = mAuth.currentUser!!.uid.toString()
-                                        var user_detail = UserDetails(1, "", "Honda", "Activa S", "default",null)
-                                        var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID, user_detail)
+                                        var user_detail = UserDetails(1, "Default", "Honda", "Activa S", "default", 1)
+                                        var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,"Er", user_detail)
                                         FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
 
                                     } else {
                                         mAuth.currentUser!!.delete().addOnCompleteListener(object : OnCompleteListener<Void> {
                                             override fun onComplete(p0: Task<Void>) {
-                                                if (p0!!.isSuccessful) {
+                                                if (p0.isSuccessful) {
                                                     Toast.makeText(this@LoginActivity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
                                                 }
                                             }

@@ -56,6 +56,9 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //foto sıkıstırma
+    implementation 'id.zelory:compressor:3.0.0'
+
 //eventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
     // intent geçiş animasyonu
