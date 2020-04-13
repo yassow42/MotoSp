@@ -178,10 +178,10 @@
                 android:id="@+id/imgHaberDetay"
                 android:layout_width="0dp"
                 android:layout_height="230dp"
+                android:layout_marginTop="4dp"
                 android:cropToPadding="true"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/youtubePlayer"
                 app:srcCompat="@drawable/ic_honda" />
