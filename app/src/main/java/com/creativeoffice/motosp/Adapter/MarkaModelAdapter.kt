@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Activity.ModelDetayiActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.tek_model_list.view.*
 
 
@@ -79,6 +80,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var tvModel = tumLayout.tvModel
         var tvDetaylariGoster = tumLayout.tvDetaylariGoster
         var tvDetaylariGizle = tumLayout.tvDetaylariGizle
+        var tvFiyat = tumLayout.tvFiyat
 
         var tvTanitim2 = tumLayout.tvTanitim2
         var tvGoruldu = tumLayout.tvGoruldu
@@ -105,15 +107,18 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             setupModelFotolari(oAnkiModel)
             setupModelYazilari(oAnkiModel)
 
-            if (oAnkiModel.goruntulenme_sayisi.toString() == "null") {
-                tvGoruldu.text = "1"
-            }
+
             if (oAnkiModel.ortYildiz.toString() == "null") {
                 tvYildiz.text = "1"
             }
             if (oAnkiModel.model_yorum_sayisi.toString() == "null"){
                tvYorumSayisi.text = "1"
             }
+            if (oAnkiModel.fiyat.toString() == "1"){
+           //   FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(oAnkiModel.model.toString()).child("fiyat").setValue("1")
+                tvFiyat.visibility = View.INVISIBLE
+            }
+
 
             if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
 

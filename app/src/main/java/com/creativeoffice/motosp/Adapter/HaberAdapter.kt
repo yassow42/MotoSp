@@ -54,11 +54,12 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
         var haberBaslik = itemView.tvHaberBasligi
         var haberAltBaslik = itemView.tvAltBaslik
         var tumLayout = itemView.tumLayout
+        var tvZaman = itemView.tvZaman
 
         fun setData(haberler: HaberlerData?) {
             haberBaslik.text = haberler!!.haber_baslik
             haberAltBaslik.text = haberler!!.haber_altbaslik
-
+            tvZaman.text = formatDate(haberler.haber_eklenme_zamani).toString()
 
 
             tumLayout.setOnClickListener {
@@ -116,7 +117,7 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
     fun formatDate(miliSecond: Long?): String? {
         if (miliSecond == null) return "0"
         val date = Date(miliSecond)
-        val sdf = SimpleDateFormat("EEE, MMM d, ''yy", Locale("tr"))
+        val sdf = SimpleDateFormat("d MMM", Locale("tr"))
         return sdf.format(date)
 
     }

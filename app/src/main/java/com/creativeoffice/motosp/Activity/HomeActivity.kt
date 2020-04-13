@@ -271,17 +271,17 @@ class HomeActivity : AppCompatActivity() {
                         sonYorumlarList.add(sonYorumlarTumList[1])
                         sonYorumlarList.add(sonYorumlarTumList[2])
                         sonYorumlarList.add(sonYorumlarTumList[3])
-                    } else if (konularList.size > 3) {
+                    } else if (sonYorumlarTumList.size > 3) {
                         sonYorumlarList.add(sonYorumlarTumList[0])
                         sonYorumlarList.add(sonYorumlarTumList[1])
                         sonYorumlarList.add(sonYorumlarTumList[2])
-                    } else if (konularList.size > 2) {
+                    } else if (sonYorumlarTumList.size > 2) {
                         sonYorumlarList.add(sonYorumlarTumList[0])
                         sonYorumlarList.add(sonYorumlarTumList[1])
-                    } else if (konularList.size > 1) {
+                    } else if (sonYorumlarTumList.size > 1) {
                         sonYorumlarList.add(sonYorumlarTumList[0])
                         sonYorumlarList.add(sonYorumlarTumList[1])
-                    } else if (konularList.size > 0) {
+                    } else if (sonYorumlarTumList.size > 0) {
                         sonYorumlarList.add(sonYorumlarTumList[0])
                     }
 
