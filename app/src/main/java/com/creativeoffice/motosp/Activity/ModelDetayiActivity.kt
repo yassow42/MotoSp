@@ -94,6 +94,8 @@ class ModelDetayiActivity : AppCompatActivity() {
                         var gelenYorumlar = ds.getValue(ModelDetaylariData.Yorumlar::class.java)!!
                         yorumListesi.add(gelenYorumlar)
                     }
+                    var yorumSayisi = yorumListesi.size
+                    ref.child("tum_motorlar").child(model.toString()).child("model_yorum_sayisi").setValue(yorumSayisi)
                 } else {
                     yorumListesi.add(ModelDetaylariData.Yorumlar("Admin", "İlk Yorumu Yapmak İster Misin?", 1, "123", model, "Admin"))
 
@@ -188,33 +190,7 @@ class ModelDetayiActivity : AppCompatActivity() {
         })
     }
 
-    private fun initVeri() {
-        var ref = FirebaseDatabase.getInstance().reference
-        ref.child("tum_motorlar").child(model.toString()).child("yildizlar").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
 
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                var modellerinVerisi = p0.getValue(ModelDetaylariData::class.java) ?: return //Cok onemli
-
-                /////////////////////////////////////////////////////////////////////////**********************************************//////////////////////////////////////////////////////
-                var form = DecimalFormat("0.0")
-                val yildizHashMap = modellerinVerisi.yildizlar ?: return
-                for (i in yildizHashMap.values) {
-                    yildizListesi.add(i)
-                }
-
-                var ortalamaYildiz = yildizListesi.map { it -> it?.yildiz!! }.average()
-                tvYildizKisi.text = "(" + yildizListesi.size.toString() + ")"
-                rbMotor.rating = ortalamaYildiz.toFloat()
-                FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("ortYildiz").setValue(form.format(ortalamaYildiz).toString())
-
-
-            }
-        })
-
-    }
 
     //butontıklamalarının hepsi burada
     private fun init() {

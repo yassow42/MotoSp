@@ -14,14 +14,12 @@
         android:id="@+id/tvModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:text="TextView"
         android:textColor="#E8EEF2"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,8 +45,6 @@
         android:background="@drawable/ic_scooter"
         app:layout_constraintBottom_toBottomOf="@+id/tvMarka"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/tvModel"
         app:layout_constraintTop_toTopOf="@+id/tvModel" />
 
     <View
@@ -66,7 +62,6 @@
         android:id="@+id/tvDetaylariGoster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:text="Detayları Göster"
         android:textColor="#E8EEF2"
         android:textSize="10sp"
@@ -102,7 +97,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTanitim">
+        app:layout_constraintTop_toBottomOf="@+id/tvGoruldu">
 
         <LinearLayout
             android:id="@+id/modelDetayLL"
@@ -329,35 +324,19 @@
     <TextView
         android:id="@+id/yorumlariGor"
         android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="32dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="45dp"
         android:layout_marginTop="6dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="45dp"
         android:background="@drawable/text_background"
         android:gravity="center"
         android:text="Yorumları Gör"
         android:textAllCaps="false"
         android:textColor="@color/beyaz"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/scrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTanitim2" />
-
-    <TextView
-        android:id="@+id/tvTanitim"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:maxWidth="250dp"
-        android:maxLines="2"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textColor="@color/beyaz"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/imgMotorTipi"
-        app:layout_constraintStart_toStartOf="@+id/tvModel"
-        app:layout_constraintTop_toBottomOf="@+id/tvMarka" />
 
     <TextView
         android:id="@+id/tvTanitim2"
@@ -380,45 +359,85 @@
         android:id="@+id/imageView6"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/ic_eye"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDetaylariGizle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yorumlariGor" />
+        app:layout_constraintStart_toStartOf="@+id/imgStar"
+        app:layout_constraintTop_toBottomOf="@+id/imgStar" />
 
     <TextView
         android:id="@+id/tvGoruldu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:text="TextView"
         android:textColor="@color/beyaz"
-        android:textSize="8sp"
+        android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:layout_constraintStart_toStartOf="@+id/tvYildiz"
         app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
     <ImageView
         android:id="@+id/imgStar"
         android:layout_width="12sp"
         android:layout_height="12sp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/ic_star"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDetaylariGizle"
-        app:layout_constraintTop_toBottomOf="@+id/yorumlariGor"
-        app:srcCompat="@drawable/ic_star"
-        tools:layout_editor_absoluteX="5dp" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView20"
+        app:srcCompat="@drawable/ic_star" />
 
     <TextView
         android:id="@+id/tvYildiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textColor="@color/beyaz"
-        android:textSize="8sp"
+        android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="@+id/imgStar"
-        app:layout_constraintStart_toEndOf="@+id/imgStar"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="@+id/imgStar" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="100.000"
+        android:textColor="@color/beyaz"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView20"
+        app:layout_constraintStart_toEndOf="@+id/textView20"
+        app:layout_constraintTop_toTopOf="@+id/textView20" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="12dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="₺"
+        android:textColor="@color/beyaz"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/ic_forum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvModel" />
+
+    <TextView
+        android:id="@+id/tvYorumSayisi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/beyaz"
+        android:textSize="9sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,24 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clYeniKonular"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="5dp"
-    android:background="@drawable/beyaz_bg"
+    android:background="@drawable/siyah_bg_bos_sadece_kenar"
     android:padding="3dp">
 
     <TextView
         android:id="@+id/tvKonuBasligi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:maxWidth="120dp"
+        android:layout_marginEnd="16dp"
+        android:maxWidth="130dp"
         android:maxLines="2"
         android:text="Konu Başligi"
         android:textAlignment="center"
         android:textColor="@color/siyah"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,9 @@
         android:text="konuyuAcan"
         android:textColor="@color/siyah"
         android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvAcilmaZamani"
         app:layout_constraintEnd_toEndOf="@+id/tvAcilmaZamani"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/tvAcilmaZamani"
         app:layout_constraintTop_toBottomOf="@+id/tvKonuBasligi" />
 
@@ -52,6 +54,7 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvKonuyuAcan" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="594fe60e-196e-40ec-b0e7-3834a22db273" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/siyah_bg_bos_sadece_kenar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Activity/ModelDetayiActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Activity/ModelDetayiActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Activity/MotorActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Activity/MotorActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Adapter/CevaplarAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Adapter/CevaplarAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Adapter/MarkaModelAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Adapter/MarkaModelAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Datalar/ModelDetaylariData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/creativeoffice/motosp/Datalar/ModelDetaylariData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout-large/activity_home.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout-xlarge/activity_home.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_haber_detaylari.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_haber_detaylari.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_konu_detay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_konu_detay.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_motor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_motor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/item_forum_konu_basliklari.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/item_forum_konu_basliklari.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/item_son_model_mesajlari.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/item_son_model_mesajlari.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/item_yeni_konular.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/item_yeni_konular.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/tek_model_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/tek_model_list.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../values/colors.xml" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+  </component>
+  <component name="ProjectId" id="1aSjrPo0uCHS9LnJXiuWmfSgUbI" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="594fe60e-196e-40ec-b0e7-3834a22db273" name="Default Changelist" comment="" />
+      <created>1586736086619</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1586736086619</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

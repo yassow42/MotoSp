@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_haber_detaylari.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +26,7 @@ class HaberDetaylariActivity : AppCompatActivity() {
     var haber_icerik: String? = null
     var haber_key: String? = null
     var haber_video: String? = null
+    var haber_videolumu: String? = null
 
 
     var userID: String? = null
@@ -55,6 +57,7 @@ class HaberDetaylariActivity : AppCompatActivity() {
         haber_icerik = intent.getStringExtra("haber_icerik")
         haber_key = intent.getStringExtra("haber_key")
         haber_video = intent.getStringExtra("haber_video")
+        haber_videolumu = intent.getStringExtra("haber_videolumu")
 
         FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -91,18 +94,28 @@ class HaberDetaylariActivity : AppCompatActivity() {
         }
 
 
-        var currentSecond = 0f
-        youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: YouTubePlayer) {
-                youTubePlayer.cueVideo(haber_video.toString(), 0f)
-            }
+        if (haber_videolumu =="true"){
 
-            override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-                currentSecond = second
-            }
-        })
-        youtubePlayer.display
-        youtubePlayer.getPlayerUiController().showVideoTitle(false)
+            imgHaberDetay.visibility = View.GONE
+            var currentSecond = 0f
+            youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
+                    youTubePlayer.cueVideo(haber_video.toString(), 0f)
+                }
+
+                override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                    currentSecond = second
+                }
+            })
+            youtubePlayer.display
+            youtubePlayer.getPlayerUiController().showVideoTitle(false)
+
+        }else if (haber_videolumu =="false"){
+            youtubePlayer.visibility = View.GONE
+            Picasso.get().load(haber_video.toString()).into(imgHaberDetay)
+
+        }
+
 
 
         FirebaseDatabase.getInstance().reference.child("Haberler").child(haber_key.toString()).child("yorumlar").addListenerForSingleValueEvent(object : ValueEventListener {

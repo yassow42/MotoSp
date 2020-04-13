@@ -13,6 +13,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.GidilenProfilActivity
+import com.creativeoffice.motosp.Activity.KonuDetayActivity
 import com.creativeoffice.motosp.Activity.ProfileActivity
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
@@ -73,6 +74,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                                 FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).child("cevaplar").child(gelenItem.cevap_key.toString())
                                     .child("cevap").setValue(yeniCevap.toString()).addOnCompleteListener {
                                         Toast.makeText(myContext, "Cevanın Güncelleniyor :) Biraz Bekle ", Toast.LENGTH_SHORT).show()
+
                                     }
                                 dialog.dismiss()
 

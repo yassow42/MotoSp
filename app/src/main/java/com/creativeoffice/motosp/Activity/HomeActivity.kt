@@ -83,10 +83,10 @@ class HomeActivity : AppCompatActivity() {
                 var haberAltBaslik = view.etAltBaslik.text.toString()
                 var haberIcerik = view.etIcerik.text.toString()
                 var haberVideo = view.etVideo.text.toString()
-
+                var haberVideolumu = view.etHaberVideolumu.text.toString().toBoolean()
                 var haberKey = ref.child("Haberler").push().key
 
-                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey, haberAltBaslik)
+                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey, haberAltBaslik,haberVideolumu)
 
                 ref.child("Haberler").child(haberKey.toString()).setValue(haberData).addOnCompleteListener {
                     ref.child("Haberler").child(haberKey.toString()).child("haber_eklenme_zamani").setValue(ServerValue.TIMESTAMP)
@@ -258,11 +258,34 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
+                    var sonYorumlarTumList = ArrayList<YorumlarData>()
+                    sonYorumlarTumList = ArrayList()
                     for (ds in p0.children) {
                         var gelenVeri = ds.getValue(YorumlarData::class.java)!!
-                        sonYorumlarList.add(gelenVeri)
-
+                        sonYorumlarTumList.add(gelenVeri)
                     }
+
+                    sonYorumlarTumList.sortByDescending { it.yorum_zaman }
+                    if (sonYorumlarTumList.size > 4) {
+                        sonYorumlarList.add(sonYorumlarTumList[0])
+                        sonYorumlarList.add(sonYorumlarTumList[1])
+                        sonYorumlarList.add(sonYorumlarTumList[2])
+                        sonYorumlarList.add(sonYorumlarTumList[3])
+                    } else if (konularList.size > 3) {
+                        sonYorumlarList.add(sonYorumlarTumList[0])
+                        sonYorumlarList.add(sonYorumlarTumList[1])
+                        sonYorumlarList.add(sonYorumlarTumList[2])
+                    } else if (konularList.size > 2) {
+                        sonYorumlarList.add(sonYorumlarTumList[0])
+                        sonYorumlarList.add(sonYorumlarTumList[1])
+                    } else if (konularList.size > 1) {
+                        sonYorumlarList.add(sonYorumlarTumList[0])
+                        sonYorumlarList.add(sonYorumlarTumList[1])
+                    } else if (konularList.size > 0) {
+                        sonYorumlarList.add(sonYorumlarTumList[0])
+                    }
+
+
                     setupRecyclerViewSonYorum()
                 }
             }

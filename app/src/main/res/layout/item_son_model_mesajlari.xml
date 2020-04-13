@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="@drawable/beyaz_bg"
+    android:background="@drawable/siyah_bg_bos_sadece_kenar"
     android:padding="4dp">
 
     <TextView
@@ -17,7 +17,7 @@
         android:layout_marginTop="8dp"
         android:text="Marka"
         android:textColor="@color/mavi"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,8 +28,7 @@
         android:layout_marginTop="4dp"
         android:text="Model"
         android:textColor="@color/mavi"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/tvMarka"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/tvMarka"
         app:layout_constraintTop_toBottomOf="@+id/tvMarka" />
 
@@ -38,9 +37,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="24dp"
+        android:maxLines="2"
         android:text="Son Mesaj"
         android:textColor="@color/siyah"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvModel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvModel"
@@ -51,6 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
         android:text="Son yazan ahmet 23:19"
         android:textColor="@color/siyah"
         android:textSize="8sp"

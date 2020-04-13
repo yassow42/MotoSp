@@ -2,14 +2,16 @@ package com.creativeoffice.motosp.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.creativeoffice.motosp.Datalar.ModelDetaylariData
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Activity.ModelDetayiActivity
+import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
 import kotlinx.android.synthetic.main.tek_model_list.view.*
 
@@ -41,6 +43,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         //   p0.imgMotoripi.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
 
         p0.setData(tumModeller.get(p1), myContext)
+
 
 
         p0.yorumlariGor.setOnClickListener {
@@ -77,8 +80,6 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var tvDetaylariGoster = tumLayout.tvDetaylariGoster
         var tvDetaylariGizle = tumLayout.tvDetaylariGizle
 
-        //  var youTubePlayer = tumLayout.ytTekModelList
-        var tvTanitim = tumLayout.tvTanitim
         var tvTanitim2 = tumLayout.tvTanitim2
         var tvGoruldu = tumLayout.tvGoruldu
         var tvYildiz = tumLayout.tvYildiz
@@ -96,7 +97,8 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var detay_agirlik = tumLayout.detay_agirlik
         var detay_kapasite = tumLayout.detay_yakitKap
         var imgMotoripi = tumLayout.imgMotorTipi
-        var imgStar = tumLayout.imgStar
+        var tvYorumSayisi = tumLayout.tvYorumSayisi
+
 
 
         fun setData(oAnkiModel: ModelDetaylariData, myContext: Context) {
@@ -107,13 +109,14 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                 tvGoruldu.text = "1"
             }
             if (oAnkiModel.ortYildiz.toString() == "null") {
-               tvYildiz.visibility = View.GONE
-               imgStar.visibility= View.GONE
+                tvYildiz.text = "1"
+            }
+            if (oAnkiModel.model_yorum_sayisi.toString() == "null"){
+               tvYorumSayisi.text = "1"
             }
 
-
             if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
-                tvTanitim.visibility = View.GONE
+
                 tvTanitim2.visibility = View.GONE
             }
 
@@ -126,11 +129,13 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                 yorumlariGor.visibility = View.VISIBLE
                 tvTanitim2.visibility = View.VISIBLE
                 if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {
-                    tvTanitim.visibility = View.GONE
+
                     tvTanitim2.visibility = View.GONE
                 }
 
                 scrollView!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+
+
 
 
             }
@@ -145,19 +150,16 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                 scrollView.visibility = View.GONE
                 tvDetaylariGoster.visibility = View.VISIBLE
                 tvDetaylariGizle.visibility = View.GONE
-                //      youTubePlayer.visibility = View.GONE
+
                 yorumlariGor.visibility = View.GONE
 
                 tvMarka.visibility = View.VISIBLE
                 tvModel.visibility = View.VISIBLE
                 tvTanitim2.visibility = View.GONE
-                tvTanitim.visibility = View.VISIBLE
+
                 imgMotoripi.visibility = View.VISIBLE
 
             }
-
-
-
 
 
         }
@@ -165,7 +167,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         private fun setupModelYazilari(oAnkiModel: ModelDetaylariData) {
             tvMarka.text = oAnkiModel.marka.toString()
             tvModel.text = oAnkiModel.model.toString()
-            tvTanitim.text = oAnkiModel.tanitim.toString()
+
             tvTanitim2.text = oAnkiModel.tanitim.toString()
 
             detay_kategori.text = oAnkiModel.kategori
@@ -179,6 +181,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             detay_kapasite.text = oAnkiModel.yakitkap
             tvGoruldu.text = oAnkiModel.goruntulenme_sayisi.toString()
             tvYildiz.text = oAnkiModel.ortYildiz.toString()
+            tvYorumSayisi.text = oAnkiModel.model_yorum_sayisi.toString()
 
         }
 

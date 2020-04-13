@@ -63,7 +63,6 @@
                 android:id="@+id/clForum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/beyaz_bg"
                 android:visibility="visible">
 
 
@@ -134,7 +133,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg2">
+                android:background="@color/beyaz">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcYeniKonular"
@@ -253,8 +252,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/beyaz_bg">
+                android:layout_height="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcSonModelMesajlari"

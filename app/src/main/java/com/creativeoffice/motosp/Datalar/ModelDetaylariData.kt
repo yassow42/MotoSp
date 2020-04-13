@@ -19,6 +19,7 @@ class ModelDetaylariData {
     var goruntulenme_sayisi: Int? = null
     var fiyat: String? = null
     var ortYildiz: String? = null
+    var model_yorum_sayisi:Int?=null
 
     var yorumlar: HashMap<String, Yorumlar>? = null
     var yy_parcalar: HashMap<String, Parcalar>? = null

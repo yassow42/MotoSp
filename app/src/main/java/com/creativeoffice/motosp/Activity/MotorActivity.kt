@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.creativeoffice.motosp.Adapter.MarkaModelAdapter
 import com.creativeoffice.motosp.Adapter.SpinnerAdapter
@@ -117,8 +118,8 @@ class MotorActivity : AppCompatActivity() {
 
 
     private fun setupRecyclerView() {
-        //rvModelListesi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        rvModelListesi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rvModelListesi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+      //  rvModelListesi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val markaAdapter = MarkaModelAdapter(this.applicationContext, tumModeller)
         rvModelListesi.adapter = markaAdapter
 

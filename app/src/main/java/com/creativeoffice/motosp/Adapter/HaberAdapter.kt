@@ -35,7 +35,13 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
 
     override fun onBindViewHolder(holder: HaberHolder, position: Int) {
 
-        Picasso.get().load(makeImagePath(haberler[position].haber_video.toString())).into(holder.img)
+
+        if (haberler[position].haber_videolumu == false) {
+            Picasso.get().load(haberler[position].haber_video.toString()).into(holder.img)
+        } else {
+            Picasso.get().load(makeImagePath(haberler[position].haber_video.toString())).into(holder.img)
+        }
+
 
 
 
@@ -63,28 +69,17 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
                 viewDialog.tvHaberBaslik.text = haberler.haber_baslik.toString()
                 viewDialog.tvHaberIcerik.text = haberler.haber_altbaslik.toString()
 
-                var currentSecond = 0f
-                viewDialog.youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                    override fun onReady(youTubePlayer: YouTubePlayer) {
-                        youTubePlayer.cueVideo(haberler.haber_video.toString(), 0f)
-                    }
-
-                    override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-                        currentSecond = second
-                    }
-                })
-                viewDialog.youtubePlayer.display
-                viewDialog.youtubePlayer.getPlayerUiController().showVideoTitle(false)
 
                 viewDialog.tvHaberDetayları.setOnClickListener {
                     var intent = Intent(myContext, HaberDetaylariActivity::class.java)
 
-                    intent.putExtra("haber_altbaslik",haberler.haber_altbaslik.toString())
-                    intent.putExtra("haber_baslik",haberler.haber_baslik.toString())
-                    intent.putExtra("haber_eklenme",haberler.haber_eklenme_zamani.toString())
-                    intent.putExtra("haber_icerik",haberler.haber_icerik.toString())
-                    intent.putExtra("haber_key",haberler.haber_key.toString())
-                    intent.putExtra("haber_video",haberler.haber_video.toString())
+                    intent.putExtra("haber_altbaslik", haberler.haber_altbaslik.toString())
+                    intent.putExtra("haber_baslik", haberler.haber_baslik.toString())
+                    intent.putExtra("haber_eklenme", haberler.haber_eklenme_zamani.toString())
+                    intent.putExtra("haber_icerik", haberler.haber_icerik.toString())
+                    intent.putExtra("haber_key", haberler.haber_key.toString())
+                    intent.putExtra("haber_video", haberler.haber_video.toString())
+                    intent.putExtra("haber_videolumu", haberler.haber_videolumu.toString())
 
 
                     myContext.startActivity(intent)
