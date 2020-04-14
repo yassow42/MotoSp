@@ -24,7 +24,7 @@ class GidilenProfilActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gidilen_profil)
 
-        gidilenUserID = intent.getStringExtra("gidilenUserID")
+        gidilenUserID  = intent.getStringExtra("gidilenUserID")!!
 
 
         kullaniciVerileriniGetir()
@@ -80,7 +80,7 @@ class GidilenProfilActivity : AppCompatActivity() {
                                 var silindir = gelenMotorDetaylari.silindirHacmi.toString()
                                 var tork = gelenMotorDetaylari.tork.toString()
                                 var yakitKap = gelenMotorDetaylari.yakitkap.toString()
-                                var yakitTuk = gelenMotorDetaylari.yakitTuk.toString()
+                              //  var yakitTuk = gelenMotorDetaylari.yakitTuk.toString()
 
                                 tvMarkaProfile.text = marka
                                 tvModelProfile.text = model

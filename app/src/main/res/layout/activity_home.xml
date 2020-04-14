@@ -5,6 +5,7 @@
     android:id="@+id/tumLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".Activity.HomeActivity">
 
     <ScrollView
@@ -20,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,7 +71,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
@@ -81,11 +80,15 @@
 
                 <TextView
                     android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/beyaz_yazi_bg"
+                    android:gravity="center"
+                    android:padding="3dp"
                     android:text="Cevap Yazılan Son Konu Başlıkları"
+                    android:textAlignment="center"
                     android:textColor="@color/siyah"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -93,12 +96,14 @@
 
                 <TextView
                     android:id="@+id/tvTumKonular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/beyaz_yazi_bg"
+                    android:gravity="center"
                     android:text="Tüm Konular"
+                    android:textAlignment="center"
                     android:textColor="@color/siyah"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -132,8 +137,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/beyaz">
+                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcYeniKonular"

@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
-    android:background="@drawable/siyah_bg_bos_sadece_kenar"
+    android:background="@drawable/bg_forum_item"
     android:padding="3dp">
 
     <TextView

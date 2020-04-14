@@ -12,10 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.HaberDetaylariActivity
 import com.creativeoffice.motosp.Datalar.HaberlerData
 import com.creativeoffice.motosp.R
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.dialog_haber_detay.view.*
 import kotlinx.android.synthetic.main.item_haber.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,41 +55,23 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
 
         fun setData(haberler: HaberlerData?) {
             haberBaslik.text = haberler!!.haber_baslik
-            haberAltBaslik.text = haberler!!.haber_altbaslik
+            haberAltBaslik.text = haberler.haber_altbaslik
             tvZaman.text = formatDate(haberler.haber_eklenme_zamani).toString()
 
 
             tumLayout.setOnClickListener {
-                var builder: AlertDialog.Builder = AlertDialog.Builder(myContext)
+                var intent = Intent(myContext, HaberDetaylariActivity::class.java)
 
-                var viewDialog: View = inflate(myContext, R.layout.dialog_haber_detay, null)
-
-                viewDialog.tvHaberBaslik.text = haberler.haber_baslik.toString()
-                viewDialog.tvHaberIcerik.text = haberler.haber_altbaslik.toString()
-
-
-                viewDialog.tvHaberDetayları.setOnClickListener {
-                    var intent = Intent(myContext, HaberDetaylariActivity::class.java)
-
-                    intent.putExtra("haber_altbaslik", haberler.haber_altbaslik.toString())
-                    intent.putExtra("haber_baslik", haberler.haber_baslik.toString())
-                    intent.putExtra("haber_eklenme", haberler.haber_eklenme_zamani.toString())
-                    intent.putExtra("haber_icerik", haberler.haber_icerik.toString())
-                    intent.putExtra("haber_key", haberler.haber_key.toString())
-                    intent.putExtra("haber_video", haberler.haber_video.toString())
-                    intent.putExtra("haber_videolumu", haberler.haber_videolumu.toString())
+                intent.putExtra("haber_altbaslik", haberler.haber_altbaslik.toString())
+                intent.putExtra("haber_baslik", haberler.haber_baslik.toString())
+                intent.putExtra("haber_eklenme", haberler.haber_eklenme_zamani.toString())
+                intent.putExtra("haber_icerik", haberler.haber_icerik.toString())
+                intent.putExtra("haber_key", haberler.haber_key.toString())
+                intent.putExtra("haber_video", haberler.haber_video.toString())
+                intent.putExtra("haber_videolumu", haberler.haber_videolumu.toString())
 
 
-                    myContext.startActivity(intent)
-                }
-
-
-                builder.setView(viewDialog)
-
-
-                var dialog: Dialog = builder.create()
-                dialog.show()
-
+                myContext.startActivity(intent)
 
             }
 

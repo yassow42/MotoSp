@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#CB0236B8</color>
-    <color name="colorPrimaryDark">#CB0236B8</color>
+    <color name="colorPrimary">#2837C8</color>
+    <color name="colorPrimaryDark">#2837C8</color>
     <color name="colorAccent">#000000</color>
     <color name="siyah">#000000</color>
     <color name="bgMotor">#C8C8C8</color>
-    <color name="mavi">#CC053CBE</color>
+    <color name="mavi">#2837C8</color>
     <color name="soluk_mavi">#5B89FB</color>
     <color name="kirmizi">#FF0000</color>
     <color name="beyaz">#FFFFFF</color>
