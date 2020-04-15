@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.inflate
@@ -75,6 +76,33 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                                     .child("cevap").setValue(yeniCevap.toString()).addOnCompleteListener {
                                         Toast.makeText(myContext, "Cevanın Güncelleniyor :) Biraz Bekle ", Toast.LENGTH_SHORT).show()
 
+                                        FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                                            override fun onCancelled(p0: DatabaseError) {
+
+                                            }
+
+                                            override fun onDataChange(p0: DataSnapshot) {
+
+                                                if (p0.hasChildren()) {
+                                                    val konuBasligi = p0.child("konu_basligi").value.toString()
+                                                    val konuKey = p0.child("konu_key").value.toString()
+                                                    val konuAcanKey = p0.child("konuyu_acan_key").value.toString()
+
+
+                                                    val intent = Intent(myContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                                    intent.putExtra("konuBasligi",konuBasligi)
+                                                    intent.putExtra("konuKey", konuKey)
+                                                    intent.putExtra("konuyu_acan_key", konuAcanKey)
+                                                    myContext.startActivity(intent)
+                                                }
+
+                                            }
+
+                                        })
+
+
+
+
                                     }
                                 dialog.dismiss()
 
@@ -94,7 +122,33 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                                 .setPositiveButton("Sil", object : DialogInterface.OnClickListener {
                                     override fun onClick(p0: DialogInterface?, p1: Int) {
                                         FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).child("cevaplar")
-                                            .child(gelenItem.cevap_key.toString()).removeValue()
+                                            .child(gelenItem.cevap_key.toString()).removeValue().addOnCompleteListener {
+
+                                                FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                                                    override fun onCancelled(p0: DatabaseError) {
+
+                                                    }
+
+                                                    override fun onDataChange(p0: DataSnapshot) {
+
+                                                        if (p0.hasChildren()) {
+                                                            val konuBasligi = p0.child("konu_basligi").value.toString()
+                                                            val konuKey = p0.child("konu_key").value.toString()
+                                                            val konuAcanKey = p0.child("konuyu_acan_key").value.toString()
+
+
+                                                            val intent = Intent(myContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                                            intent.putExtra("konuBasligi",konuBasligi)
+                                                            intent.putExtra("konuKey", konuKey)
+                                                            intent.putExtra("konuyu_acan_key", konuAcanKey)
+                                                            myContext.startActivity(intent)
+                                                        }
+
+                                                    }
+
+                                                })
+
+                                            }
                                     }
 
                                 })

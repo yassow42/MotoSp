@@ -48,7 +48,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
             val intent = Intent(myContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.putExtra("konuBasligi", gelenItem.konu_basligi.toString())
             intent.putExtra("userName", gelenItem.konuyu_acan.toString())
-            intent.putExtra("tarih", holder.formatDate(gelenItem.acilma_zamani).toString())
+         //   intent.putExtra("tarih", holder.formatDate(gelenItem.acilma_zamani).toString())
             intent.putExtra("konuKey", gelenItem.konu_key)
             intent.putExtra("konuyu_acan_key", gelenItem.konuyu_acan_key)
 

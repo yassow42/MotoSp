@@ -6,11 +6,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Adapter.CevaplarAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
@@ -29,6 +27,9 @@ class KonuDetayActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
 
     lateinit var konuBasligi: String
+    lateinit var userName: String
+    lateinit var konuKey: String
+    lateinit var konuAcanKey: String
     var userID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,18 +40,14 @@ class KonuDetayActivity : AppCompatActivity() {
         userID = mAuth.currentUser!!.uid
         cevapList = ArrayList()
 
+        
         konuBasligi = intent.getStringExtra("konuBasligi").toString()
-        var userName = intent.getStringExtra("userName")
-        var konuKey = intent.getStringExtra("konuKey")
-        var konuacanKey = intent.getStringExtra("konuyu_acan_key")
+        konuKey = intent.getStringExtra("konuKey").toString()
+        konuAcanKey = intent.getStringExtra("konuyu_acan_key").toString()
 
 
-        if (userID == konuacanKey) {
-            imgAyarlar.visibility = View.VISIBLE
-        }
+        tvKonuBasligi.text = konuBasligi
 
-        tvKonuBasligi.text = konuBasligi.toString()
-        tvUserName.text = userName
 
         initBtn(konuKey)
         initVeri(konuKey)
@@ -59,9 +56,9 @@ class KonuDetayActivity : AppCompatActivity() {
     private fun initBtn(konuKey: String?) {
         imgCevapEkle.setOnClickListener {
 
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            var inflater: LayoutInflater = layoutInflater
-            var view: View = inflater.inflate(R.layout.dialog_cevap_yaz, null)
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            val inflater: LayoutInflater = layoutInflater
+            val view: View = inflater.inflate(R.layout.dialog_cevap_yaz, null)
 
             builder.setView(view)
             builder.setTitle("Yorumun...")
@@ -73,8 +70,8 @@ class KonuDetayActivity : AppCompatActivity() {
             })
             builder.setPositiveButton("Gönder", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
-                    var ref = FirebaseDatabase.getInstance().reference
-                    var konuyaVerilenCevap = view.etCevap.text.toString()
+                    val ref = FirebaseDatabase.getInstance().reference
+                    val konuyaVerilenCevap = view.etCevap.text.toString()
 
 
                     //  var cevapKey = ref.child("Forum").child("cevaplar").push().key
@@ -86,10 +83,10 @@ class KonuDetayActivity : AppCompatActivity() {
                         override fun onDataChange(p0: DataSnapshot) {
 
 
-                            var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
-                            var cevapYazan = p0.value.toString()
+                            val cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
+                            val cevapYazan = p0.value.toString()
                             //ilk olarak cevap vereni son cevap olarak kaydediyruz.
-                            var soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
+                            val soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
                             ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
                             ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
@@ -98,7 +95,7 @@ class KonuDetayActivity : AppCompatActivity() {
 
                             //cevaba da eklıyruz
 
-                            var cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
+                            val cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
                             ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
                             ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
                                 .addOnCompleteListener {
@@ -117,7 +114,7 @@ class KonuDetayActivity : AppCompatActivity() {
                     })
                 }
             })
-            var dialog: Dialog = builder.create()
+            val dialog: Dialog = builder.create()
             dialog.show()
 
 
@@ -131,22 +128,30 @@ class KonuDetayActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.popDüzenle -> {
-                        var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
 
-                        var view: View = View.inflate(this, R.layout.dialog_konu_cevap_duzenle, null)
+                        val view: View = View.inflate(this, R.layout.dialog_konu_cevap_duzenle, null)
 
                         view.etKonuCevabi.setText(konuBasligi)
                         builder.setView(view)
 
-                        var dialog: Dialog = builder.create()
+                        val dialog: Dialog = builder.create()
                         view.btnKaydet.setOnClickListener {
 
                             FirebaseDatabase.getInstance().reference.child("Forum").child(konuKey.toString()).child("konu_basligi").setValue(view.etKonuCevabi.text.toString())
+                                .addOnCompleteListener {
+                                    val intent = Intent(this, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+                                    intent.putExtra("konuBasligi", view.etKonuCevabi.text.toString())
+                                    intent.putExtra("konuKey", konuKey)
+                                    intent.putExtra("konuyu_acan_key", konuAcanKey)
+                                    startActivity(intent)
+
+                                }
 
                             dialog.dismiss()
 
                         }
-
                         view.btnIptal.setOnClickListener {
 
                             dialog.dismiss()
@@ -155,7 +160,7 @@ class KonuDetayActivity : AppCompatActivity() {
                     }
 
                     R.id.popSil -> {
-                        var alert = AlertDialog.Builder(this)
+                        val alert = AlertDialog.Builder(this)
                             .setTitle("Yorumu Sil")
                             .setMessage("Emin Misiniz ?")
                             .setPositiveButton("Sil", object : DialogInterface.OnClickListener {
@@ -191,8 +196,7 @@ class KonuDetayActivity : AppCompatActivity() {
         cevapList.clear()
 
 
-        FirebaseDatabase.getInstance().reference.child("Forum").child(konuKey.toString())
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+        FirebaseDatabase.getInstance().reference.child("Forum").child(konuKey.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
 
                 }
@@ -200,7 +204,7 @@ class KonuDetayActivity : AppCompatActivity() {
                 override fun onDataChange(p0: DataSnapshot) {
                     if (p0.child("cevaplar").hasChildren()) {
                         for (i in p0.child("cevaplar").children) {
-                            var gelenKonu = i.getValue(ForumKonuData.cevaplar::class.java)
+                            val gelenKonu = i.getValue(ForumKonuData.cevaplar::class.java)
                             cevapList.add(gelenKonu!!)
                         }
                         cevapList.sortBy { it.cevap_zamani }
@@ -217,6 +221,21 @@ class KonuDetayActivity : AppCompatActivity() {
 
 
             })
+
+        FirebaseDatabase.getInstance().reference.child("users").child(konuAcanKey.toString()).child("user_name").addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                tvUserName.text = p0.value.toString()
+                userName = p0.value.toString()
+            }
+
+        })
+
+
+
     }
 
     private fun formatDate(miliSecond: Long?): String? {
@@ -236,6 +255,14 @@ class KonuDetayActivity : AppCompatActivity() {
         rcCevaplar.adapter = ForumKonuAdapter
         rcCevaplar.setItemViewCacheSize(20)
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (userID == konuAcanKey) {
+            imgAyarlar.visibility = View.VISIBLE
+        }
 
     }
 }
