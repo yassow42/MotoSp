@@ -90,7 +90,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
 
 
                                                     val intent = Intent(myContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                                    intent.putExtra("konuBasligi",konuBasligi)
+                                                    intent.putExtra("konuBasligi", konuBasligi)
                                                     intent.putExtra("konuKey", konuKey)
                                                     intent.putExtra("konuyu_acan_key", konuAcanKey)
                                                     myContext.startActivity(intent)
@@ -99,8 +99,6 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                                             }
 
                                         })
-
-
 
 
                                     }
@@ -123,14 +121,10 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                                     override fun onClick(p0: DialogInterface?, p1: Int) {
                                         FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).child("cevaplar")
                                             .child(gelenItem.cevap_key.toString()).removeValue().addOnCompleteListener {
-
                                                 FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                                                     override fun onCancelled(p0: DatabaseError) {
-
                                                     }
-
                                                     override fun onDataChange(p0: DataSnapshot) {
-
                                                         if (p0.hasChildren()) {
                                                             val konuBasligi = p0.child("konu_basligi").value.toString()
                                                             val konuKey = p0.child("konu_key").value.toString()
@@ -138,19 +132,15 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
 
 
                                                             val intent = Intent(myContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                                            intent.putExtra("konuBasligi",konuBasligi)
+                                                            intent.putExtra("konuBasligi", konuBasligi)
                                                             intent.putExtra("konuKey", konuKey)
                                                             intent.putExtra("konuyu_acan_key", konuAcanKey)
                                                             myContext.startActivity(intent)
                                                         }
-
                                                     }
-
                                                 })
-
                                             }
                                     }
-
                                 })
                                 .setNegativeButton("İptal", object : DialogInterface.OnClickListener {
                                     override fun onClick(p0: DialogInterface?, p1: Int) {
@@ -163,19 +153,10 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                     }
                     return@OnMenuItemClickListener true
                 })
-
                 popup.show()
-
-
             }
-
-
             return@setOnLongClickListener true
         }
-
-
-
-
 
 
         holder.imgProfile.setOnClickListener {
@@ -189,6 +170,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                 myContext.startActivity(intent)
             }
         }
+
         holder.userName.setOnClickListener {
             if (userID.equals(cevapList.get(position).cevap_yazan_key.toString())) {
 
