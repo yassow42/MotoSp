@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+
 import com.creativeoffice.motosp.Activity.ModelDetayiActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.tek_model_list.view.*
 
 
@@ -51,6 +50,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
 
             val intent = Intent(myContext, ModelDetayiActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
             intent.putExtra("Marka", tumModeller.get(p1).marka.toString())
             intent.putExtra("Model", tumModeller.get(p1).model.toString())
             intent.putExtra("Kategori", tumModeller.get(p1).kategori.toString())
@@ -102,7 +102,6 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         var tvYorumSayisi = tumLayout.tvYorumSayisi
 
 
-
         fun setData(oAnkiModel: ModelDetaylariData, myContext: Context) {
             setupModelFotolari(oAnkiModel)
             setupModelYazilari(oAnkiModel)
@@ -111,11 +110,11 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             if (oAnkiModel.ortYildiz.toString() == "null") {
                 tvYildiz.text = "1"
             }
-            if (oAnkiModel.model_yorum_sayisi.toString() == "null"){
-               tvYorumSayisi.text = "1"
+            if (oAnkiModel.model_yorum_sayisi.toString() == "null") {
+                tvYorumSayisi.text = "1"
             }
-            if (oAnkiModel.fiyat.toString() == "1"){
-           //   FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(oAnkiModel.model.toString()).child("fiyat").setValue("1")
+            if (oAnkiModel.fiyat.toString() == "1") {
+                //   FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(oAnkiModel.model.toString()).child("fiyat").setValue("1")
                 tvFiyat.visibility = View.INVISIBLE
             }
 
@@ -139,8 +138,6 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                 }
 
                 scrollView!!.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
-
-
 
 
             }

@@ -3,9 +3,10 @@ package com.creativeoffice.motosp.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.dialog_haber_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
+import kotlinx.android.synthetic.main.dialog_konu_ac.view.tvGonder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,6 +39,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var tumModeller: ArrayList<ModelDetaylariData>
     lateinit var tumHaberler: ArrayList<HaberlerData>
 
+    lateinit var view: View
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
@@ -86,13 +89,13 @@ class HomeActivity : AppCompatActivity() {
                 var haberVideolumu = view.etHaberVideolumu.text.toString().toBoolean()
                 var haberKey = ref.child("Haberler").push().key
 
-                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey, haberAltBaslik,haberVideolumu)
+                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey, haberAltBaslik, haberVideolumu)
 
                 ref.child("Haberler").child(haberKey.toString()).setValue(haberData).addOnCompleteListener {
                     ref.child("Haberler").child(haberKey.toString()).child("haber_eklenme_zamani").setValue(ServerValue.TIMESTAMP)
                     dialog.dismiss()
                 }.addOnFailureListener {
-                    Toast.makeText(this, "Haber eklenmedi", Toast.LENGTH_LONG).show()
+
                 }
             }
 
@@ -107,8 +110,9 @@ class HomeActivity : AppCompatActivity() {
 
             var builder: AlertDialog.Builder = AlertDialog.Builder(this)
             var inflater: LayoutInflater = layoutInflater
-            var view: View = inflater.inflate(R.layout.dialog_konu_ac, null)
-
+            view = inflater.inflate(R.layout.dialog_konu_ac, null)
+            view.etKonuBasligi.addTextChangedListener(watcherForumKonu)
+            view.etKonuCevap.addTextChangedListener(watcherForumCevap)
             builder.setView(view)
             var dialog: Dialog = builder.create()
 
@@ -117,10 +121,14 @@ class HomeActivity : AppCompatActivity() {
             }
 
             view.tvGonder.setOnClickListener {
+
+
                 var ref = FirebaseDatabase.getInstance().reference
                 var konuBasligi = view.etKonuBasligi.text.toString()
                 var konuCevap = view.etKonuCevap.text.toString()
                 var konuKey = ref.child("Forum").push().key
+
+
                 ref.child("users").child(userID).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
 
@@ -129,33 +137,39 @@ class HomeActivity : AppCompatActivity() {
                     override fun onDataChange(p0: DataSnapshot) {
                         var konuyuAcan = p0.value.toString()
 
-                        var konuData = ForumKonuData(null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
+                        if (konuBasligi.length >= 5 && konuCevap.length>=5){
+                            var konuData = ForumKonuData(null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
 
-                        ref.child("Forum").child(konuKey.toString()).setValue(konuData)
+                            ref.child("Forum").child(konuKey.toString()).setValue(konuData)
 
-                        //son cevap ekliyoruzkı sıralayabılelım.
-                        ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
-                        ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
+                            //son cevap ekliyoruzkı sıralayabılelım.
+                            ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                            ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
 
-                            val intent = Intent(this@HomeActivity, KonuDetayActivity::class.java)//.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                            intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
-                            intent.putExtra("userName", konuData.konuyu_acan.toString())
-                            intent.putExtra("konuKey", konuData.konu_key)
-                            startActivity(intent)
+                                val intent = Intent(this@HomeActivity, KonuDetayActivity::class.java)//.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
+                                intent.putExtra("userName", konuData.konuyu_acan.toString())
+                                intent.putExtra("konuKey", konuData.konu_key)
+                                intent.putExtra("konuyu_acan_key", konuData.konuyu_acan_key)
+                                startActivity(intent)
+                            }
+
+                            //ilk olarak konuyu acanı son cevaba kaydedıyoruz...
+                            var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID, konuKey.toString())
+                            ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
+                            ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+
+                            //cevaba da eklıyruz kı ılk gorunsun
+                            var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
+                            var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, null, userID, konuKey.toString())
+                            ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
+                            ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                            dialog.dismiss()
+                        }else{
+                            Toast.makeText(this@HomeActivity,"Başlık veya Cevap çok kısa",Toast.LENGTH_LONG).show()
                         }
 
-                        //ilk olarak konuyu acanı son cevaba kaydedıyoruz...
-                        var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID, konuKey.toString())
-                        ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
-                        ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
-                        //cevaba da eklıyruz kı ılk gorunsun
-                        var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
-                        var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, null, userID, konuKey.toString())
-                        ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
-                        ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
-
-                        dialog.dismiss()
 
 
                     }
@@ -179,6 +193,8 @@ class HomeActivity : AppCompatActivity() {
 
         }
     }
+
+
 
     private fun formatDate(miliSecond: Long?): String? {
         if (miliSecond == null) return "0"
@@ -378,4 +394,51 @@ class HomeActivity : AppCompatActivity() {
         super.onStart()
     }
 
+
+    var watcherForumKonu = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s!!.length >= 5) {
+
+                view.tvGonder.visibility = View.VISIBLE
+                view.tvGonder.isEnabled = true
+                view.tvGonder.setBackgroundResource(R.color.yesil)
+            } else {
+                view.tvGonder.isEnabled = false
+                view.tvGonder.setBackgroundResource(R.color.beyaz)
+
+            }
+        }
+
+    }
+    var watcherForumCevap = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s!!.length >= 5) {
+
+                view.tvGonder.visibility = View.VISIBLE
+                view.tvGonder.isEnabled = true
+                view.tvGonder.setBackgroundResource(R.color.yesil)
+            } else {
+                view.tvGonder.isEnabled = false
+                view.tvGonder.setBackgroundResource(R.color.beyaz)
+
+            }
+        }
+
+    }
 }

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 29
@@ -20,7 +21,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -36,6 +39,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.firebase:firebase-perf:19.0.6'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -47,7 +51,7 @@ dependencies {
     implementation 'com.android.support:design:29.0.0'
     // bottom nav view
     implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.2'
-//circle img
+    //circle img
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //kullanıcı arama
     implementation 'com.hendraanggrian:socialview-core:0.18'
@@ -59,10 +63,12 @@ dependencies {
     //foto sıkıstırma
     implementation 'id.zelory:compressor:3.0.0'
 
-//eventBus
+    //eventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
+
     // intent geçiş animasyonu
     //  implementation 'com.github.hajiyevelnur92:intentanimation:1.0'
+    // implementation 'com.github.mohammadatif:Animatoo:master'
 
     implementation 'com.github.martinstamenkovski:ARIndicatorView:2.0.0'
 

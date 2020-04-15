@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_model_detayi.*
 import kotlinx.android.synthetic.main.activity_parca_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_yakit_tuketim.view.*
 import kotlinx.android.synthetic.main.dialog_yorum.view.*
+
 import java.text.DecimalFormat
 
 
@@ -545,6 +546,8 @@ class ModelDetayiActivity : AppCompatActivity() {
         yorumVerileri()
 
     }
+
+
 
 
 }

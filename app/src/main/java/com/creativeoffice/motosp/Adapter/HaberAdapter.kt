@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.inflate
@@ -32,12 +33,15 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
 
     override fun onBindViewHolder(holder: HaberHolder, position: Int) {
 
+        if (haberler[position].haber_videolumu != null && haberler[position].haber_video != null){
 
-        if (haberler[position].haber_videolumu == false) {
-            Picasso.get().load(haberler[position].haber_video.toString()).into(holder.img)
-        } else {
-            Picasso.get().load(makeImagePath(haberler[position].haber_video.toString())).into(holder.img)
+            if (haberler[position].haber_videolumu == false) {
+                Picasso.get().load(haberler[position].haber_video.toString()).into(holder.img)
+            } else {
+                Picasso.get().load(makeImagePath(haberler[position].haber_video.toString())).into(holder.img)
+            }
         }
+
 
 
 
@@ -58,6 +62,8 @@ class HaberAdapter(val myContext: Context, var haberler: ArrayList<HaberlerData>
             haberAltBaslik.text = haberler.haber_altbaslik
             tvZaman.text = formatDate(haberler.haber_eklenme_zamani).toString()
 
+
+            Log.e("sayi",  haberler!!.haber_baslik!!.length.toString())
 
             tumLayout.setOnClickListener {
                 var intent = Intent(myContext, HaberDetaylariActivity::class.java)

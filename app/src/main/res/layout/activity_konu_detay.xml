@@ -40,6 +40,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_plus" />
+
+        <ImageView
+            android:id="@+id/imgAyarlar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/imgCevapEkle"
+            app:layout_constraintEnd_toStartOf="@+id/imgCevapEkle"
+            app:layout_constraintTop_toTopOf="@+id/imgCevapEkle"
+            app:srcCompat="@drawable/ic_setting" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

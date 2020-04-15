@@ -44,7 +44,7 @@ class YeniAcilanKonuAdapter(val myContext: Context, val yeniKonuList: ArrayList<
             intent.putExtra("userName", gelenItem.konuyu_acan.toString())
             intent.putExtra("tarih", holder.formatDate(gelenItem.acilma_zamani).toString())
             intent.putExtra("konuKey", gelenItem.konu_key)
-
+            intent.putExtra("konuyu_acan_key", gelenItem.konuyu_acan_key)
 
             myContext.startActivity(intent)
 
