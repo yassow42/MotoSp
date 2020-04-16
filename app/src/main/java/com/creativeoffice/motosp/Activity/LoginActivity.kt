@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
 
                                         var userID = mAuth.currentUser!!.uid.toString()
                                         var user_detail = UserDetails(1, "Default", "Honda", "Activa S", "default", 1)
-                                        var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,"Er", user_detail)
+                                        var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,"Yeni", user_detail)
                                         FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
 
                                     } else {

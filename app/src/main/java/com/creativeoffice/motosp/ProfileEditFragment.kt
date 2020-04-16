@@ -3,7 +3,6 @@ package com.creativeoffice.motosp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +12,11 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
-import com.creativeoffice.motosp.utils.UniversalimageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
-import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 import kotlinx.android.synthetic.main.fragment_profile_edit.view.*
 import kotlinx.android.synthetic.main.fragment_profile_edit.view.etUserBio

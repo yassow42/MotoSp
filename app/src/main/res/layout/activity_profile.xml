@@ -32,9 +32,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/leatsans"
             android:text="TextView"
             android:textColor="#E8EEF2"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:transitionName="trans_marka"
             app:layout_constraintEnd_toEndOf="@+id/tvModelProfile"
@@ -46,9 +47,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/leatsans"
             android:text="TextView"
             android:textColor="#E8EEF2"
-            android:textSize="18sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,10 +86,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
                 android:background="@drawable/beyaz_bg_bos_sadece_kenar"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="8dp">
 
                 <LinearLayout
                     android:id="@+id/modelDetayLL"
@@ -101,7 +102,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
+                        android:layout_margin="3dp"
                         android:orientation="vertical">
 
                         <ImageView
@@ -115,20 +116,23 @@
 
                         <TextView
                             android:id="@+id/detay_kategori"
-                            android:layout_width="wrap_content"
+                            android:layout_width="63dp"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/summit"
+                            android:gravity="center"
+                            android:maxLines="1"
                             android:padding="8dp"
                             android:text="Text"
                             android:textAlignment="center"
                             android:textColor="@color/beyaz"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
+                        android:layout_margin="3dp"
                         android:orientation="vertical">
 
                         <ImageView
@@ -142,20 +146,22 @@
 
                         <TextView
                             android:id="@+id/detay_silindirhacmi"
-                            android:layout_width="wrap_content"
+                            android:layout_width="63dp"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/summit"
+                            android:maxLines="1"
                             android:padding="8dp"
                             android:text="Text"
                             android:textAlignment="center"
                             android:textColor="@color/beyaz"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
+                        android:layout_margin="3dp"
                         android:orientation="vertical">
 
                         <ImageView
@@ -168,22 +174,24 @@
 
                         <TextView
                             android:id="@+id/detay_beygir"
-                            android:layout_width="wrap_content"
+                            android:layout_width="63dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/summit"
+                            android:maxLines="1"
                             android:padding="8dp"
                             android:text="Text"
                             android:textAlignment="center"
                             android:textColor="@color/beyaz"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
+                        android:layout_margin="3dp"
                         android:orientation="vertical">
 
                         <ImageView
@@ -196,22 +204,24 @@
 
                         <TextView
                             android:id="@+id/detay_hiz"
-                            android:layout_width="wrap_content"
+                            android:layout_width="63dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/summit"
+                            android:maxLines="1"
                             android:padding="8dp"
-                            android:text="Text"
+                            android:text="80 km/s"
                             android:textAlignment="center"
                             android:textColor="@color/beyaz"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
+                        android:layout_margin="3dp"
                         android:orientation="vertical">
 
                         <ImageView
@@ -224,15 +234,17 @@
 
                         <TextView
                             android:id="@+id/detay_tork"
-                            android:layout_width="wrap_content"
+                            android:layout_width="63dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/summit"
+                            android:maxLines="1"
                             android:padding="8dp"
                             android:text="Text"
                             android:textAlignment="center"
                             android:textColor="@color/beyaz"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
 
                     </LinearLayout>
 
@@ -247,7 +259,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
+                        android:layout_margin="3dp"
                         android:orientation="vertical">
 
                         <ImageView
@@ -261,20 +273,22 @@
 
                         <TextView
                             android:id="@+id/detay_devir"
-                            android:layout_width="wrap_content"
+                            android:layout_width="63dp"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/summit"
+                            android:maxLines="1"
                             android:padding="8dp"
                             android:text="Text"
                             android:textAlignment="center"
                             android:textColor="@color/beyaz"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_margin="4dp"
+                        android:layout_margin="3dp"
                         android:orientation="vertical">
 
                         <ImageView
@@ -287,20 +301,22 @@
 
                         <TextView
                             android:id="@+id/detay_agirlik"
-                            android:layout_width="wrap_content"
+                            android:layout_width="63dp"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/summit"
+                            android:maxLines="1"
                             android:padding="8dp"
                             android:text="Text"
                             android:textAlignment="center"
                             android:textColor="@color/beyaz"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_margin="4dp"
+                        android:layout_margin="3dp"
                         android:orientation="vertical">
 
                         <ImageView
@@ -313,14 +329,16 @@
 
                         <TextView
                             android:id="@+id/detay_yakitKap"
-                            android:layout_width="wrap_content"
+                            android:layout_width="63dp"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/summit"
+                            android:maxLines="1"
                             android:padding="8dp"
                             android:text="Text"
                             android:textAlignment="center"
                             android:textColor="@color/beyaz"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -374,7 +392,9 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/edit_profile_button_background"
             android:enabled="true"
+            android:fontFamily="@font/summit"
             android:text="Profili Düzenle"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/circleProfileImage" />
@@ -420,9 +440,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/summit"
             android:text="Er"
             android:textColor="@color/beyaz"
-            android:textSize="36sp"
+            android:textSize="34sp"
             app:layout_constraintBottom_toTopOf="@+id/tvPuan"
             app:layout_constraintEnd_toEndOf="@+id/tvProfilDuzenleButton"
             app:layout_constraintStart_toStartOf="@+id/tvProfilDuzenleButton"

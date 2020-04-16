@@ -54,17 +54,17 @@ dependencies {
     //circle img
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //kullanıcı arama
-    implementation 'com.hendraanggrian:socialview-core:0.18'
-    implementation 'com.hendraanggrian:socialview-commons:0.18'
+  //  implementation 'com.hendraanggrian:socialview-core:0.18'
+  //  implementation 'com.hendraanggrian:socialview-commons:0.18'
     //image ataması
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+  //  implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //foto sıkıstırma
-    implementation 'id.zelory:compressor:3.0.0'
+  //  implementation 'id.zelory:compressor:3.0.0'
 
     //eventBus
-    implementation 'org.greenrobot:eventbus:3.1.1'
+  //  implementation 'org.greenrobot:eventbus:3.1.1'
 
     // intent geçiş animasyonu
     //  implementation 'com.github.hajiyevelnur92:intentanimation:1.0'

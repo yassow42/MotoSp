@@ -50,8 +50,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-       // imgPlus.isEnabled = false
-       // imgHaberEkle.isEnabled=false
+        // imgPlus.isEnabled = false
+        //  imgHaberEkle.isEnabled=false
 
         if (FirebaseDatabase.getInstance().reference == null) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true)
@@ -59,6 +59,7 @@ class HomeActivity : AppCompatActivity() {
 
         FirebaseDatabase.getInstance().reference.keepSynced(true)
 
+        initMyAuthStateListener()
 
         mAuth = FirebaseAuth.getInstance()
         userID = mAuth.currentUser!!.uid
@@ -141,7 +142,7 @@ class HomeActivity : AppCompatActivity() {
                     override fun onDataChange(p0: DataSnapshot) {
                         var konuyuAcan = p0.value.toString()
 
-                        if (konuBasligi.length >= 5 && konuCevap.length>=5){
+                        if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
                             var konuData = ForumKonuData(null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
 
                             ref.child("Forum").child(konuKey.toString()).setValue(konuData)
@@ -169,11 +170,9 @@ class HomeActivity : AppCompatActivity() {
                             ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
                             ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
                             dialog.dismiss()
-                        }else{
-                            Toast.makeText(this@HomeActivity,"Başlık veya Cevap çok kısa",Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(this@HomeActivity, "Başlık veya Cevap çok kısa", Toast.LENGTH_LONG).show()
                         }
-
-
 
 
                     }
@@ -197,7 +196,6 @@ class HomeActivity : AppCompatActivity() {
 
         }
     }
-
 
 
     private fun formatDate(miliSecond: Long?): String? {
@@ -393,11 +391,6 @@ class HomeActivity : AppCompatActivity() {
         menuItem.setChecked(true)
     }
 
-    override fun onStart() {
-        FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
-        super.onStart()
-    }
-
 
     var watcherForumKonu = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -445,4 +438,31 @@ class HomeActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun initMyAuthStateListener() {
+
+        mAuthListener = object : FirebaseAuth.AuthStateListener {
+
+            override fun onAuthStateChanged(p0: FirebaseAuth) {
+                val kullaniciGirisi = p0.currentUser
+                if (kullaniciGirisi != null) { //eğer kişi giriş yaptıysa nul gorunmez. giriş yapmadıysa null olur
+
+
+                } else {
+                    startActivity(
+                        Intent(
+                            this@HomeActivity, LoginActivity::class.java
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+
+    override fun onStart() {
+        FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
+        super.onStart()
+    }
+
 }

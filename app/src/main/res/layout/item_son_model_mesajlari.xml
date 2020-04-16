@@ -5,31 +5,34 @@
     android:id="@+id/tumLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="5dp"
     android:background="@drawable/bg_forum_item"
-    android:padding="4dp">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/tvMarka"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Marka"
         android:textColor="@color/mavi"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvModel"
+        app:layout_constraintStart_toStartOf="@+id/tvModel"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
+        android:maxLength="10"
+        android:maxLines="1"
         android:text="Model"
         android:textColor="@color/mavi"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/tvMarka"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvMarka" />
 
     <TextView
@@ -38,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="24dp"
+        android:fontFamily="sans-serif-medium"
         android:maxLines="2"
         android:text="Son Mesaj"
         android:textColor="@color/siyah"

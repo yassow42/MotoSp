@@ -79,7 +79,7 @@ class ProfileActivity : AppCompatActivity() {
                             FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Hızlanan")
                         }
                         in 60..119->{
-                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Rölantı")
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Rölanti")
                         }
                         in 30..59->{
                             FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Acemi")
