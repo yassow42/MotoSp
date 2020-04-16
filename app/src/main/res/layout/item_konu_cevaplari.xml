@@ -69,6 +69,19 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvKullanilanMotor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvKullanilanMotor" />
+
+        <TextView
+            android:id="@+id/tvKonuSahibi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Konu Sahibi"
+            android:textColor="@color/beyaz"
+            android:visibility="invisible"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvUnvan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvUserName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

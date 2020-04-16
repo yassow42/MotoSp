@@ -21,14 +21,21 @@
 
 
         </activity>
+
+        <activity android:name=".Activity.SplashScreenActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
+    </activity>
+
+
+
         <activity android:name=".Activity.ProfileSettingActivity" />
         <activity android:name=".Activity.ProfileActivity" />
         <activity android:name=".Activity.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Activity.MotorActivity" />
         <activity android:name=".Activity.BayiActivity" />

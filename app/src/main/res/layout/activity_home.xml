@@ -5,7 +5,6 @@
     android:id="@+id/tumLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     tools:context=".Activity.HomeActivity">
 
     <ScrollView
@@ -82,7 +81,6 @@
                     android:id="@+id/textView7"
                     android:layout_width="0dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/beyaz_yazi_bg"
                     android:gravity="center"
                     android:padding="3dp"
                     android:text="Cevap Yazılan Son Konu Başlıkları"
@@ -98,7 +96,6 @@
                     android:id="@+id/tvTumKonular"
                     android:layout_width="0dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/beyaz_yazi_bg"
                     android:gravity="center"
                     android:text="Tüm Konular"
                     android:textAlignment="center"
@@ -280,6 +277,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/beyaz"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

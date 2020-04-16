@@ -49,6 +49,10 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+       // imgPlus.isEnabled = false
+       // imgHaberEkle.isEnabled=false
+
         if (FirebaseDatabase.getInstance().reference == null) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         }

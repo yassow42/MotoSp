@@ -2,6 +2,7 @@ package com.creativeoffice.motosp.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,10 +26,6 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ForumKonuBasligiHolder {
 
         val view = LayoutInflater.from(myContext).inflate(R.layout.item_forum_konu_basliklari, p0, false)
-
-
-
-
         return ForumKonuBasligiHolder(view)
     }
 
@@ -78,6 +75,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
             tarih.text = formatDate(forumKonuData.acilma_zamani).toString()
 
 
+            Log.e("sad",forumKonuData.konuyu_acan)
             //foruma soncevap yazan verisi
             FirebaseDatabase.getInstance().reference.child("Forum").child(forumKonuData.konu_key.toString())
                 .addListenerForSingleValueEvent(object : ValueEventListener1 {
@@ -87,13 +85,14 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
 
                     override fun onDataChange(p0: DataSnapshot) {
                         if (p0.hasChildren()) {
-                            var gelenData = p0.child("son_cevap").getValue(ForumKonuData.son_cevap::class.java)!!
+                            val gelenData = p0.child("son_cevap").getValue(ForumKonuData.son_cevap::class.java)!!
                             var cevapZamani = gelenData.cevap_zamani
                             tvZamanCevap.text = formatDate(cevapZamani).toString()
                             tvSonYazan.text = gelenData.cevap_yazan
 
                            var sayi = p0.child("cevaplar").childrenCount
                             cevapSayisi.text = "Cevaplar: " +sayi.toString()
+
 
                         } else {
                             tvZamanCevap.text = ""

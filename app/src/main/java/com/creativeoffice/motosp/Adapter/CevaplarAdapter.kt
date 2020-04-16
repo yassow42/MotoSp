@@ -195,6 +195,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
         var kullanilanMotor = itemView.tvKullanilanMotor
         var tumLayout = itemView.tumLayout
         var tvUnvan = itemView.tvUnvan
+        var tvSahibi = itemView.tvKonuSahibi
 
 
         var ref = FirebaseDatabase.getInstance().reference
@@ -226,6 +227,9 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
             })
 
 
+            if (userID == gelenItemVerisi.cevap_yazan_key){
+                tvSahibi.visibility = View.VISIBLE
+            }
         }
 
         fun formatDate(miliSecond: Long?): String? {

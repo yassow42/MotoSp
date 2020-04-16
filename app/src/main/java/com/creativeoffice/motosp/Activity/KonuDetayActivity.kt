@@ -27,7 +27,7 @@ class KonuDetayActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
 
     lateinit var konuBasligi: String
-    lateinit var userName: String
+    lateinit var konuSahibiUserName: String
     lateinit var konuKey: String
     lateinit var konuAcanKey: String
     var userID: String? = null
@@ -229,7 +229,7 @@ class KonuDetayActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 tvUserName.text = p0.value.toString()
-                userName = p0.value.toString()
+                konuSahibiUserName = p0.value.toString()
             }
 
         })

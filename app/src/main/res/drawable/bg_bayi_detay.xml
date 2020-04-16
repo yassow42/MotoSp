@@ -4,10 +4,10 @@
     <corners android:radius="0dp" />
     <gradient
         android:angle="315"
-        android:centerColor="#CA4150DC"
+        android:centerColor="#DE3142DA"
         android:centerY="55%"
         android:endColor="#C9FA5C5C"
-        android:startColor="#DC2D3BBF"
+        android:startColor="#E62D3CBE"
         android:type="linear" />
 
     <size
@@ -16,6 +16,6 @@
     <corners android:radius="5dp" />
 
     <stroke
-        android:width="2dp"
+        android:width="1.7dp"
         android:color="@color/beyaz" />
 </shape>

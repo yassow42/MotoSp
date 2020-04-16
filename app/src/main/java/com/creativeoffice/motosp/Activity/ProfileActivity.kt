@@ -88,7 +88,7 @@ class ProfileActivity : AppCompatActivity() {
                             FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Yeni")
                         }
                         in 0..14->{
-                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Er")
+                            FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_unvan").setValue("Yeni")
                         }
                     }
 

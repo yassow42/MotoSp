@@ -11,7 +11,7 @@ import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
 import kotlinx.android.synthetic.main.activity_profile_setting.*
 
 class ProfileSettingActivity : AppCompatActivity() {
-    private val ACTIVITY_NO = 2
+    private val ACTIVITY_NO = 3
     private val TAG = "ProfileSettingActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,18 +25,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
 
     private fun fragmentNavigation() {
-        tvProfilDuzenleHesapAyarlari.setOnClickListener {
-            //Frame layout içinde fragment cagırma yapıyoruz. transaction
-            profileSettingRoot.visibility = View.GONE //profilde ki genel yazıları gone ettık cunku arka planda gozukmesın
-            profileSettingContainer.visibility = View.VISIBLE
 
-            var transaction = supportFragmentManager.beginTransaction()
-            transaction.addToBackStack("editProfileFragmentEklendi")// geriye adım ekledık. Cunu gerı dedıgımızde dırek activityprofile gidiyordu. Şimdi ise Activityprofile settinge gıdıyr
-
-            transaction.replace(R.id.profileSettingContainer, ProfileEditFragment())
-            transaction.commit()
-
-        }
 
         tvCikisYap.setOnClickListener {
             //Frame layout içinde fragment cagırma yapıyoruz. transaction

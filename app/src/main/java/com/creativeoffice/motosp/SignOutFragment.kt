@@ -3,11 +3,12 @@ package com.creativeoffice.motosp
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.DialogFragment
-
+import com.creativeoffice.motosp.Activity.ProfileActivity
 
 
 import com.google.firebase.auth.FirebaseAuth
@@ -36,6 +37,7 @@ class SignOutFragment : DialogFragment() {
             .setNegativeButton("İptal", object : DialogInterface.OnClickListener {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
                     dismiss()
+                    startActivity(Intent(context!!.applicationContext,ProfileActivity::class.java))
                 }
 
             })
