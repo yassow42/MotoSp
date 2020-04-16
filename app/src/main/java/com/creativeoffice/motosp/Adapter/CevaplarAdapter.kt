@@ -226,10 +226,22 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                 }
             })
 
+            ref.child("Forum").child(gelenItemVerisi.cevap_yazilan_key.toString()).child("konuyu_acan").addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
 
-            if (userID == gelenItemVerisi.cevap_yazan_key){
-                tvSahibi.visibility = View.VISIBLE
-            }
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+
+                    var konuyuAcan = p0.value.toString()
+
+                    if (konuyuAcan == gelenItemVerisi.cevap_yazan){
+                        tvSahibi.visibility = View.VISIBLE
+                    }
+                }
+
+            })
+
         }
 
         fun formatDate(miliSecond: Long?): String? {
