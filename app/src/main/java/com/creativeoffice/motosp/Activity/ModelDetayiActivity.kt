@@ -311,9 +311,12 @@ class ModelDetayiActivity : AppCompatActivity() {
             builder.setPositiveButton("Ekle", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
 
-                    if (view.etParcaİsmi.text.isNullOrEmpty() && view.etParcaİsmi.text.isNullOrEmpty() && view.etParcaİsmi.text.isNullOrEmpty()) {
+                    if ((view.etParcaİsmi.text.isNullOrEmpty() || view.etParcaİsmi.text.isNullOrEmpty()) || view.etParcaİsmi.text.isNullOrEmpty()) {
                         Toast.makeText(this@ModelDetayiActivity, "Verilerde Hata Var", Toast.LENGTH_LONG).show()
+
+
                     } else {
+
                         var parcaIsmi = view.etParcaİsmi.text.toString()
                         var parcaModel = view.etParcaModelYili.text.toString()
                         var parcaYorum = view.etParcaUygunlugu.text.toString()
@@ -350,10 +353,13 @@ class ModelDetayiActivity : AppCompatActivity() {
             })
             builder.setPositiveButton("Gönder", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
-                    if (view.etYakitVerisi.text.toString().isNullOrEmpty() && view.etModelYili.text.toString().isNullOrEmpty()) {
+
+                    if (view.etYakitVerisi.text.toString().isNullOrEmpty() || view.etModelYili.text.toString().isNullOrEmpty()) {
                         Toast.makeText(this@ModelDetayiActivity, "Girdigin veride hata var", Toast.LENGTH_LONG).show()
 
+
                     } else {
+
                         var gelenYakit = view.etYakitVerisi.text.toString().toFloat()
                         var motorYili = view.etModelYili.text.toString()
                         var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
