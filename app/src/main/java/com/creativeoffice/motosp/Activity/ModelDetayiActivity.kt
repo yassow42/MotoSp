@@ -335,9 +335,9 @@ class ModelDetayiActivity : AppCompatActivity() {
 
         tvYakitTukEkle.setOnClickListener {
 
-            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            val inflater: LayoutInflater = layoutInflater
-            val view: View = inflater.inflate(R.layout.dialog_yakit_tuketim, null)
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var inflater: LayoutInflater = layoutInflater
+            var view: View = inflater.inflate(R.layout.dialog_yakit_tuketim, null)
 
             builder.setView(view)
 
