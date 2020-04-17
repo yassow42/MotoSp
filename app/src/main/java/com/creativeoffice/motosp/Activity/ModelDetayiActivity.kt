@@ -311,7 +311,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             builder.setPositiveButton("Ekle", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
 
-                    if (view.etParcaİsmi.text.isNullOrEmpty() || view.etParcaİsmi.text.isNullOrEmpty() || view.etParcaİsmi.text.isNullOrEmpty()) {
+                    if (view.etParcaİsmi.text.isNullOrEmpty() && view.etParcaİsmi.text.isNullOrEmpty() && view.etParcaİsmi.text.isNullOrEmpty()) {
                         Toast.makeText(this@ModelDetayiActivity, "Verilerde Hata Var", Toast.LENGTH_LONG).show()
                     } else {
                         var parcaIsmi = view.etParcaİsmi.text.toString()
@@ -350,7 +350,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             })
             builder.setPositiveButton("Gönder", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
-                    if (view.etYakitVerisi.text.toString().isNullOrEmpty() || view.etModelYili.text.toString().isNullOrEmpty()) {
+                    if (view.etYakitVerisi.text.toString().isNullOrEmpty() && view.etModelYili.text.toString().isNullOrEmpty()) {
                         Toast.makeText(this@ModelDetayiActivity, "Girdigin veride hata var", Toast.LENGTH_LONG).show()
 
                     } else {
@@ -361,10 +361,11 @@ class ModelDetayiActivity : AppCompatActivity() {
                         FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString())
                             .setValue(yakitVerisi).addOnCompleteListener {
                                 yakitVerileri()
+                                dialog!!.dismiss()
                             }
                         var yeniPuan = kullaniciKendiPuan!! + 5
                         ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
-                        dialog!!.dismiss()
+
                     }
 
                 }
