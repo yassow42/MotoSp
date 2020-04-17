@@ -355,9 +355,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                     } else {
                         var gelenYakit = view.etYakitVerisi.text.toString().toFloat()
-
                         var motorYili = view.etModelYili.text.toString()
-
                         var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
 
                         FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString())
