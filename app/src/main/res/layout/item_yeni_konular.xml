@@ -16,7 +16,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/emprie"
+        android:fontFamily="sans-serif-medium"
         android:maxWidth="130dp"
         android:maxLines="2"
         android:text="Konu Başligi"

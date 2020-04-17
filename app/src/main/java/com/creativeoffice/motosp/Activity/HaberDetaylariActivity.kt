@@ -1,9 +1,11 @@
 package com.creativeoffice.motosp.Activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.HaberYorumlariAdapter
@@ -94,7 +96,7 @@ class HaberDetaylariActivity : AppCompatActivity() {
         }
 
 
-        if (haber_videolumu =="true"){
+        if (haber_videolumu == "true") {
 
             imgHaberDetay.visibility = View.GONE
             var currentSecond = 0f
@@ -110,7 +112,7 @@ class HaberDetaylariActivity : AppCompatActivity() {
             youtubePlayer.display
             youtubePlayer.getPlayerUiController().showVideoTitle(false)
 
-        }else if (haber_videolumu =="false"){
+        } else if (haber_videolumu == "false") {
             youtubePlayer.visibility = View.GONE
             Picasso.get().load(haber_video.toString()).into(imgHaberDetay)
 
@@ -214,5 +216,10 @@ class HaberDetaylariActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this@HaberDetaylariActivity, HomeActivity::class.java))
+        super.onBackPressed()
     }
 }

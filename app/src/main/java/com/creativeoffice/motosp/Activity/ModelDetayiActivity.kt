@@ -25,7 +25,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
 import kotlinx.android.synthetic.main.activity_model_detayi.*
-import kotlinx.android.synthetic.main.activity_parca_ekle.view.*
+import kotlinx.android.synthetic.main.dialog_parca_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_yakit_tuketim.view.*
 import kotlinx.android.synthetic.main.dialog_yorum.view.*
 
@@ -186,11 +186,9 @@ class ModelDetayiActivity : AppCompatActivity() {
                 }
 
 
-
             }
         })
     }
-
 
 
     //butontıklamalarının hepsi burada
@@ -300,9 +298,10 @@ class ModelDetayiActivity : AppCompatActivity() {
 
             var builder: AlertDialog.Builder = AlertDialog.Builder(this)
             var inflater: LayoutInflater = layoutInflater
-            var view: View = inflater.inflate(R.layout.activity_parca_ekle, null)
+            var view: View = inflater.inflate(R.layout.dialog_parca_ekle, null)
 
             builder.setView(view)
+
             builder.setNegativeButton("İptal", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     dialog!!.dismiss()
@@ -312,37 +311,37 @@ class ModelDetayiActivity : AppCompatActivity() {
             builder.setPositiveButton("Ekle", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
 
-                    var parcaIsmi = view.etParcaİsmi.text.toString()
-                    var parcaModel = view.etParcaModelYili.text.toString()
-                    var parcaYorum = view.etParcaUygunlugu.text.toString()
+                    if (view.etParcaİsmi.text.isNullOrEmpty() || view.etParcaİsmi.text.isNullOrEmpty() || view.etParcaİsmi.text.isNullOrEmpty()) {
+                        Toast.makeText(this@ModelDetayiActivity, "Verilerde Hata Var", Toast.LENGTH_LONG).show()
+                    } else {
+                        var parcaIsmi = view.etParcaİsmi.text.toString()
+                        var parcaModel = view.etParcaModelYili.text.toString()
+                        var parcaYorum = view.etParcaUygunlugu.text.toString()
 
+                        var parcaKey = FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").push().key
+                        var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaYorum, parcaModel, kullaniciAdi, parcaKey, marka, model)
+                        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").child(parcaKey.toString()).setValue(parcaVerisi)
 
-                    var parcaKey = FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").push().key
-
-
-                    var parcaVerisi = ModelDetaylariData.Parcalar(parcaIsmi, parcaYorum, parcaModel, kullaniciAdi, parcaKey, marka, model)
-                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_parcalar").child(parcaKey.toString()).setValue(parcaVerisi)
-
-
-                    var yeniPuan = kullaniciKendiPuan!! + 10
-                    ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
-                  parcaVerileri()
-                    dialog!!.dismiss()
-
+                        var yeniPuan = kullaniciKendiPuan!! + 10
+                        ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+                        parcaVerileri()
+                        dialog!!.dismiss()
+                    }
                 }
             })
             var dialog: Dialog = builder.create()
             dialog.show()
-
-
         }
+
         tvYakitTukEkle.setOnClickListener {
 
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            var inflater: LayoutInflater = layoutInflater
-            var view: View = inflater.inflate(R.layout.dialog_yakit_tuketim, null)
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            val inflater: LayoutInflater = layoutInflater
+            val view: View = inflater.inflate(R.layout.dialog_yakit_tuketim, null)
 
             builder.setView(view)
+
+
             builder.setNegativeButton("İptal", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     dialog!!.dismiss()
@@ -351,25 +350,29 @@ class ModelDetayiActivity : AppCompatActivity() {
             })
             builder.setPositiveButton("Gönder", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
-                    var gelenYakit = view.etYakitVerisi.text.toString().toFloat()
-                    var motorYili = view.etModelYili.text.toString()
+                    if (view.etYakitVerisi.text.toString().isNullOrEmpty() || view.etModelYili.text.toString().isNullOrEmpty()) {
+                        Toast.makeText(this@ModelDetayiActivity, "Girdigin veride hata var", Toast.LENGTH_LONG).show()
 
-                    var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
-                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString())
-                        .setValue(yakitVerisi).addOnCompleteListener {
-                            yakitVerileri()
-                        }
+                    } else {
+                        var gelenYakit = view.etYakitVerisi.text.toString().toFloat()
 
+                        var motorYili = view.etModelYili.text.toString()
 
-                    var yeniPuan = kullaniciKendiPuan!! + 5
-                    ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+                        var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
+
+                        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("yy_yakit_verileri").child(kullaniciAdi.toString())
+                            .setValue(yakitVerisi).addOnCompleteListener {
+                                yakitVerileri()
+                            }
+                        var yeniPuan = kullaniciKendiPuan!! + 5
+                        ref.child("users").child(userID.toString()).child("user_details").child("puan").setValue(yeniPuan)
+                        dialog!!.dismiss()
+                    }
 
                 }
             })
 
-
-
-            var dialog: Dialog = builder.create()
+            val dialog: Dialog = builder.create()
             dialog.show()
 
         }
@@ -546,8 +549,6 @@ class ModelDetayiActivity : AppCompatActivity() {
         yorumVerileri()
 
     }
-
-
 
 
 }
