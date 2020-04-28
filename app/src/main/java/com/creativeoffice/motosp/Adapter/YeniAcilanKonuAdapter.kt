@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.KonuDetayActivity
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
-import kotlinx.android.synthetic.main.item_yeni_konular.view.*
+import kotlinx.android.synthetic.main.item_forum_yeni_konular.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -19,7 +19,7 @@ class YeniAcilanKonuAdapter(val myContext: Context, val yeniKonuList: ArrayList<
 
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): YeniKonuHolder {
 
-        val view = LayoutInflater.from(myContext).inflate(R.layout.item_yeni_konular, p0, false)
+        val view = LayoutInflater.from(myContext).inflate(R.layout.item_forum_yeni_konular, p0, false)
 
 
 

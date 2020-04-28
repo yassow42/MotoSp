@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Datalar.HaberlerData
 import com.creativeoffice.motosp.R
-import kotlinx.android.synthetic.main.yorum_item.view.*
+import kotlinx.android.synthetic.main.item_yorum.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 class HaberYorumlariAdapter (val myContext: Context, val yorumlar: ArrayList<HaberlerData.Yorumlar>, val userID: String? = null) : RecyclerView.Adapter<HaberYorumlariAdapter.YorumHolder>() {
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): YorumHolder {
 
-        return YorumHolder(LayoutInflater.from(myContext).inflate(R.layout.yorum_item, p0, false))
+        return YorumHolder(LayoutInflater.from(myContext).inflate(R.layout.item_yorum, p0, false))
     }
 
     override fun getItemCount(): Int {

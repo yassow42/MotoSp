@@ -168,7 +168,7 @@
                 android:id="@+id/view7"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="6dp"
                 android:background="@color/gri"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -72,6 +73,8 @@ class HomeActivity : AppCompatActivity() {
         initVeri(userID)
         initBtn(userID)
         setupNavigationView()
+        FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
+        
     }
 
     private fun initBtn(userID: String) {
@@ -460,9 +463,5 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    override fun onStart() {
-        FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
-        super.onStart()
-    }
 
 }

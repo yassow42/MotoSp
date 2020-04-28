@@ -11,19 +11,18 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.GidilenProfilActivity
-import com.creativeoffice.motosp.Activity.ModelDetayiActivity
 import com.creativeoffice.motosp.Activity.ProfileActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.yorum_item.view.*
+import kotlinx.android.synthetic.main.item_yorum.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylariData.Yorumlar>, val userID: String? = null) : RecyclerView.Adapter<YorumAdapter.YorumHolder>() {
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): YorumHolder {
 
-        return YorumHolder(LayoutInflater.from(myContext).inflate(R.layout.yorum_item, p0, false))
+        return YorumHolder(LayoutInflater.from(myContext).inflate(R.layout.item_yorum, p0, false))
     }
 
     override fun getItemCount(): Int {

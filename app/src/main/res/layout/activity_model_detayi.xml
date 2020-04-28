@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_model_detay"
-    android:padding="5dp">
+    android:padding="3dp">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -420,7 +420,8 @@
                     android:layout_margin="8dp"
                     android:text="Fiyat Ortalaması: 100.000"
                     android:textAlignment="center"
-                    android:textColor="@color/beyaz" />
+                    android:textColor="@color/beyaz"
+                    android:visibility="visible" />
             </LinearLayout>
 
 
@@ -560,7 +561,6 @@
 
 
     </androidx.core.widget.NestedScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

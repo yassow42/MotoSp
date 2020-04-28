@@ -68,8 +68,9 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
 
                             view.etKonuCevabi.setText(gelenItem.cevap.toString())
                             builder.setView(view)
-
                             var dialog: Dialog = builder.create()
+
+
                             view.btnKaydet.setOnClickListener {
                                 var yeniCevap = view.etKonuCevabi.text
                                 FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).child("cevaplar").child(gelenItem.cevap_key.toString())

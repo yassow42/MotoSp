@@ -4,4 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashScreenActivity" />
+    android:background="@drawable/bg_splash"
+    tools:context=".SplashScreenActivity">
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="216dp"
+        android:layout_height="221dp"
+        android:layout_marginTop="60dp"
+        android:rotation="28"
+        android:src="@drawable/motorbikeicon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

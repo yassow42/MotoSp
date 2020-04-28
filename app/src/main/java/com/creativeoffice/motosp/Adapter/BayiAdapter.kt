@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Datalar.BayilerData
 import com.creativeoffice.motosp.R
 
-import kotlinx.android.synthetic.main.bayi_item_ilce_bayiler.view.*
-import kotlinx.android.synthetic.main.bayi_item_ilce_bayiler.view.tvBayiAdi
+import kotlinx.android.synthetic.main.item_bayi_ilce_bayiler.view.*
+import kotlinx.android.synthetic.main.item_bayi_ilce_bayiler.view.tvBayiAdi
 import kotlinx.android.synthetic.main.dialog_bayi_detay.view.*
 
 class BayiAdapter(val myContext: Context, val bayilerList: ArrayList<BayilerData.BayiDetaylari>) : RecyclerView.Adapter<BayiAdapter.BayilerHolder>() {
@@ -23,7 +23,7 @@ class BayiAdapter(val myContext: Context, val bayilerList: ArrayList<BayilerData
 
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): BayilerHolder {
 
-        val view = LayoutInflater.from(myContext).inflate(R.layout.bayi_item_ilce_bayiler, p0, false)
+        val view = LayoutInflater.from(myContext).inflate(R.layout.item_bayi_ilce_bayiler, p0, false)
 
         // view.rcIlceler.visibility = View.GONE
         return BayilerHolder(view)

@@ -4,9 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Datalar.BayilerData
@@ -15,14 +12,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.bayi_item.view.*
+import kotlinx.android.synthetic.main.item_bayi.view.*
 
 class SehirAdapter(val myContext: Context, val sehirList: ArrayList<BayilerData>) : RecyclerView.Adapter<SehirAdapter.SehirHolder>() {
 
 
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): SehirHolder {
 
-        val view = LayoutInflater.from(myContext).inflate(R.layout.bayi_item, p0, false)
+        val view = LayoutInflater.from(myContext).inflate(R.layout.item_bayi, p0, false)
 
         view.rcIlceler.visibility = View.GONE
         view.tvDetayGizle.visibility = View.GONE

@@ -258,6 +258,11 @@ class KonuDetayActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@KonuDetayActivity,HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+    }
+
     override fun onResume() {
         super.onResume()
         if (userID == konuAcanKey) {

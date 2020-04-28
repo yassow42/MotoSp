@@ -8,19 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
-import com.creativeoffice.motosp.Activity.ModelDetayiActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.parca_item.view.*
+import kotlinx.android.synthetic.main.item_parca.view.*
 
 class ParcaAdapter(val myContext: Context, val parcalar: ArrayList<ModelDetaylariData.Parcalar>, val userID: String? = null) : RecyclerView.Adapter<ParcaAdapter.ParcaHolder>() {
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ParcaHolder {
 
-        return ParcaHolder(LayoutInflater.from(myContext).inflate(R.layout.parca_item, p0, false))
+        return ParcaHolder(LayoutInflater.from(myContext).inflate(R.layout.item_parca, p0, false))
     }
 
     override fun getItemCount(): Int {

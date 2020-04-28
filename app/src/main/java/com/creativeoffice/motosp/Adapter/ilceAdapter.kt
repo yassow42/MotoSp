@@ -1,11 +1,9 @@
 package com.creativeoffice.motosp.Adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Datalar.BayilerData
@@ -14,14 +12,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.bayi_item_ilce.view.*
+import kotlinx.android.synthetic.main.item_bayi_ilce.view.*
 
 class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.ilcelerData>) : RecyclerView.Adapter<ilceAdapter.IlceHolder>() {
 
 
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): IlceHolder {
 
-        val view = LayoutInflater.from(myContext).inflate(R.layout.bayi_item_ilce, p0, false)
+        val view = LayoutInflater.from(myContext).inflate(R.layout.item_bayi_ilce, p0, false)
 
         view.rcBayiler.visibility = View.GONE
         return IlceHolder(view)

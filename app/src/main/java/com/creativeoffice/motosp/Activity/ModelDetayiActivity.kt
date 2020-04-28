@@ -473,8 +473,8 @@ class ModelDetayiActivity : AppCompatActivity() {
 
 
 
-                tvFiyat.visibility = View.GONE
-                if (fiyat != "null" && !fiyat.isNullOrEmpty()) {
+                tvFiyat.visibility = View.INVISIBLE
+                if (fiyat != "1") {
                     tvFiyat.text = "Ortalama Fiyat: " + fiyat
                     tvFiyat.visibility = View.VISIBLE
                 }

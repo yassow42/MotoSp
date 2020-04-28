@@ -94,8 +94,6 @@ class ProfileEditFragment : Fragment() {
 
                                     if (p0.isSuccessful) {
                                         dialogYukleniyor.dismiss()
-
-
                                     } else {
                                         Toast.makeText(activity, "Resim Yüklenemedi", Toast.LENGTH_LONG).show()
 
@@ -109,7 +107,7 @@ class ProfileEditFragment : Fragment() {
             FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("user_details").child("kullanilan_motor_marka").setValue(secilenMarka)
             FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("user_details").child("kullanilan_motor_model").setValue(secilenModel)
 
-            Toast.makeText(activity, "Kullanıcı Güncellendi", Toast.LENGTH_SHORT).show()
+
             activity!!.onBackPressed()
         }
 
@@ -189,7 +187,6 @@ class ProfileEditFragment : Fragment() {
                         fragmentView.etUserBio.setText(p0.child("user_details").child("biyografi").value.toString())
                         var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                         if (imgURL != "default") {
-
                             Picasso.get().load(imgURL).into(circleEditProfileImage)
                             mProgresBarEdit.visibility = View.GONE
                         }
@@ -197,6 +194,8 @@ class ProfileEditFragment : Fragment() {
                     }
 
                 })
+
+
             }
         })
 

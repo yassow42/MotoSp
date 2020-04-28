@@ -20,7 +20,7 @@
         android:maxLines="2"
         android:text="Konu başlığı"
         android:textColor="@color/siyah"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/sagView"
         app:layout_constraintHorizontal_bias="1.0"

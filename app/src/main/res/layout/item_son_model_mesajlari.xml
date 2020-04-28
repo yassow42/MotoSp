@@ -5,7 +5,9 @@
     android:id="@+id/tumLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginRight="4dp"
     android:background="@drawable/bg_forum_item"
     android:padding="5dp">
 
@@ -16,7 +18,7 @@
         android:layout_marginTop="8dp"
         android:text="Marka"
         android:textColor="@color/mavi"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/tvModel"
         app:layout_constraintStart_toStartOf="@+id/tvModel"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +33,7 @@
         android:maxLines="1"
         android:text="Model"
         android:textColor="@color/mavi"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvMarka" />
 
@@ -45,6 +47,7 @@
         android:maxLines="2"
         android:text="Son Mesaj"
         android:textColor="@color/siyah"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvModel"
         app:layout_constraintEnd_toEndOf="parent"
