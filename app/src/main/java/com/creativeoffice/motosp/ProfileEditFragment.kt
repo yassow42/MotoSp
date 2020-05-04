@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.creativeoffice.motosp.Activity.ProfileActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -108,7 +109,7 @@ class ProfileEditFragment : Fragment() {
             FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("user_details").child("kullanilan_motor_model").setValue(secilenModel)
 
 
-            activity!!.onBackPressed()
+            activity!!.startActivity(Intent(activity!!.applicationContext,ProfileActivity::class.java))
         }
 
 

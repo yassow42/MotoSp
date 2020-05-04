@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.dialog_haber_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.tvGonder
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -216,59 +217,71 @@ class HomeActivity : AppCompatActivity() {
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
+
+
+
                 if (p0.hasChildren()) {
-                    var yeniKonuList = ArrayList<ForumKonuData>()
-                    yeniKonuList = ArrayList()
 
-                    var gelenKonu: ForumKonuData
-                    for (i in p0.children) {
-                        gelenKonu = i.getValue(ForumKonuData::class.java)!!
-                        konularList.add(gelenKonu)
+                    try {
 
+
+                        var yeniKonuList = ArrayList<ForumKonuData>()
+                        yeniKonuList = ArrayList()
+
+                        var gelenKonu: ForumKonuData
+                        for (i in p0.children) {
+                            gelenKonu = i.getValue(ForumKonuData::class.java)!!
+                            konularList.add(gelenKonu)
+
+                        }
+                        konularList.sortByDescending { it.son_cevap_zamani }
+                        if (konularList.size > 4) {
+                            cevapYazilanKonuList.add(konularList[0])
+                            cevapYazilanKonuList.add(konularList[1])
+                            cevapYazilanKonuList.add(konularList[2])
+                            cevapYazilanKonuList.add(konularList[3])
+                            //    cevapYazilanKonuList.add(konularList[4])//son konu baslıklarının sayısını 5 ten 4 e dusurdum
+                            yeniKonuList.add(konularList[0])
+                            yeniKonuList.add(konularList[1])
+                            yeniKonuList.add(konularList[2])
+                            yeniKonuList.add(konularList[3])
+                            yeniKonuList.add(konularList[4])
+                        } else if (konularList.size > 3) {
+                            cevapYazilanKonuList.add(konularList[0])
+                            cevapYazilanKonuList.add(konularList[1])
+                            cevapYazilanKonuList.add(konularList[2])
+                            cevapYazilanKonuList.add(konularList[3])
+                            yeniKonuList.add(konularList[0])
+                            yeniKonuList.add(konularList[1])
+                            yeniKonuList.add(konularList[2])
+                            yeniKonuList.add(konularList[3])
+                        } else if (konularList.size > 2) {
+                            cevapYazilanKonuList.add(konularList[0])
+                            cevapYazilanKonuList.add(konularList[1])
+                            cevapYazilanKonuList.add(konularList[2])
+                            yeniKonuList.add(konularList[0])
+                            yeniKonuList.add(konularList[1])
+                            yeniKonuList.add(konularList[2])
+                        } else if (konularList.size > 1) {
+                            cevapYazilanKonuList.add(konularList[0])
+                            cevapYazilanKonuList.add(konularList[1])
+                            yeniKonuList.add(konularList[0])
+                            yeniKonuList.add(konularList[1])
+                        } else if (konularList.size > 0) {
+                            cevapYazilanKonuList.add(konularList[0])
+                            yeniKonuList.add(konularList[0])
+                        }
+
+                        yeniKonuList.sortByDescending { it.acilma_zamani }
+                        cevapYazilanKonuList.sortByDescending { it.son_cevap_zamani }
+
+                        setupRecyclerViewForumKonu(cevapYazilanKonuList)
+                        setupRecyclerViewYeniKonu(yeniKonuList)
+
+
+                    }catch (ex:Exception){
+                        Log.e("initVeri exception",ex.toString())
                     }
-                    konularList.sortByDescending { it.son_cevap_zamani }
-                    if (konularList.size > 4) {
-                        cevapYazilanKonuList.add(konularList[0])
-                        cevapYazilanKonuList.add(konularList[1])
-                        cevapYazilanKonuList.add(konularList[2])
-                        cevapYazilanKonuList.add(konularList[3])
-                        //    cevapYazilanKonuList.add(konularList[4])//son konu baslıklarının sayısını 5 ten 4 e dusurdum
-                        yeniKonuList.add(konularList[0])
-                        yeniKonuList.add(konularList[1])
-                        yeniKonuList.add(konularList[2])
-                        yeniKonuList.add(konularList[3])
-                        yeniKonuList.add(konularList[4])
-                    } else if (konularList.size > 3) {
-                        cevapYazilanKonuList.add(konularList[0])
-                        cevapYazilanKonuList.add(konularList[1])
-                        cevapYazilanKonuList.add(konularList[2])
-                        cevapYazilanKonuList.add(konularList[3])
-                        yeniKonuList.add(konularList[0])
-                        yeniKonuList.add(konularList[1])
-                        yeniKonuList.add(konularList[2])
-                        yeniKonuList.add(konularList[3])
-                    } else if (konularList.size > 2) {
-                        cevapYazilanKonuList.add(konularList[0])
-                        cevapYazilanKonuList.add(konularList[1])
-                        cevapYazilanKonuList.add(konularList[2])
-                        yeniKonuList.add(konularList[0])
-                        yeniKonuList.add(konularList[1])
-                        yeniKonuList.add(konularList[2])
-                    } else if (konularList.size > 1) {
-                        cevapYazilanKonuList.add(konularList[0])
-                        cevapYazilanKonuList.add(konularList[1])
-                        yeniKonuList.add(konularList[0])
-                        yeniKonuList.add(konularList[1])
-                    } else if (konularList.size > 0) {
-                        cevapYazilanKonuList.add(konularList[0])
-                        yeniKonuList.add(konularList[0])
-                    }
-
-                    yeniKonuList.sortByDescending { it.acilma_zamani }
-                    cevapYazilanKonuList.sortByDescending { it.son_cevap_zamani }
-
-                    setupRecyclerViewForumKonu(cevapYazilanKonuList)
-                    setupRecyclerViewYeniKonu(yeniKonuList)
                 }
             }
         })

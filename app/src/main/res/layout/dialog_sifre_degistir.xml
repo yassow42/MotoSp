@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etEskiSifre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Eski Şifre"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etYeniSifre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint = "Yeni Şifre"
+        android:inputType="textPersonName"
+
+        app:layout_constraintEnd_toEndOf="@+id/etEskiSifre"
+        app:layout_constraintStart_toStartOf="@+id/etEskiSifre"
+        app:layout_constraintTop_toBottomOf="@+id/etEskiSifre" />
+
+    <EditText
+        android:id="@+id/etYeniSifre2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint = "Yeni Şifre"
+        app:layout_constraintEnd_toEndOf="@+id/etYeniSifre"
+        app:layout_constraintStart_toStartOf="@+id/etYeniSifre"
+        app:layout_constraintTop_toBottomOf="@+id/etYeniSifre" />
+
+    <TextView
+        android:id="@+id/tvGonder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Gönder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etYeniSifre2" />
+
+    <TextView
+        android:id="@+id/tvIptal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="İptal"
+        app:layout_constraintBottom_toBottomOf="@+id/tvGonder"
+        app:layout_constraintEnd_toStartOf="@+id/tvGonder"
+        app:layout_constraintTop_toTopOf="@+id/tvGonder" />
+</androidx.constraintlayout.widget.ConstraintLayout>
