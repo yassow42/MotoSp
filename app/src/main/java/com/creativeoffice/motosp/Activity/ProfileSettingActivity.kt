@@ -77,11 +77,11 @@ class ProfileSettingActivity : AppCompatActivity() {
                                 if (view.etYeniSifre.text.toString().equals(view.etYeniSifre2.text.toString())) {
 
                                     mUser.updatePassword(view.etYeniSifre.text.toString()).addOnCompleteListener{
-                                        //   Log.e("sad",it.toString())
+
                                         FirebaseDatabase.getInstance().reference.child("users").child(mUser.uid).child("password").setValue(view.etYeniSifre.text.toString())
                                         dialog.dismiss()
                                     }.addOnFailureListener {
-                                        Log.e("sad1",it.toString())
+                                        Toast.makeText(this@ProfileSettingActivity, it.message.toString(), Toast.LENGTH_SHORT).show()
                                     }
 
 
