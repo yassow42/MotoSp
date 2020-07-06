@@ -28,7 +28,7 @@
             android:layout_marginStart="8dp"
             android:src="@drawable/ic_profile"
             app:civ_border_color="@color/siyah"
-            app:civ_border_width="3dp"
+            app:civ_border_width="2dp"
             app:layout_constraintBottom_toBottomOf="@+id/tvKullanilanMotor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvUserName"></de.hdodenhof.circleimageview.CircleImageView>
@@ -79,8 +79,8 @@
             android:layout_marginEnd="8dp"
             android:text="Konu Sahibi"
             android:textColor="@color/beyaz"
-            android:visibility="invisible"
             android:textSize="10sp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/tvUnvan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvUserName" />
@@ -116,7 +116,6 @@
             android:id="@+id/tvCevapZamani"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="2dp"
             android:text="cevap_zamani"
@@ -124,6 +123,17 @@
             android:textSize="8sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgItemYorumFotosu" />
+
+        <ImageView
+            android:id="@+id/imgItemYorumFotosu"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="centerCrop"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCevap" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.ModelDetayiActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.tek_model_list.view.*
+import java.io.IOException
 
 
 class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<ModelDetaylariData>) : RecyclerView.Adapter<MarkaModelAdapter.MyViewHolder>() {
 
-
+    var ref = FirebaseDatabase.getInstance().reference
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
         var viewHolder = LayoutInflater.from(myContext).inflate(R.layout.tek_model_list, p0, false)
 
@@ -37,38 +39,39 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
 
-        p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
+        try {
+            p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
 
-        //     p0.tvModel.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
-        //   p0.imgMotoripi.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
+            //     p0.tvModel.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
+            //   p0.imgMotoripi.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.olusma_sol))
 
-        p0.setData(tumModeller.get(p1), myContext)
+            p0.setData(tumModeller.get(p1), myContext)
 
+            p0.yorumlariGor.setOnClickListener {
+                val intent = Intent(myContext, ModelDetayiActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
+                intent.putExtra("Marka", tumModeller.get(p1).marka.toString())
+                intent.putExtra("Model", tumModeller.get(p1).model.toString())
+                intent.putExtra("Kategori", tumModeller.get(p1).kategori.toString())
+                intent.putExtra("Silindir", tumModeller.get(p1).silindirHacmi.toString())
+                intent.putExtra("Beygir", tumModeller.get(p1).beygir.toString())
+                intent.putExtra("Hiz", tumModeller.get(p1).hiz.toString())
+                intent.putExtra("Tork", tumModeller.get(p1).tork.toString())
+                intent.putExtra("Devir", tumModeller.get(p1).devir.toString())
+                intent.putExtra("Agirlik", tumModeller.get(p1).agirlik.toString())
+                intent.putExtra("YakitKap", tumModeller.get(p1).yakitkap.toString())
+                intent.putExtra("YakitTuk", tumModeller.get(p1).yakitTuk.toString())
+                intent.putExtra("tanitim", tumModeller.get(p1).tanitim.toString())
+                intent.putExtra("video", tumModeller.get(p1).motorVideo.toString())
+                intent.putExtra("fiyat", tumModeller.get(p1).fiyat.toString())
 
-        p0.yorumlariGor.setOnClickListener {
-
-
-            val intent = Intent(myContext, ModelDetayiActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-            intent.putExtra("Marka", tumModeller.get(p1).marka.toString())
-            intent.putExtra("Model", tumModeller.get(p1).model.toString())
-            intent.putExtra("Kategori", tumModeller.get(p1).kategori.toString())
-            intent.putExtra("Silindir", tumModeller.get(p1).silindirHacmi.toString())
-            intent.putExtra("Beygir", tumModeller.get(p1).beygir.toString())
-            intent.putExtra("Hiz", tumModeller.get(p1).hiz.toString())
-            intent.putExtra("Tork", tumModeller.get(p1).tork.toString())
-            intent.putExtra("Devir", tumModeller.get(p1).devir.toString())
-            intent.putExtra("Agirlik", tumModeller.get(p1).agirlik.toString())
-            intent.putExtra("YakitKap", tumModeller.get(p1).yakitkap.toString())
-            intent.putExtra("YakitTuk", tumModeller.get(p1).yakitTuk.toString())
-            intent.putExtra("tanitim", tumModeller.get(p1).tanitim.toString())
-            intent.putExtra("video", tumModeller.get(p1).motorVideo.toString())
-            intent.putExtra("fiyat", tumModeller.get(p1).fiyat.toString())
-
-            myContext.startActivity(intent)
+                myContext.startActivity(intent)
 
 
+            }
+
+        } catch (e: IOException) {
+            ref.child("Hatalar/MarkaModelAdapterHatası").push().setValue(e.message.toString())
         }
 
 
@@ -116,7 +119,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             if (oAnkiModel.fiyat.toString() == "1") {
                 //   FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(oAnkiModel.model.toString()).child("fiyat").setValue("1")
                 tvFiyat.visibility = View.INVISIBLE
-            }
+            } else tvFiyat.text = oAnkiModel.fiyat
 
 
             if (oAnkiModel.tanitim == null || oAnkiModel.tanitim.isNullOrEmpty() || oAnkiModel.tanitim.toString().trim() == "") {

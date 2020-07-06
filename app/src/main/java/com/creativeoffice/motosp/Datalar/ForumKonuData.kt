@@ -24,6 +24,7 @@ class ForumKonuData(
     data class cevaplar(
 
         var cevap: String? = null,
+        var Foto: String? = null,
         var cevap_key: String? = null,
         var cevap_yazan: String? = null,
         var cevap_zamani: Long? = null,

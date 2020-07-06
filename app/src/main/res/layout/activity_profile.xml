@@ -11,7 +11,7 @@
         android:id="@+id/profileRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_profile"
+        android:background="@color/mavi"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/leatsans"
+            android:fontFamily="@font/summit"
             android:text="TextView"
             android:textColor="#E8EEF2"
             android:textSize="18sp"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/leatsans"
+            android:fontFamily="@font/summit"
             android:text="TextView"
             android:textColor="#E8EEF2"
             android:textSize="30sp"
@@ -365,37 +365,26 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:background="@mipmap/ic_profile"
-            app:civ_border_color="@color/beyaz"
-            app:civ_border_width="3dp"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view5">
 
         </de.hdodenhof.circleimageview.CircleImageView>
 
 
-        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
-            android:id="@+id/bottomNavigationContainer"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/beyaz"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_nav_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
-
         <TextView
             android:id="@+id/tvProfilDuzenleButton"
             style="@style/btn_style"
-            android:layout_width="120dp"
-            android:layout_height="30dp"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/edit_profile_button_background"
             android:enabled="true"
             android:fontFamily="@font/summit"
+            android:gravity="center"
             android:text="Profili Düzenle"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/circleProfileImage" />
@@ -428,7 +417,7 @@
             android:layout_height="wrap_content"
             android:text="15"
             android:textColor="@color/beyaz"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold|italic"
             app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
             app:layout_constraintEnd_toEndOf="@+id/tvUnvan"
@@ -444,7 +433,7 @@
             android:fontFamily="@font/summit"
             android:text="Er"
             android:textColor="@color/beyaz"
-            android:textSize="34sp"
+            android:textSize="40sp"
             app:layout_constraintBottom_toTopOf="@+id/tvPuan"
             app:layout_constraintEnd_toEndOf="@+id/tvProfilDuzenleButton"
             app:layout_constraintStart_toStartOf="@+id/tvProfilDuzenleButton"
@@ -452,11 +441,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
 
 
     <FrameLayout
@@ -472,4 +456,16 @@
 
     </FrameLayout>
 
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bottomNavigationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:accessibilityLiveRegion="polite"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/beyaz"
+        app:itemTextColor="@color/beyaz"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 </androidx.constraintlayout.widget.ConstraintLayout>

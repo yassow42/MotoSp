@@ -1,9 +1,12 @@
 package com.creativeoffice.motosp.Activity
 
+import android.app.Dialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +19,7 @@ import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.Datalar.SpinnerData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
+import com.creativeoffice.motosp.utils.LoadingDialog
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_motor.*
 
@@ -29,18 +33,33 @@ class MotorActivity : AppCompatActivity() {
     lateinit var modeller: ModelDetaylariData
 
     var myRef = FirebaseDatabase.getInstance().reference
+    var loading: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_motor)
         secilenModeller = ArrayList()
-
-
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setupNavigationView()
         setupSpinner()
 
+
+        dialogCalistir()
+        Handler().postDelayed({ markaModelGetir()},800)
+        Handler().postDelayed({dialogGizle()},4000)
+
+
+
+
+    }
+    fun dialogGizle() {
+        loading?.let { if (it.isShowing) it.cancel() }
     }
 
+    fun dialogCalistir() {
+        dialogGizle()
+        loading = LoadingDialog.startDialog(this)
+    }
     private fun setupSpinner() {
         var markaList = ArrayList<SpinnerData>()
         markaList.add(SpinnerData("Marka seçiniz", R.drawable.ic_honda))
@@ -100,14 +119,11 @@ class MotorActivity : AppCompatActivity() {
                 if (p0.hasChildren()) {
                     for (ds in p0.children) {
                         modeller = ds.getValue(ModelDetaylariData::class.java)!!
-                        //   if (modeller.marka =="Honda"){
                         tumModeller.add(modeller)
-                        //    }
                     }
 
-                    //tumModeller.sortBy { it.marka }
-                    //rastgele sıralama.shuffle
-                    // tumModeller.shuffle()
+
+                    dialogGizle()
                     setupRecyclerView()
                 }
 
@@ -119,7 +135,7 @@ class MotorActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         rvModelListesi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
       //  rvModelListesi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val markaAdapter = MarkaModelAdapter(this.applicationContext, tumModeller)
+        val markaAdapter = MarkaModelAdapter(this, tumModeller)
         rvModelListesi.adapter = markaAdapter
 
         //  rvModelListesi.setHasFixedSize(true)
@@ -142,7 +158,7 @@ class MotorActivity : AppCompatActivity() {
 
         tumModeller = ArrayList()
 
-        markaModelGetir()
+
         super.onStart()
     }
 

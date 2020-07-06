@@ -10,7 +10,7 @@
         android:centerX="55%"
 
         android:endColor="#FAF2F2"
-        android:startColor="#BA355BB8"
+        android:startColor="@color/colorPrimary"
         android:type="linear" />
 
 

@@ -4,6 +4,7 @@ package com.creativeoffice.motosp.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.ProfileEditFragment
@@ -30,6 +31,8 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         mAuth = FirebaseAuth.getInstance()
+      //  this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
 
         setupAuthListener()
@@ -45,7 +48,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
     private fun kullaniciVerileriniGetir() {
-        var userID = mAuth.currentUser!!.uid
+        var userID = "VKlEKKy0EbPHifLrYrVjFBZXxf82"// mAuth.currentUser!!.uid
         FirebaseDatabase.getInstance().reference.child("users").child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }

@@ -5,7 +5,6 @@
     android:id="@+id/tumLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_home"
     tools:context=".Activity.HomeActivity">
 
     <ScrollView
@@ -280,9 +279,12 @@
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/beyaz"
+        android:layout_height="wrap_content"
+        android:accessibilityLiveRegion="polite"
 
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/beyaz"
+        app:itemTextColor="@color/beyaz"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

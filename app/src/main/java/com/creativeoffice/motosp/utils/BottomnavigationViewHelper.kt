@@ -18,9 +18,10 @@ class BottomnavigationViewHelper {
 
 
             bottomNavigationViewEx.enableAnimation(true)
-            bottomNavigationViewEx.enableItemShiftingMode(false)
-            bottomNavigationViewEx.enableShiftingMode(false)
+       //     bottomNavigationViewEx.enableShiftingMode(2,true)
             bottomNavigationViewEx.setTextVisibility(true)
+            bottomNavigationViewEx.setLargeTextSize(14f)
+            bottomNavigationViewEx.setSmallTextSize(10f)
 
         }
 

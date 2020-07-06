@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
+import kotlinx.android.synthetic.main.dialog_photo.view.*
+
 import kotlinx.android.synthetic.main.item_konu_cevaplari.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -125,6 +129,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                                                 FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                                                     override fun onCancelled(p0: DatabaseError) {
                                                     }
+
                                                     override fun onDataChange(p0: DataSnapshot) {
                                                         if (p0.hasChildren()) {
                                                             val konuBasligi = p0.child("konu_basligi").value.toString()
@@ -184,6 +189,18 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
             }
         }
 
+        holder.yorumFotosu.setOnClickListener {
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this.myContext)
+            var viewDialogg = inflate(myContext, R.layout.dialog_photo, null)
+            Picasso.get().load(gelenItem.Foto).into(viewDialogg.imgFoto)
+            viewDialogg.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            //viewDialogg.setBackgroundColor(ColorDrawable(Color.TRANSPARENT))
+
+            builder.setView(viewDialogg)
+            var dialogSiparisTuru: Dialog = builder.create()
+            dialogSiparisTuru.show()
+        }
+
 
     }
 
@@ -197,7 +214,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
         var tumLayout = itemView.tumLayout
         var tvUnvan = itemView.tvUnvan
         var tvSahibi = itemView.tvKonuSahibi
-
+        var yorumFotosu = itemView.imgItemYorumFotosu
 
         var ref = FirebaseDatabase.getInstance().reference
         fun setData(gelenItemVerisi: ForumKonuData.cevaplar, myContext: Context) {
@@ -214,7 +231,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                 override fun onDataChange(p0: DataSnapshot) {
                     var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                     if (imgURL != "default") {
-                        Picasso.get().load(imgURL).into(imgProfile)
+                        Picasso.get().load(imgURL).resize(200, 200).into(imgProfile)
                         imgProfile.borderWidth = 1
                     }
 
@@ -227,21 +244,30 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                 }
             })
 
-            ref.child("Forum").child(gelenItemVerisi.cevap_yazilan_key.toString()).child("konuyu_acan").addListenerForSingleValueEvent(object :ValueEventListener{
+            ref.child("Forum").child(gelenItemVerisi.cevap_yazilan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
 
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
 
-                    var konuyuAcan = p0.value.toString()
+                    var konuyuAcan = p0.child("konuyu_acan").value.toString()
+                    var yorumFoto = p0.child("cevaplar").child(gelenItemVerisi.cevap_key.toString()).child("Foto").value.toString()
+                    if (yorumFoto != "null") {
 
-                    if (konuyuAcan == gelenItemVerisi.cevap_yazan){
+                        Picasso.get().load(yorumFoto).resize(350, 350).into(yorumFotosu)
+                        yorumFotosu.visibility = View.VISIBLE
+                    } else yorumFotosu.visibility = View.GONE
+
+
+                    Log.e("foto", yorumFoto)
+                    if (konuyuAcan == gelenItemVerisi.cevap_yazan) {
                         tvSahibi.visibility = View.VISIBLE
                     }
                 }
 
             })
+
 
         }
 

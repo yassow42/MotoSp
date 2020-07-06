@@ -21,8 +21,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.dialog_register.view.*
+import kotlinx.android.synthetic.main.activity_login2.*
+import kotlinx.android.synthetic.main.dialog_register2.view.*
 
 class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
@@ -31,16 +31,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setupAuthListener()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_login2)
 
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -48,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
             var builder: AlertDialog.Builder = AlertDialog.Builder(this)
             var inflater: LayoutInflater = layoutInflater
-            var view: View = inflater.inflate(R.layout.dialog_register, null)
+            var view: View = inflater.inflate(R.layout.dialog_register2, null)
 
             builder.setView(view)
             var dialog: Dialog = builder.create()
@@ -66,15 +60,15 @@ class LoginActivity : AppCompatActivity() {
 
                     override fun onDataChange(p0: DataSnapshot) {
 
-                            for (ds in p0.children) {
-                                val gelenKullanicilar = ds.getValue(Users::class.java)!!
-                                if (gelenKullanicilar.user_name.equals(kullaniciAdi)) {
-                                    userNameKullanimi = true
-                                    break
-                                } else {
-                                    userNameKullanimi = false
-                                }
+                        for (ds in p0.children) {
+                            val gelenKullanicilar = ds.getValue(Users::class.java)!!
+                            if (gelenKullanicilar.user_name.equals(kullaniciAdi)) {
+                                userNameKullanimi = true
+                                break
+                            } else {
+                                userNameKullanimi = false
                             }
+                        }
 
 
                         if (userNameKullanimi == true) {
@@ -83,12 +77,12 @@ class LoginActivity : AppCompatActivity() {
                             mAuth.createUserWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
                                 override fun onComplete(p0: Task<AuthResult>) {
                                     if (p0.isSuccessful) {
-                                        setupAuthListener()
-
                                         var userID = mAuth.currentUser!!.uid.toString()
                                         var user_detail = UserDetails(1, "Default", "Honda", "Activa S", "default", 1)
-                                        var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID,"Yeni", user_detail)
-                                        FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers)
+                                        var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID, "Yeni", user_detail)
+                                        FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers).addOnCompleteListener {
+                                            setupAuthListener()
+                                        }
 
                                     } else {
                                         mAuth.currentUser!!.delete().addOnCompleteListener(object : OnCompleteListener<Void> {
@@ -110,40 +104,23 @@ class LoginActivity : AppCompatActivity() {
 
             dialog.show()
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         btnLogin.setOnClickListener {
             var kullaniciAdi = etKullaniciAdiLogin.text.toString()
             var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
             var kullaniciSifre = etSifreLogin.text.toString()
             mAuth.signInWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre)
-                .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                    override fun onComplete(p0: Task<AuthResult>) {
-                        if (p0!!.isSuccessful) {
+                    .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                        override fun onComplete(p0: Task<AuthResult>) {
+                            if (p0!!.isSuccessful) {
 
-                            setupAuthListener()
+                                setupAuthListener()
 
-                        } else {
-                            Toast.makeText(this@LoginActivity, " Kullanıcı Adı/Sifre Hatalı :", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this@LoginActivity, " Kullanıcı Adı/Sifre Hatalı :", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
 
-                })
+                    })
         }
 
     }

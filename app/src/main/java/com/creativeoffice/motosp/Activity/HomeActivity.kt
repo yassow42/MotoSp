@@ -3,11 +3,13 @@ package com.creativeoffice.motosp.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.Datalar.YorumlarData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
+import com.creativeoffice.motosp.utils.LoadingDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
@@ -46,11 +49,15 @@ class HomeActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var userID: String
-
+    var ref = FirebaseDatabase.getInstance().reference
     private val ACTIVITY_NO = 0
+    var loading: Dialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+     //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         //    imgPlus.isEnabled = false
         //    imgHaberEkle.isEnabled = false
@@ -64,20 +71,32 @@ class HomeActivity : AppCompatActivity() {
         initMyAuthStateListener()
 
         mAuth = FirebaseAuth.getInstance()
+        // mAuth.signOut()
         userID = mAuth.currentUser!!.uid
+
         konularList = ArrayList()
         cevapYazilanKonuList = ArrayList()
         sonYorumlarList = ArrayList()
         tumModeller = ArrayList()
         tumHaberler = ArrayList()
 
-        initVeri(userID)
+        initVeri()
         initBtn(userID)
         setupNavigationView()
-        FirebaseDatabase.getInstance().reference.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
-        
+
+        dialogCalistir()
+        Handler().postDelayed({ ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP) }, 5000)
+        Handler().postDelayed({dialogGizle()},4000)
     }
 
+    fun dialogGizle() {
+        loading?.let { if (it.isShowing) it.cancel() }
+    }
+
+    fun dialogCalistir() {
+        dialogGizle()
+        loading = LoadingDialog.startDialog(this)
+    }
     private fun initBtn(userID: String) {
 
         imgHaberEkle.setOnClickListener {
@@ -112,7 +131,6 @@ class HomeActivity : AppCompatActivity() {
             dialog.show()
 
         }
-
 
 
         imgPlus.setOnClickListener {
@@ -150,7 +168,6 @@ class HomeActivity : AppCompatActivity() {
                             var konuData = ForumKonuData(null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
 
                             ref.child("Forum").child(konuKey.toString()).setValue(konuData)
-
                             //son cevap ekliyoruzkı sıralayabılelım.
                             ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
                             ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
@@ -202,28 +219,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    private fun formatDate(miliSecond: Long?): String? {
-        if (miliSecond == null) return "0"
-        val date = Date(miliSecond)
-        val sdf = SimpleDateFormat(" d MMM hh:mm ", Locale("tr"))
-        return sdf.format(date)
-
-    }
-
-    private fun initVeri(userID: String) {
+    private fun initVeri() {
         val ref = FirebaseDatabase.getInstance().reference
-        //son aktiviteyi kaydetme
-
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
 
 
-
                 if (p0.hasChildren()) {
 
                     try {
-
 
                         var yeniKonuList = ArrayList<ForumKonuData>()
                         yeniKonuList = ArrayList()
@@ -277,10 +282,11 @@ class HomeActivity : AppCompatActivity() {
 
                         setupRecyclerViewForumKonu(cevapYazilanKonuList)
                         setupRecyclerViewYeniKonu(yeniKonuList)
+                      //  dialogGizle()
+                        Handler().postDelayed({dialogGizle()},850)
 
-
-                    }catch (ex:Exception){
-                        Log.e("initVeri exception",ex.toString())
+                    } catch (ex: Exception) {
+                        Log.e("initVeri exception", ex.toString())
                     }
                 }
             }
@@ -292,35 +298,43 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
-                    var sonYorumlarTumList = ArrayList<YorumlarData>()
-                    sonYorumlarTumList = ArrayList()
-                    for (ds in p0.children) {
-                        var gelenVeri = ds.getValue(YorumlarData::class.java)!!
-                        sonYorumlarTumList.add(gelenVeri)
+
+                    try {
+                        var sonYorumlarTumList = ArrayList<YorumlarData>()
+                        sonYorumlarTumList = ArrayList()
+                        for (ds in p0.children) {
+                            var gelenVeri = ds.getValue(YorumlarData::class.java)!!
+                            sonYorumlarTumList.add(gelenVeri)
+
+                        }
+                        sonYorumlarTumList.sortByDescending { it.yorum_zaman }
+
+                        if (sonYorumlarTumList.size > 4) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                            sonYorumlarList.add(sonYorumlarTumList[1])
+                            sonYorumlarList.add(sonYorumlarTumList[2])
+                            sonYorumlarList.add(sonYorumlarTumList[3])
+                        } else if (sonYorumlarTumList.size > 3) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                            sonYorumlarList.add(sonYorumlarTumList[1])
+                            sonYorumlarList.add(sonYorumlarTumList[2])
+                        } else if (sonYorumlarTumList.size > 2) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                            sonYorumlarList.add(sonYorumlarTumList[1])
+                        } else if (sonYorumlarTumList.size > 1) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                            sonYorumlarList.add(sonYorumlarTumList[1])
+                        } else if (sonYorumlarTumList.size > 0) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                        }
+
+
+
+                        setupRecyclerViewSonYorum()
+                    } catch (e: Exception) {
+                        Log.e("CatchHata", e.message + " homeActivity")
                     }
 
-                    sonYorumlarTumList.sortByDescending { it.yorum_zaman }
-                    if (sonYorumlarTumList.size > 4) {
-                        sonYorumlarList.add(sonYorumlarTumList[0])
-                        sonYorumlarList.add(sonYorumlarTumList[1])
-                        sonYorumlarList.add(sonYorumlarTumList[2])
-                        sonYorumlarList.add(sonYorumlarTumList[3])
-                    } else if (sonYorumlarTumList.size > 3) {
-                        sonYorumlarList.add(sonYorumlarTumList[0])
-                        sonYorumlarList.add(sonYorumlarTumList[1])
-                        sonYorumlarList.add(sonYorumlarTumList[2])
-                    } else if (sonYorumlarTumList.size > 2) {
-                        sonYorumlarList.add(sonYorumlarTumList[0])
-                        sonYorumlarList.add(sonYorumlarTumList[1])
-                    } else if (sonYorumlarTumList.size > 1) {
-                        sonYorumlarList.add(sonYorumlarTumList[0])
-                        sonYorumlarList.add(sonYorumlarTumList[1])
-                    } else if (sonYorumlarTumList.size > 0) {
-                        sonYorumlarList.add(sonYorumlarTumList[0])
-                    }
-
-
-                    setupRecyclerViewSonYorum()
                 }
             }
 
@@ -465,16 +479,11 @@ class HomeActivity : AppCompatActivity() {
 
 
                 } else {
-                    startActivity(
-                        Intent(
-                            this@HomeActivity, LoginActivity::class.java
-                        )
-                    )
+                    val intent = Intent(this@HomeActivity, LoginActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }
     }
-
-
 
 }
