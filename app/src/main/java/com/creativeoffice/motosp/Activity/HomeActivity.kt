@@ -32,8 +32,6 @@ import kotlinx.android.synthetic.main.dialog_haber_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.tvGonder
 import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity() {
@@ -53,26 +51,34 @@ class HomeActivity : AppCompatActivity() {
     private val ACTIVITY_NO = 0
     var loading: Dialog? = null
 
+    private var mDelayHandler: Handler? = null
+
+    internal val sonAktiflik: Runnable = Runnable {
+        if (!isFinishing) {
+            ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
+
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-     //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
-        //    imgPlus.isEnabled = false
-        //    imgHaberEkle.isEnabled = false
-
-        if (FirebaseDatabase.getInstance().reference == null) {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        }
-
-        FirebaseDatabase.getInstance().reference.keepSynced(true)
-
-        initMyAuthStateListener()
+        mDelayHandler = Handler()
 
         mAuth = FirebaseAuth.getInstance()
+        initMyAuthStateListener()
+
         // mAuth.signOut()
-        userID = mAuth.currentUser!!.uid
+        var user = mAuth.currentUser
+        if (user != null) {
+            userID = mAuth.currentUser!!.uid
+            dialogCalistir()
+        } else {
+            var intent = Intent(this, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+            finish()
+        }
 
         konularList = ArrayList()
         cevapYazilanKonuList = ArrayList()
@@ -81,12 +87,13 @@ class HomeActivity : AppCompatActivity() {
         tumHaberler = ArrayList()
 
         initVeri()
-        initBtn(userID)
+        initBtn()
         setupNavigationView()
 
-        dialogCalistir()
-        Handler().postDelayed({ ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP) }, 5000)
-        Handler().postDelayed({dialogGizle()},4000)
+        mDelayHandler!!.postDelayed(sonAktiflik, 2000)
+
+        // Handler().postDelayed({ dialogGizle() }, 4000)
+
     }
 
     fun dialogGizle() {
@@ -97,7 +104,8 @@ class HomeActivity : AppCompatActivity() {
         dialogGizle()
         loading = LoadingDialog.startDialog(this)
     }
-    private fun initBtn(userID: String) {
+
+    private fun initBtn() {
 
         imgHaberEkle.setOnClickListener {
             var builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -224,15 +232,10 @@ class HomeActivity : AppCompatActivity() {
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
-
-
                 if (p0.hasChildren()) {
-
                     try {
-
                         var yeniKonuList = ArrayList<ForumKonuData>()
                         yeniKonuList = ArrayList()
-
                         var gelenKonu: ForumKonuData
                         for (i in p0.children) {
                             gelenKonu = i.getValue(ForumKonuData::class.java)!!
@@ -282,63 +285,13 @@ class HomeActivity : AppCompatActivity() {
 
                         setupRecyclerViewForumKonu(cevapYazilanKonuList)
                         setupRecyclerViewYeniKonu(yeniKonuList)
-                      //  dialogGizle()
-                        Handler().postDelayed({dialogGizle()},850)
+                        dialogGizle()
 
                     } catch (ex: Exception) {
                         Log.e("initVeri exception", ex.toString())
                     }
                 }
             }
-        })
-
-        ref.child("tum_motorlar").child("yorumlar_son").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                if (p0.hasChildren()) {
-
-                    try {
-                        var sonYorumlarTumList = ArrayList<YorumlarData>()
-                        sonYorumlarTumList = ArrayList()
-                        for (ds in p0.children) {
-                            var gelenVeri = ds.getValue(YorumlarData::class.java)!!
-                            sonYorumlarTumList.add(gelenVeri)
-
-                        }
-                        sonYorumlarTumList.sortByDescending { it.yorum_zaman }
-
-                        if (sonYorumlarTumList.size > 4) {
-                            sonYorumlarList.add(sonYorumlarTumList[0])
-                            sonYorumlarList.add(sonYorumlarTumList[1])
-                            sonYorumlarList.add(sonYorumlarTumList[2])
-                            sonYorumlarList.add(sonYorumlarTumList[3])
-                        } else if (sonYorumlarTumList.size > 3) {
-                            sonYorumlarList.add(sonYorumlarTumList[0])
-                            sonYorumlarList.add(sonYorumlarTumList[1])
-                            sonYorumlarList.add(sonYorumlarTumList[2])
-                        } else if (sonYorumlarTumList.size > 2) {
-                            sonYorumlarList.add(sonYorumlarTumList[0])
-                            sonYorumlarList.add(sonYorumlarTumList[1])
-                        } else if (sonYorumlarTumList.size > 1) {
-                            sonYorumlarList.add(sonYorumlarTumList[0])
-                            sonYorumlarList.add(sonYorumlarTumList[1])
-                        } else if (sonYorumlarTumList.size > 0) {
-                            sonYorumlarList.add(sonYorumlarTumList[0])
-                        }
-
-
-
-                        setupRecyclerViewSonYorum()
-                    } catch (e: Exception) {
-                        Log.e("CatchHata", e.message + " homeActivity")
-                    }
-
-                }
-            }
-
-
         })
         ref.child("tum_motorlar").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -349,10 +302,65 @@ class HomeActivity : AppCompatActivity() {
                     for (ds in p0.children) {
                         var modeller = ds.getValue(ModelDetaylariData::class.java)!!
                         tumModeller.add(modeller)
+
                     }
+                    ref.child("tum_motorlar").child("yorumlar_son").addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot) {
+                            if (p0.hasChildren()) {
+                                try {
+                                    var sonYorumlarTumList = ArrayList<YorumlarData>()
+                                    sonYorumlarTumList = ArrayList()
+                                    for (ds in p0.children) {
+                                        var gelenVeri = ds.getValue(YorumlarData::class.java)!!
+                                        sonYorumlarTumList.add(gelenVeri)
+                                    }
+                                    sonYorumlarTumList.sortByDescending { it.yorum_zaman }
+
+                                    if (sonYorumlarTumList.size > 4) {
+                                        sonYorumlarList.add(sonYorumlarTumList[0])
+                                        sonYorumlarList.add(sonYorumlarTumList[1])
+                                        sonYorumlarList.add(sonYorumlarTumList[2])
+                                        sonYorumlarList.add(sonYorumlarTumList[3])
+
+                                    } else if (sonYorumlarTumList.size > 3) {
+                                        sonYorumlarList.add(sonYorumlarTumList[0])
+                                        sonYorumlarList.add(sonYorumlarTumList[1])
+                                        sonYorumlarList.add(sonYorumlarTumList[2])
+
+                                    } else if (sonYorumlarTumList.size > 2) {
+                                        sonYorumlarList.add(sonYorumlarTumList[0])
+                                        sonYorumlarList.add(sonYorumlarTumList[1])
+
+                                    } else if (sonYorumlarTumList.size > 1) {
+                                        sonYorumlarList.add(sonYorumlarTumList[0])
+                                        sonYorumlarList.add(sonYorumlarTumList[1])
+
+                                    } else if (sonYorumlarTumList.size > 0) {
+                                        sonYorumlarList.add(sonYorumlarTumList[0])
+
+                                    } else {
+                                        Log.e("HataHome", "son yorum yok")
+                                    }
+
+                                    setupRecyclerViewSonYorum()
+                                } catch (e: Exception) {
+                                    Log.e("CatchHata", e.message + " homeActivity")
+                                }
+
+                            }
+                        }
+
+
+                    })
+
                 }
             }
         })
+
+
 
         ref.child("Haberler").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -392,6 +400,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViewSonYorum() {
+
         // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         rcSonModelMesajlari.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val yeniKonuAdapter = SonMotorYorumAdapter(this, sonYorumlarList, tumModeller)
@@ -486,4 +495,11 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        if (mDelayHandler != null) {
+            mDelayHandler!!.removeCallbacks(sonAktiflik)
+        }
+
+        super.onDestroy()
+    }
 }

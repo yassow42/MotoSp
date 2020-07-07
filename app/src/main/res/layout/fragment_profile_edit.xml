@@ -90,7 +90,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="850dp"
+            android:layout_height="match_parent"
             tools:context="com.creativeoffice.Profile.ProfileEditFragment">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -101,7 +101,7 @@
 
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-               android:background="@mipmap/ic_profile"
+                android:background="@mipmap/ic_profile"
                 app:civ_border_color="@color/siyah"
                 app:civ_border_width="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -148,12 +148,11 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="Biyografi"
                 android:textColor="@color/siyah"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/textView12"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textView12"
                 app:layout_constraintTop_toBottomOf="@+id/spinnerModel" />
 
@@ -161,9 +160,9 @@
                 android:id="@+id/etUserBio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="32dp"
                 android:ems="10"
                 android:hint="Biyografi"
                 android:inputType="textPersonName"
@@ -178,6 +177,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
+                android:completionThreshold="1"
+                android:textColor="@color/siyah"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
@@ -188,6 +190,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
+                android:completionThreshold="1"
+                android:textColor="@color/siyah"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 

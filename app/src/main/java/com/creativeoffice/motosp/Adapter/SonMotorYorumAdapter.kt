@@ -28,6 +28,7 @@ class SonMotorYorumAdapter(val myContext: Context, val yorumlar: ArrayList<Yorum
     }
 
     override fun onBindViewHolder(holder: YorumHolder, position: Int) {
+
         val yorumData = yorumlar.get(position)
         val modelData = tumModeller.get(position)
         holder.setData(yorumData, modelData)

@@ -8,7 +8,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginRight="8dp"
-    android:background="@drawable/bg_tek_model_list">
+    android:background="@drawable/bg_bayi_il">
 
     <TextView
         android:id="@+id/tvSehirAdi"

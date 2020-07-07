@@ -1,6 +1,7 @@
 package com.creativeoffice.motosp.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +55,7 @@ class SehirAdapter(val myContext: Context, val sehirList: ArrayList<BayilerData>
 
             private fun setupIlceRecyclerView(ilceList: ArrayList<BayilerData.ilcelerData>) {
 
-                p0.rcIlceler.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
+                p0.rcIlceler.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                 //  p0.rcIlceler.layoutManager = LinearLayoutManager(myContext, LinearLayoutManager.HORIZONTAL, false)
                 val markaAdapter = ilceAdapter(myContext, ilceList)
                 p0.rcIlceler.adapter = markaAdapter
@@ -72,7 +73,9 @@ class SehirAdapter(val myContext: Context, val sehirList: ArrayList<BayilerData>
             p0.tvDetayGizle.visibility = View.VISIBLE
             p0.tvDetayGoster.visibility = View.GONE
 
+
         }
+
         p0.tvDetayGizle.setOnClickListener {
             p0.rcIlceler.visibility = View.GONE
             p0.tvDetayGizle.visibility = View.GONE

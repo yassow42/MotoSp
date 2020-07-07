@@ -35,8 +35,6 @@ class ProfileEditFragment : Fragment() {
 
     var profilPhotoUri: Uri? = null
     var userID: String? = null
-    var secilenMarka: String? = null
-    var secilenModel: String? = null
     var ref = FirebaseDatabase.getInstance().reference
     lateinit var adapterMarka: ArrayAdapter<String>
     lateinit var adapterModel: ArrayAdapter<String>
@@ -57,7 +55,6 @@ class ProfileEditFragment : Fragment() {
 
 
         fragmentView.imgCLose.setOnClickListener {
-
             activity?.onBackPressed()
 
         }
@@ -78,7 +75,6 @@ class ProfileEditFragment : Fragment() {
                 var dialogYukleniyor = YukleniyorFragment()
                 dialogYukleniyor.show(activity!!.supportFragmentManager, "yukleniyorFragmenti")
                 //  dialogYukleniyor.isCancelable = false
-
 
                 FirebaseStorage.getInstance().reference.child("users").child(userID.toString()).child("profile_picture").putFile(profilPhotoUri!!) // burada fotografı kaydettik veritabanına.
                     .addOnSuccessListener { UploadTask ->
@@ -103,9 +99,9 @@ class ProfileEditFragment : Fragment() {
                     }
             }
 
-            FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("user_details").child("biyografi").setValue(fragmentView.etUserBio.text.toString())
-            FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("user_details").child("kullanilan_motor_marka").setValue(secilenMarka)
-            FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("user_details").child("kullanilan_motor_model").setValue(secilenModel)
+            ref.child("users").child(userID.toString()).child("user_details").child("biyografi").setValue(fragmentView.etUserBio.text.toString())
+            ref.child("users").child(userID.toString()).child("user_details").child("kullanilan_motor_marka").setValue(fragmentView.spinnerMarka.text.toString())
+            ref.child("users").child(userID.toString()).child("user_details").child("kullanilan_motor_model").setValue(fragmentView.spinnerModel.text.toString())
 
 
         }
@@ -116,9 +112,22 @@ class ProfileEditFragment : Fragment() {
 
 
     private fun kullaniciBilgileriGuncelle(fragmentView: View) {
+        ref.child("users").child(userID.toString()).child("user_details").addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+            }
 
+            override fun onDataChange(snapshot: DataSnapshot) {
+               var biyo = snapshot.child("biyografi").value.toString()
+                fragmentView.etUserBio.setText(biyo)
+                var marka = snapshot.child("kullanilan_motor_marka").value.toString()
+                fragmentView.spinnerMarka.setText(marka)
+                var model = snapshot.child("kullanilan_motor_model").value.toString()
+                fragmentView.spinnerModel.setText(model)
 
-        FirebaseDatabase.getInstance().reference.child("tum_motorlar").addListenerForSingleValueEvent(object : ValueEventListener {
+            }
+        })
+
+        ref.child("tum_motorlar").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 

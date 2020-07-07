@@ -24,7 +24,7 @@ class BayiActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bayi)
-     //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         sehirList = ArrayList()
@@ -45,7 +45,7 @@ class BayiActivity : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
 
                 for (sehir in p0.children) {
-                  var gelendata =   BayilerData(sehir.key.toString())
+                    var gelendata = BayilerData(sehir.key.toString())
                     sehirList.add(gelendata)
                 }
                 setupRecyclerViewSehir()
@@ -57,15 +57,10 @@ class BayiActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViewSehir() {
-          rcBayi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-
+        rcBayi.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         val markaAdapter = SehirAdapter(this, sehirList)
-
         rcBayi.adapter = markaAdapter
-        rcBayi.setItemViewCacheSize(20)
-
-
-
+        rcBayi.setItemViewCacheSize(50)
     }
 
 

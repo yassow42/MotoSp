@@ -26,7 +26,7 @@ class SplashScreenActivity : AppCompatActivity() {
     internal val mRunnable: Runnable = Runnable {
         if (!isFinishing) {
 
-            val intent = Intent(applicationContext, LoginActivity::class.java)
+            val intent = Intent(applicationContext, HomeActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -38,13 +38,10 @@ class SplashScreenActivity : AppCompatActivity() {
         FirebaseDatabase.getInstance().reference
         this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        //  imgIcon.setAnimation(AnimationUtils.loadAnimation(this, R.anim.olusma_sol_splash))
+         imgIcon2.setAnimation(AnimationUtils.loadAnimation(this, R.anim.olusma_sol_splash))
 
-       // dialogCalistir()
-        //Initialize the Handler
+
         mDelayHandler = Handler()
-
-        //Navigate with delay
         mDelayHandler!!.postDelayed(mRunnable, SPLASH_DELAY)
 
 
