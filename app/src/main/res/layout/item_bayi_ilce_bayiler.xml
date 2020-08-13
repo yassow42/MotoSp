@@ -20,7 +20,7 @@
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:maxWidth="100dp"
-        android:maxLines="2"
+        android:maxLines="1"
         android:text="TextView"
         android:textColor="@color/mavi"
         android:textStyle="bold"

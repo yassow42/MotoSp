@@ -7,59 +7,103 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
-    android:layout_marginRight="8dp"
-    android:background="@drawable/bg_bayi_il">
+    android:layout_marginRight="8dp">
 
     <TextView
         android:id="@+id/tvSehirAdi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+
         android:text="Ankara"
         android:textColor="@color/beyaz"
         android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcIlceler"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvDetayGizle"
+        android:layout_marginEnd="3dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/imgSag"
+        app:layout_constraintStart_toEndOf="@+id/imgSol"
+        app:layout_constraintTop_toBottomOf="@+id/view9">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.arindicatorview.ARIndicatorView
+        android:id="@+id/ar_indicator_ilce"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:animate_indicator_scrubbing="true"
+        app:indicator_animation="@anim/olusma_sag"
+        app:indicator_color="@color/beyaz"
+        app:indicator_scrubbing="true"
+        app:indicator_shape="@drawable/white_radius_gray"
+        app:indicator_size="15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rcIlceler"
+        app:selected_color="@color/mavi">
+
+    </com.arindicatorview.ARIndicatorView>
+
+    <ImageView
+        android:id="@+id/imgSol"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rcIlceler"
+        app:srcCompat="@drawable/nav_sol" />
+
+    <ImageView
+        android:id="@+id/imgSag"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rcIlceler"
+        app:srcCompat="@drawable/nav_sag" />
+
+    <View
+        android:id="@+id/view9"
+        android:layout_width="100dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="-8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="-8dp"
+        android:background="@color/beyaz"
+        app:layout_constraintEnd_toEndOf="@+id/tvSehirAdi"
+        app:layout_constraintStart_toStartOf="@+id/tvSehirAdi"
         app:layout_constraintTop_toBottomOf="@+id/tvSehirAdi" />
 
-    <TextView
-        android:id="@+id/tvDetay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="İlçeleri Göster"
-        android:textColor="@color/beyaz"
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/siyah"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ar_indicator_ilce" />
 
-    <TextView
-        android:id="@+id/tvDetayGizle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="İlçeleri Gizle"
-        android:textColor="@color/beyaz"
-        app:layout_constraintBottom_toTopOf="@+id/tvDetay"
-        app:layout_constraintEnd_toEndOf="@+id/tvDetay"
-        app:layout_constraintStart_toStartOf="@+id/tvDetay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
