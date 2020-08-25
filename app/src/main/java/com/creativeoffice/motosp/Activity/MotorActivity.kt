@@ -1,15 +1,13 @@
 package com.creativeoffice.motosp.Activity
 
 import android.app.Dialog
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 import com.creativeoffice.motosp.Adapter.MarkaModelAdapter
@@ -43,31 +41,21 @@ class MotorActivity : AppCompatActivity() {
         setupNavigationView()
         setupSpinner()
 
-
         dialogCalistir()
-        Handler().postDelayed({ markaModelGetir()},800)
-        Handler().postDelayed({dialogGizle()},4000)
-
-
+        Handler().postDelayed({ markaModelGetir() }, 800)
+        Handler().postDelayed({ dialogGizle() }, 4000)
 
 
     }
-    fun dialogGizle() {
-        loading?.let { if (it.isShowing) it.cancel() }
-    }
 
-    fun dialogCalistir() {
-        dialogGizle()
-        loading = LoadingDialog.startDialog(this)
-    }
     private fun setupSpinner() {
         var markaList = ArrayList<SpinnerData>()
         markaList.add(SpinnerData("Marka seçiniz", R.drawable.ic_honda))
         markaList.add(SpinnerData("Honda", R.drawable.ic_honda))
-        markaList.add(SpinnerData("Yamaha",  R.drawable.yamaha))
-        markaList.add(SpinnerData("Kawasaki",  R.drawable.kawasaki))
-        markaList.add(SpinnerData("Triumph",  R.drawable.ic_tr))
-        markaList.add(SpinnerData("Suzuki",  R.drawable.suzuki))
+        markaList.add(SpinnerData("Yamaha", R.drawable.yamaha))
+        markaList.add(SpinnerData("Kawasaki", R.drawable.kawasaki))
+        markaList.add(SpinnerData("Triumph", R.drawable.ic_tr))
+        markaList.add(SpinnerData("Suzuki", R.drawable.suzuki))
 
         val adapter = SpinnerAdapter(this, markaList)
         spMotorList.adapter = adapter
@@ -82,34 +70,20 @@ class MotorActivity : AppCompatActivity() {
                 if (position != 0) {
                     var secilenMarka = markaList[position].marka.toString()
                     secilenModeller.clear()
-
-                    myRef.child("tum_motorlar").addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError) {}
-                        override fun onDataChange(p0: DataSnapshot) {
-                            if (p0.hasChildren()) {
-                                for (ds in p0.children) {
-                                    modeller = ds.getValue(ModelDetaylariData::class.java)!!
-                                    if (modeller.marka == secilenMarka) {
-                                        secilenModeller.add(modeller)
-                                    }
-                                }
-                                if (secilenModeller.size > 0) {
-                                    rvModelListesi.layoutManager = LinearLayoutManager(this@MotorActivity, LinearLayoutManager.VERTICAL, false)
-                                    val markaAdapter = MarkaModelAdapter(this@MotorActivity, secilenModeller)
-                                    rvModelListesi.adapter = markaAdapter
-                                }
-
-
-                            }
-
+                    for (modeller in tumModeller) {
+                        if (modeller.marka.toString() == secilenMarka) {
+                            secilenModeller.add(modeller)
                         }
-                    })
-
-                } else if ( position ==0){
-                    setupRecyclerView()
+                    }
+                    setupRecyclerView(secilenModeller)
+                } else if (position == 0) {
+                    setupRecyclerView(tumModeller)
                 }
             }
         }
+
+
+
     }
 
     private fun markaModelGetir() {
@@ -121,10 +95,9 @@ class MotorActivity : AppCompatActivity() {
                         modeller = ds.getValue(ModelDetaylariData::class.java)!!
                         tumModeller.add(modeller)
                     }
-
-
+                    //  tumModeller.shuffle()
                     dialogGizle()
-                    setupRecyclerView()
+                    setupRecyclerView(tumModeller)
                 }
 
             }
@@ -132,10 +105,10 @@ class MotorActivity : AppCompatActivity() {
     }
 
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView(modelList: ArrayList<ModelDetaylariData>) {
         rvModelListesi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-      //  rvModelListesi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val markaAdapter = MarkaModelAdapter(this, tumModeller)
+        //  rvModelListesi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val markaAdapter = MarkaModelAdapter(this, modelList)
         rvModelListesi.adapter = markaAdapter
 
         //  rvModelListesi.setHasFixedSize(true)
@@ -145,7 +118,6 @@ class MotorActivity : AppCompatActivity() {
 
 
     fun setupNavigationView() {
-
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
         BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView) // Bottomnavhelper içinde setupNavigationda context ve nav istiyordu verdik...
         var menu = bottomNavigationView.menu
@@ -155,12 +127,18 @@ class MotorActivity : AppCompatActivity() {
 
 
     override fun onStart() {
-
         tumModeller = ArrayList()
-
-
         super.onStart()
     }
 
+
+    fun dialogGizle() {
+        loading?.let { if (it.isShowing) it.cancel() }
+    }
+
+    fun dialogCalistir() {
+        dialogGizle()
+        loading = LoadingDialog.startDialog(this)
+    }
 
 }

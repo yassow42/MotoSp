@@ -259,8 +259,6 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                         yorumFotosu.visibility = View.VISIBLE
                     } else yorumFotosu.visibility = View.GONE
 
-
-                    Log.e("foto", yorumFoto)
                     if (konuyuAcan == gelenItemVerisi.cevap_yazan) {
                         tvSahibi.visibility = View.VISIBLE
                     }

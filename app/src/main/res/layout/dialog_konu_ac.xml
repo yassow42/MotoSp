@@ -5,14 +5,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@drawable/bg_dialog_tumlayout">
+    android:background="@drawable/bg_mavi_beyaz">
 
     <EditText
         android:id="@+id/etKonuBasligi"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="18dp"
         android:background="@drawable/bg_edit_text"
         android:ems="10"
@@ -27,7 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="2dp"
         android:background="@drawable/bg_edit_text"
         android:ems="10"
@@ -41,7 +41,7 @@
         android:id="@+id/tvIptal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:padding="8dp"
         android:text="iptal"
         app:layout_constraintEnd_toStartOf="@+id/tvGonder"
@@ -56,7 +56,9 @@
         android:layout_marginBottom="8dp"
         android:padding="8dp"
         android:text="Gönder"
-        android:textColor="@color/siyah"
+        android:textColor="@color/beyaz"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/etKonuCevap"
         app:layout_constraintHorizontal_bias="0.5"
@@ -69,6 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="Konuyu güzel seç :) "
+        android:textColor="@color/beyaz"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -77,10 +81,11 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Unutma başlığı değiştiremezsin..."
-        android:textSize="10sp"
+        android:textColor="@color/beyaz"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/etKonuBasligi"
-        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="@+id/etKonuBasligi"
         app:layout_constraintTop_toBottomOf="@+id/etKonuBasligi" />
 </androidx.constraintlayout.widget.ConstraintLayout>

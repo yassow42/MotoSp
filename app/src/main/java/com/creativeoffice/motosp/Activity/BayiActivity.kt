@@ -57,10 +57,10 @@ class BayiActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViewSehir() {
-        rcBayi.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        val markaAdapter = SehirAdapter(this, sehirList)
-        rcBayi.adapter = markaAdapter
-        rcBayi.setItemViewCacheSize(50)
+        rcBayi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        val SehirAdapter = SehirAdapter(this, sehirList)
+        rcBayi.adapter = SehirAdapter
+      //  rcBayi.setItemViewCacheSize(50)
     }
 
 

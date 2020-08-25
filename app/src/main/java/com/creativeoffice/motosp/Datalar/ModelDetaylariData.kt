@@ -18,7 +18,7 @@ class ModelDetaylariData {
     var yakitkap: String? = null
     var goruntulenme_sayisi: Int? = null
     var fiyat: String? = null
-    var ortYildiz: String? = null
+    var ortYildiz: Float? = null
     var model_yorum_sayisi:Int?=null
 
     var yorumlar: HashMap<String, Yorumlar>? = null
@@ -44,7 +44,7 @@ class ModelDetaylariData {
         yakitkap: String?,
         goruntulenme_sayisi: Int?,
         fiyat: String?,
-        ortYildiz: String?
+        ortYildiz: Float?
     ) {
         this.marka = marka
         this.model = model
@@ -68,6 +68,8 @@ class ModelDetaylariData {
     data class Yorumlar(
         val isim: String? = null,
         val yorum: String? = null,
+        val yorum_yildiz: Float? = null,
+
         val tarih: Long? = null,
         val yorum_key: String? = null,
         val yorum_yapilan_model: String? = null,

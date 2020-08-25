@@ -2,11 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="@drawable/bg_dialog_tumlayout"
     android:padding="3dp">
+
+    <com.willy.ratingbar.ScaleRatingBar
+        android:id="@+id/rbYorumYap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:transformPivotX="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/etYorum"
+        app:layout_constraintStart_toStartOf="@+id/etYorum"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:srb_clearRatingEnabled="true"
+        app:srb_isIndicator="false"
+        app:srb_minimumStars="1"
+        app:srb_numStars="5"
+        app:srb_rating="2.5"
+        app:srb_scrollable="true"
+        app:srb_starHeight="25dp"
+        app:srb_starPadding="8dp"
+        app:srb_starWidth="25dp"
+        app:srb_stepSize="0.5" />
 
     <TextView
         android:id="@+id/textView3"
@@ -36,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tvGonder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/rbYorumYap" />
 
     <TextView
         android:id="@+id/tvIptal"

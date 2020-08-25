@@ -41,6 +41,7 @@ class YeniAcilanKonuAdapter(val myContext: Context, val yeniKonuList: ArrayList<
 
             val intent = Intent(myContext, KonuDetayActivity::class.java)
             intent.putExtra("konuBasligi", gelenItem.konu_basligi.toString())
+            intent.putExtra("konuCevabi", gelenItem.konu_sahibi_cevap.toString())
             intent.putExtra("userName", gelenItem.konuyu_acan.toString())
             intent.putExtra("tarih", holder.formatDate(gelenItem.acilma_zamani).toString())
             intent.putExtra("konuKey", gelenItem.konu_key)

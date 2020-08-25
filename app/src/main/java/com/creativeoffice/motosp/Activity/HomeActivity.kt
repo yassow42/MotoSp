@@ -52,14 +52,14 @@ class HomeActivity : AppCompatActivity() {
     var loading: Dialog? = null
 
     private var mDelayHandler: Handler? = null
-
+/*
     internal val sonAktiflik: Runnable = Runnable {
         if (!isFinishing) {
             ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
 
         }
     }
-
+*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -90,141 +90,12 @@ class HomeActivity : AppCompatActivity() {
         initBtn()
         setupNavigationView()
 
-        mDelayHandler!!.postDelayed(sonAktiflik, 2000)
+     //   mDelayHandler!!.postDelayed(sonAktiflik, 2000)
 
         // Handler().postDelayed({ dialogGizle() }, 4000)
 
     }
 
-    fun dialogGizle() {
-        loading?.let { if (it.isShowing) it.cancel() }
-    }
-
-    fun dialogCalistir() {
-        dialogGizle()
-        loading = LoadingDialog.startDialog(this)
-    }
-
-    private fun initBtn() {
-
-        imgHaberEkle.setOnClickListener {
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            var inflater: LayoutInflater = layoutInflater
-            var view: View = inflater.inflate(R.layout.dialog_haber_ekle, null)
-
-            builder.setView(view)
-            var dialog: Dialog = builder.create()
-
-            view.btnGonder.setOnClickListener {
-                var ref = FirebaseDatabase.getInstance().reference
-
-                var haberBaslik = view.etBaslik.text.toString()
-                var haberAltBaslik = view.etAltBaslik.text.toString()
-                var haberIcerik = view.etIcerik.text.toString()
-                var haberVideo = view.etVideo.text.toString()
-                var haberVideolumu = view.etHaberVideolumu.text.toString().toBoolean()
-                var haberKey = ref.child("Haberler").push().key
-
-                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey, haberAltBaslik, haberVideolumu)
-
-                ref.child("Haberler").child(haberKey.toString()).setValue(haberData).addOnCompleteListener {
-                    ref.child("Haberler").child(haberKey.toString()).child("haber_eklenme_zamani").setValue(ServerValue.TIMESTAMP)
-                    dialog.dismiss()
-                }.addOnFailureListener {
-
-                }
-            }
-
-
-            dialog.show()
-
-        }
-
-
-        imgPlus.setOnClickListener {
-
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            var inflater: LayoutInflater = layoutInflater
-            view = inflater.inflate(R.layout.dialog_konu_ac, null)
-            view.etKonuBasligi.addTextChangedListener(watcherForumKonu)
-            view.etKonuCevap.addTextChangedListener(watcherForumCevap)
-            builder.setView(view)
-            var dialog: Dialog = builder.create()
-
-            view.tvIptal.setOnClickListener {
-                dialog.dismiss()
-            }
-
-            view.tvGonder.setOnClickListener {
-
-
-                var ref = FirebaseDatabase.getInstance().reference
-                var konuBasligi = view.etKonuBasligi.text.toString()
-                var konuCevap = view.etKonuCevap.text.toString()
-                var konuKey = ref.child("Forum").push().key
-
-
-                ref.child("users").child(userID).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-
-                    }
-
-                    override fun onDataChange(p0: DataSnapshot) {
-                        var konuyuAcan = p0.value.toString()
-
-                        if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
-                            var konuData = ForumKonuData(null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
-
-                            ref.child("Forum").child(konuKey.toString()).setValue(konuData)
-                            //son cevap ekliyoruzkı sıralayabılelım.
-                            ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
-                            ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
-
-                                val intent = Intent(this@HomeActivity, KonuDetayActivity::class.java)//.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
-                                intent.putExtra("userName", konuData.konuyu_acan.toString())
-                                intent.putExtra("konuKey", konuData.konu_key)
-                                intent.putExtra("konuyu_acan_key", konuData.konuyu_acan_key)
-                                startActivity(intent)
-                            }
-
-                            //ilk olarak konuyu acanı son cevaba kaydedıyoruz...
-                            var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID, konuKey.toString())
-                            ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
-                            ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
-
-                            //cevaba da eklıyruz kı ılk gorunsun
-                            var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
-                            var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, null, userID, konuKey.toString())
-                            ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
-                            ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
-                            dialog.dismiss()
-                        } else {
-                            Toast.makeText(this@HomeActivity, "Başlık veya Cevap çok kısa", Toast.LENGTH_LONG).show()
-                        }
-
-
-                    }
-                })
-            }
-
-
-            dialog.show()
-        }
-
-        tvTumKonular.setOnClickListener {
-
-            /*
-            setupRecyclerViewForumKonu(konularList)
-            rcForum.layoutParams.height = MATCH_PARENT
-            */
-            val intent = Intent(this, TumKonularActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-
-            startActivity(intent)
-
-
-        }
-    }
 
 
     private fun initVeri() {
@@ -380,6 +251,137 @@ class HomeActivity : AppCompatActivity() {
         })
 
     }
+    fun dialogGizle() {
+        loading?.let { if (it.isShowing) it.cancel() }
+    }
+
+    fun dialogCalistir() {
+        dialogGizle()
+        loading = LoadingDialog.startDialog(this)
+    }
+
+    private fun initBtn() {
+
+        imgHaberEkle.setOnClickListener {
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var inflater: LayoutInflater = layoutInflater
+            var view: View = inflater.inflate(R.layout.dialog_haber_ekle, null)
+
+            builder.setView(view)
+            var dialog: Dialog = builder.create()
+
+            view.btnGonder.setOnClickListener {
+                var ref = FirebaseDatabase.getInstance().reference
+
+                var haberBaslik = view.etBaslik.text.toString()
+                var haberAltBaslik = view.etAltBaslik.text.toString()
+                var haberIcerik = view.etIcerik.text.toString()
+                var haberVideo = view.etVideo.text.toString()
+                var haberVideolumu = view.etHaberVideolumu.text.toString().toBoolean()
+                var haberKey = ref.child("Haberler").push().key
+
+                var haberData = HaberlerData(haberBaslik, haberIcerik, haberVideo, null, haberKey, haberAltBaslik, haberVideolumu)
+
+                ref.child("Haberler").child(haberKey.toString()).setValue(haberData).addOnCompleteListener {
+                    ref.child("Haberler").child(haberKey.toString()).child("haber_eklenme_zamani").setValue(ServerValue.TIMESTAMP)
+                    dialog.dismiss()
+                }.addOnFailureListener {
+
+                }
+            }
+
+
+            dialog.show()
+
+        }
+
+
+        imgPlus.setOnClickListener {
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var inflater: LayoutInflater = layoutInflater
+            view = inflater.inflate(R.layout.dialog_konu_ac, null)
+            view.etKonuBasligi.addTextChangedListener(watcherForumKonu)
+            view.etKonuCevap.addTextChangedListener(watcherForumCevap)
+            builder.setView(view)
+            var dialog: Dialog = builder.create()
+
+            view.tvIptal.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            view.tvGonder.setOnClickListener {
+
+
+                var ref = FirebaseDatabase.getInstance().reference
+                var konuBasligi = view.etKonuBasligi.text.toString()
+                var konuCevap = view.etKonuCevap.text.toString()
+                var konuKey = ref.child("Forum").push().key
+
+
+                ref.child("users").child(userID).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        var konuyuAcan = p0.value.toString()
+
+                        if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
+                            var konuData = ForumKonuData(null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
+
+                            ref.child("Forum").child(konuKey.toString()).setValue(konuData)
+                            //son cevap ekliyoruzkı sıralayabılelım.
+                            ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                            ref.child("Forum").child(konuKey.toString()).child("acilma_zamani").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
+
+                                val intent = Intent(this@HomeActivity, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
+                                intent.putExtra("konuCevabi", konuData.konu_sahibi_cevap.toString())
+
+                                intent.putExtra("userName", konuData.konuyu_acan.toString())
+                                intent.putExtra("konuKey", konuData.konu_key)
+                                intent.putExtra("konuyu_acan_key", konuData.konuyu_acan_key)
+                                startActivity(intent)
+                            }
+
+                            //ilk olarak konuyu acanı son cevaba kaydedıyoruz...
+                            var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID, konuKey.toString())
+                            ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
+                            ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+
+                            //cevaba da eklıyruz kı ılk gorunsun
+                            var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
+                            var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, null, userID, konuKey.toString())
+                            ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
+                            ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                            dialog.dismiss()
+                        } else {
+                            Toast.makeText(this@HomeActivity, "Başlık veya Cevap çok kısa", Toast.LENGTH_LONG).show()
+                        }
+
+
+                    }
+                })
+            }
+
+
+            dialog.show()
+        }
+
+        tvTumKonular.setOnClickListener {
+
+            /*
+            setupRecyclerViewForumKonu(konularList)
+            rcForum.layoutParams.height = MATCH_PARENT
+            */
+            val intent = Intent(this, TumKonularActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+            startActivity(intent)
+
+
+        }
+    }
 
     private fun setupRecyclerViewForumKonu(gonderilenKonuList: ArrayList<ForumKonuData>) {
         // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -486,7 +488,6 @@ class HomeActivity : AppCompatActivity() {
                 val kullaniciGirisi = p0.currentUser
                 if (kullaniciGirisi != null) { //eğer kişi giriş yaptıysa nul gorunmez. giriş yapmadıysa null olur
 
-
                 } else {
                     val intent = Intent(this@HomeActivity, LoginActivity::class.java)
                     startActivity(intent)
@@ -497,7 +498,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         if (mDelayHandler != null) {
-            mDelayHandler!!.removeCallbacks(sonAktiflik)
+          //  mDelayHandler!!.removeCallbacks(sonAktiflik)
         }
 
         super.onDestroy()

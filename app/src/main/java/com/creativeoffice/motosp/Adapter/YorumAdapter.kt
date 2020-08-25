@@ -50,7 +50,6 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
                                     yorumlar.remove(yorumlar.get(position))
 
 
-
                                 }
                         }
 
@@ -73,13 +72,11 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
 
                 val intent = Intent(myContext, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 myContext.startActivity(intent)
-            }else{
+            } else {
                 val intent = Intent(myContext, GidilenProfilActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 intent.putExtra("gidilenUserID", yorumlar.get(position).yorum_yapan_kisi.toString())
                 myContext.startActivity(intent)
             }
-
-
 
 
         }
@@ -92,12 +89,17 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
         val date = itemView.date
 
         val yorumCL = itemView.yorumCL
+        val rbYorumItem = itemView.rbYorumItem
 
 
         fun setData(currentItem: ModelDetaylariData.Yorumlar) {
             userName.text = currentItem.isim
             comment.text = currentItem.yorum
             date.text = formatDate(currentItem.tarih).toString()
+
+            currentItem.yorum_yildiz!!.toFloat()?.let {
+                rbYorumItem.rating = it
+            }
 
         }
 

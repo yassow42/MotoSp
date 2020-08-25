@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/popYorumYap"
+        android:title="Yorum Yap" />
+    <item
+        android:id="@+id/popParca"
+        android:title="Parça Ekle" />
+    <item
+        android:id="@+id/popYakitEkle"
+        android:title="Yakıt Tüketimi Ekle" />
+</menu>
