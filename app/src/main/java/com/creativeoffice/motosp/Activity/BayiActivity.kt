@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_bayi.*
 
 class BayiActivity : AppCompatActivity() {
 
-    private val ACTIVITY_NO = 2
+    private val ACTIVITY_NO = 3
     var sehirList = ArrayList<BayilerData>()
 
 

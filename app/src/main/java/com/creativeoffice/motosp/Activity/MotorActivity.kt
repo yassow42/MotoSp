@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_motor.*
 
 
 class MotorActivity : AppCompatActivity() {
-    private val ACTIVITY_NO = 1
+    private val ACTIVITY_NO = 2
     private val TAG = "MotorActivity"
 
     lateinit var tumModeller: ArrayList<ModelDetaylariData>
@@ -87,6 +87,7 @@ class MotorActivity : AppCompatActivity() {
     }
 
     private fun markaModelGetir() {
+        myRef.child("tum_motorlar").keepSynced(true)
         myRef.child("tum_motorlar").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {

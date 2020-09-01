@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout8"
-        android:layout_width="330dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -118,7 +118,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Kategori"
+                        android:text="Category"
                         android:textColor="@color/siyah"
                         android:textStyle="bold" />
 
@@ -274,8 +274,8 @@
 
     <ImageView
         android:id="@+id/imgMarka"
-        android:layout_width="65dp"
-        android:layout_height="66dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout8"
         app:layout_constraintEnd_toStartOf="@+id/constraintLayout8"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout8"

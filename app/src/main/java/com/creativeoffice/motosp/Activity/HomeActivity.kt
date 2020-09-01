@@ -52,14 +52,15 @@ class HomeActivity : AppCompatActivity() {
     var loading: Dialog? = null
 
     private var mDelayHandler: Handler? = null
-/*
-    internal val sonAktiflik: Runnable = Runnable {
-        if (!isFinishing) {
-            ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
 
+    /*
+        internal val sonAktiflik: Runnable = Runnable {
+            if (!isFinishing) {
+                ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
+
+            }
         }
-    }
-*/
+    */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -68,7 +69,9 @@ class HomeActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
         initMyAuthStateListener()
-
+        ref.child("Forum").keepSynced(true)
+        ref.child("tum_motorlar").keepSynced(true)
+        ref.child("Haberler").keepSynced(true)
         // mAuth.signOut()
         var user = mAuth.currentUser
         if (user != null) {
@@ -90,16 +93,16 @@ class HomeActivity : AppCompatActivity() {
         initBtn()
         setupNavigationView()
 
-     //   mDelayHandler!!.postDelayed(sonAktiflik, 2000)
+        //   mDelayHandler!!.postDelayed(sonAktiflik, 2000)
 
         // Handler().postDelayed({ dialogGizle() }, 4000)
 
     }
 
 
-
     private fun initVeri() {
         val ref = FirebaseDatabase.getInstance().reference
+
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
@@ -231,8 +234,6 @@ class HomeActivity : AppCompatActivity() {
             }
         })
 
-
-
         ref.child("Haberler").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
@@ -251,6 +252,7 @@ class HomeActivity : AppCompatActivity() {
         })
 
     }
+
     fun dialogGizle() {
         loading?.let { if (it.isShowing) it.cancel() }
     }
@@ -498,7 +500,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         if (mDelayHandler != null) {
-          //  mDelayHandler!!.removeCallbacks(sonAktiflik)
+            //  mDelayHandler!!.removeCallbacks(sonAktiflik)
         }
 
         super.onDestroy()

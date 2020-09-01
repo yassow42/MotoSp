@@ -5,6 +5,10 @@
         android:id="@+id/ic_home"
         android:icon="@drawable/ic_home"
         android:title="Forum" />
+    <item
+        android:id="@+id/ic_etkinlik"
+        android:icon="@drawable/travel"
+        android:title="Etkinlikler" />
 
 
     <item
