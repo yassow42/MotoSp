@@ -6,25 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".Activity.EtkinlikDetayActivity">
 
-    <TextView
-        android:id="@+id/textView24"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="85dp"
-        android:text="Etkinlik Detayı"
-        android:textSize="24sp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:id="@+id/constraintLayout9"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/appbar_uzunluk"
+        android:background="@color/mavi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/tvKatıl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Katıl"
+            android:textColor="@color/beyaz"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvEtkinlikAdi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="İstanbul Gezisi"
+            android:textColor="@color/beyaz"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:accessibilityLiveRegion="polite"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/beyaz"
+        app:itemTextColor="@color/beyaz"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
     <TextView
-        android:id="@+id/tvEtkinlikAdi"
+        android:id="@+id/tvEtkinlikZamani"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:text="TextView"
+        android:layout_marginTop="16dp"
+        android:text="11 Eylül"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
+
+    <TextView
+        android:id="@+id/tvEtkinlikSaati"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="19:30"
+        app:layout_constraintEnd_toEndOf="@+id/tvEtkinlikZamani"
+        app:layout_constraintStart_toStartOf="@+id/tvEtkinlikZamani"
+        app:layout_constraintTop_toBottomOf="@+id/tvEtkinlikZamani" />
+
+    <TextView
+        android:id="@+id/tvKatilimciSayisi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="150/25"
+        app:layout_constraintEnd_toEndOf="@+id/tvEtkinlikSaati"
+        app:layout_constraintStart_toStartOf="@+id/tvEtkinlikSaati"
+        app:layout_constraintTop_toBottomOf="@+id/tvEtkinlikSaati" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -69,9 +69,6 @@ class HomeActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
         initMyAuthStateListener()
-        ref.child("Forum").keepSynced(true)
-        ref.child("tum_motorlar").keepSynced(true)
-        ref.child("Haberler").keepSynced(true)
         // mAuth.signOut()
         var user = mAuth.currentUser
         if (user != null) {
@@ -82,6 +79,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        ref.child("Forum").keepSynced(true)
+        ref.child("tum_motorlar").keepSynced(true)
+        ref.child("Haberler").keepSynced(true)
 
         konularList = ArrayList()
         cevapYazilanKonuList = ArrayList()
@@ -109,7 +110,6 @@ class HomeActivity : AppCompatActivity() {
                 if (p0.hasChildren()) {
                     try {
                         var yeniKonuList = ArrayList<ForumKonuData>()
-                        yeniKonuList = ArrayList()
                         var gelenKonu: ForumKonuData
                         for (i in p0.children) {
                             gelenKonu = i.getValue(ForumKonuData::class.java)!!
@@ -186,7 +186,6 @@ class HomeActivity : AppCompatActivity() {
                             if (p0.hasChildren()) {
                                 try {
                                     var sonYorumlarTumList = ArrayList<YorumlarData>()
-                                    sonYorumlarTumList = ArrayList()
                                     for (ds in p0.children) {
                                         var gelenVeri = ds.getValue(YorumlarData::class.java)!!
                                         sonYorumlarTumList.add(gelenVeri)

@@ -23,8 +23,6 @@ import com.creativeoffice.motosp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import id.zelory.compressor.Compressor
-import id.zelory.compressor.compressFormat
 import kotlinx.android.synthetic.main.activity_konu_detay.*
 import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
 import kotlinx.coroutines.Dispatchers

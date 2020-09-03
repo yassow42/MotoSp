@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.EtkinlikDetayActivity
 import com.creativeoffice.motosp.Datalar.EtkinlikData
 import com.creativeoffice.motosp.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.item_etkinlikler.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,7 +46,8 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
         holder.itemView.setOnClickListener {
 
             val intent = Intent(myContext, EtkinlikDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            intent.putExtra("etkinlik_adi", item.etkinlik_adı)
+            intent.putExtra("etkinlik_adi", item.etkinlik_adi)
+            intent.putExtra("etkinlik_key", item.etkinlik_key)
 
             myContext.startActivity(intent)
         }
@@ -56,20 +61,23 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
 
 
         val etkinlikAdi = itemView.tvEtkinlikAdi
+        val etkinlikOlusturan = itemView.tvEtkinlikOlusturan
         val etkinlikSehir = itemView.tvEtkinlikSehir
         val etkinlikZaman = itemView.tvEtkinlikZamani
         val etkinlikZamanSaat = itemView.tvEtkinlikZamaniSaat
         val countDown = itemView.tvCountDown
+        val etkinlikOlusutulmaZamani = itemView.tvEtkinlikOlustulmaTarihi
         val etkinlikKatilimci = itemView.tvKatilimciSayisi
 
         fun setData(myContext: Context, item: EtkinlikData) {
-            etkinlikAdi.text = item.etkinlik_adı
+            etkinlikAdi.text = item.etkinlik_adi
             etkinlikSehir.text = "Şehir: " + item.etkinlik_sehir.toString()
-            etkinlikZaman.text = "Etkinlik Zamanı: " + formatDate(item.etkinlik_zamani).toString()
-            etkinlikZamanSaat.text = "Etkinlik Saati: " + formatDateSaat(item.etkinlik_zamani).toString()
             etkinlikKatilimci.text = "Katılımcı Sayısı: " + item.etkinlik_katilimci_sayisi.toString() + "/23"
             var zamanFarki: Long? = null
             item.etkinlik_zamani?.let {
+                etkinlikZaman.text = "Etkinlik Zamanı: " + formatDate(item.etkinlik_zamani).toString()
+                etkinlikZamanSaat.text = "Etkinlik Saati: " + formatDateSaat(item.etkinlik_zamani).toString()
+                etkinlikOlusutulmaZamani.text = formatDateSaat(item.etkinlik_olusturulma_tarihi).toString() + " " + formatDate(item.etkinlik_olusturulma_tarihi).toString()
 
                 zamanFarki = it - Calendar.getInstance().timeInMillis
                 object : CountDownTimer(zamanFarki!!.toLong(), 1000) {   //Milisaniye cinsi
@@ -80,9 +88,32 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
                     override fun onTick(millisUntilFinished: Long) {
                         val gün = millisUntilFinished / 86400000
                         countDown.text = "$gün Gün Kaldı"
+                        if (gün <1){
+                            countDown.text = "Bugün"
+                        }
+
                     }
                 }.start()
             }
+
+            FirebaseDatabase.getInstance().reference.child("users").child(item.olusturan_key.toString()).addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.hasChildren()){
+                        snapshot.child("user_name").value.toString()?.let {
+                            etkinlikOlusturan.text = it
+                        }
+                    }
+                    else{
+                        etkinlikOlusturan.text = "it"
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            }
+            )
 
 
         }

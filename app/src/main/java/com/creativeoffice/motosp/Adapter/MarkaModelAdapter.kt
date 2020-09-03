@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
@@ -74,8 +75,8 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
     }
 
-    class MyViewHolder(viewHolder: View?, myContext: Context) : RecyclerView.ViewHolder(viewHolder!!) {
-        var tumLayout = viewHolder as ConstraintLayout
+    class MyViewHolder(viewHolder: View, myContext: Context) : RecyclerView.ViewHolder(viewHolder!!) {
+        var tumLayout = viewHolder
         var tvMarka = tumLayout.tvMarka
         var tvModel = tumLayout.tvModel
         var tvFiyat = tumLayout.tvFiyat
