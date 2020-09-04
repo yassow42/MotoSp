@@ -53,18 +53,11 @@ class HomeActivity : AppCompatActivity() {
 
     private var mDelayHandler: Handler? = null
 
-    /*
-        internal val sonAktiflik: Runnable = Runnable {
-            if (!isFinishing) {
-                ref.child("users").child(userID).child("user_details").child("son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
 
-            }
-        }
-    */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+      //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mDelayHandler = Handler()
 
         mAuth = FirebaseAuth.getInstance()
@@ -90,16 +83,20 @@ class HomeActivity : AppCompatActivity() {
         tumModeller = ArrayList()
         tumHaberler = ArrayList()
 
-        initVeri()
+
         initBtn()
         setupNavigationView()
 
-        //   mDelayHandler!!.postDelayed(sonAktiflik, 2000)
 
-        // Handler().postDelayed({ dialogGizle() }, 4000)
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialogCalistir()
+        Handler().postDelayed({ initVeri() }, 800)
+        Handler().postDelayed({ dialogGizle() }, 4000)
+    }
 
     private fun initVeri() {
         val ref = FirebaseDatabase.getInstance().reference

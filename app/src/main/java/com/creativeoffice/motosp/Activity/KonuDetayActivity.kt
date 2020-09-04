@@ -64,7 +64,7 @@ class KonuDetayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_konu_detay)
         // this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+       // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         cevapList = ArrayList()
         setupRecyclerViewCevap()
 
@@ -253,7 +253,6 @@ class KonuDetayActivity : AppCompatActivity() {
     }
 
 
-
     private fun setupRecyclerViewCevap() {
         rcCevaplar.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         //   rcBayi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -271,6 +270,7 @@ class KonuDetayActivity : AppCompatActivity() {
         return sdf.format(date)
 
     }
+
     var watcherForumCevap = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {}
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -284,15 +284,12 @@ class KonuDetayActivity : AppCompatActivity() {
 
     }
 
-
+/*
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(this@KonuDetayActivity, HomeActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-        startActivity(intent)
+        onBackPressed()
     }
-
+*/
     override fun onResume() {
         super.onResume()
         if (userID == konuAcanKey) {

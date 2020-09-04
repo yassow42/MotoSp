@@ -40,7 +40,7 @@ class MotorActivity : AppCompatActivity() {
 
 
         secilenModeller = ArrayList()
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+      //  this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setupNavigationView()
         setupSpinner()
 

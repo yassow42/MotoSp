@@ -1,443 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:cardCornerRadius="12dp"
     tools:context=".Activity.ProfileActivity">
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/profileRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/genel_renk"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imgProfileSetting"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout10"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/ic_setting"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/tvKullaniciAdi"
+            android:background="@color/genel_renk"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvKullaniciAdi" />
-
-        <TextView
-            android:id="@+id/tvMarkaProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/summit"
-            android:text="TextView"
-            android:textColor="#E8EEF2"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:transitionName="trans_marka"
-            app:layout_constraintEnd_toEndOf="@+id/tvModelProfile"
-            app:layout_constraintStart_toStartOf="@+id/tvModelProfile"
-            app:layout_constraintTop_toBottomOf="@+id/tvModelProfile" />
-
-        <TextView
-            android:id="@+id/tvModelProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/summit"
-            android:text="TextView"
-            android:textColor="#E8EEF2"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvProfilDuzenleButton" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/view8"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:background="@color/beyaz"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMarkaProfile" />
+            <ImageView
+                android:id="@+id/imgProfileSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/ic_setting"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <HorizontalScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:fadingEdge="horizontal|vertical"
-            android:foregroundGravity="center"
-            android:overScrollMode="ifContentScrolls"
-            android:padding="4dp"
-            android:scrollbarStyle="insideOverlay"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view8">
+            <TextView
+                android:id="@+id/tvMarkaProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-light"
+                android:text="TextView"
+                android:textColor="#E8EEF2"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:transitionName="trans_marka"
+                app:layout_constraintStart_toStartOf="@+id/tvKullaniciAdi"
+                app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdi" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/beyaz_bg_bos_sadece_kenar"
-                android:orientation="vertical"
-                android:padding="8dp">
+            <TextView
+                android:id="@+id/tvAdres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-light"
+                android:text=" İstanbul"
+                android:textColor="#E8EEF2"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:transitionName="trans_marka"
+                app:layout_constraintStart_toStartOf="@+id/circleProfileImage"
+                app:layout_constraintTop_toBottomOf="@+id/circleProfileImage" />
 
-                <LinearLayout
-                    android:id="@+id/modelDetayLL"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:visibility="visible">
+            <TextView
+                android:id="@+id/tvAdres2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="sans-serif-light"
+                android:text="10 KH 665"
+                android:textColor="#E8EEF2"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:transitionName="trans_marka"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/circleProfileImage"
+                app:layout_constraintTop_toBottomOf="@+id/tvAdres" />
 
+            <TextView
+                android:id="@+id/tvKullaniciAdi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-black"
+                android:text="TextView"
+                android:textColor="@color/beyaz"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@+id/circleProfileImage"
+                app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:orientation="vertical">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleProfileImage"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="16dp"
+                app:civ_border_color="@color/siyah"
+                app:civ_border_width="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgProfileSetting">
 
-                        <ImageView
-                            android:id="@+id/imgKategori"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/ic_kategori"
-                            android:padding="8dp" />
+            </de.hdodenhof.circleimageview.CircleImageView>
 
-                        <TextView
-                            android:id="@+id/detay_kategori"
-                            android:layout_width="63dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/summit"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:padding="8dp"
-                            android:text="Text"
-                            android:textAlignment="center"
-                            android:textColor="@color/beyaz"
-                            android:textSize="14sp"
-                            android:textStyle="normal|bold" />
-                    </LinearLayout>
+            <TextView
+                android:id="@+id/tvModelProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif-light"
+                android:text="TextView"
+                android:textColor="#E8EEF2"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tvMarkaProfile"
+                app:layout_constraintStart_toEndOf="@+id/tvMarkaProfile"
+                app:layout_constraintTop_toTopOf="@+id/tvMarkaProfile" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/mProgressBarActivityProfile"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
+                app:layout_constraintEnd_toEndOf="@+id/circleProfileImage"
+                app:layout_constraintStart_toStartOf="@+id/circleProfileImage"
+                app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
 
-                        <ImageView
-                            android:id="@+id/imgSilindir"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/ic_silindir"
-                            android:padding="8dp" />
+            <TextView
+                android:id="@+id/tvPuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15"
+                android:textColor="@color/beyaz"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvAdres"
+                app:layout_constraintTop_toTopOf="@+id/tvAdres" />
 
-                        <TextView
-                            android:id="@+id/detay_silindirhacmi"
-                            android:layout_width="63dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/summit"
-                            android:maxLines="1"
-                            android:padding="8dp"
-                            android:text="Text"
-                            android:textAlignment="center"
-                            android:textColor="@color/beyaz"
-                            android:textSize="14sp"
-                            android:textStyle="normal|bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/ic_beygir"
-                            android:padding="8dp" />
-
-                        <TextView
-                            android:id="@+id/detay_beygir"
-                            android:layout_width="63dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/summit"
-                            android:maxLines="1"
-                            android:padding="8dp"
-                            android:text="Text"
-                            android:textAlignment="center"
-                            android:textColor="@color/beyaz"
-                            android:textSize="14sp"
-                            android:textStyle="normal|bold" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/ic_hiz"
-                            android:padding="8dp" />
-
-                        <TextView
-                            android:id="@+id/detay_hiz"
-                            android:layout_width="63dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/summit"
-                            android:maxLines="1"
-                            android:padding="8dp"
-                            android:text="80 km/s"
-                            android:textAlignment="center"
-                            android:textColor="@color/beyaz"
-                            android:textSize="14sp"
-                            android:textStyle="normal|bold" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/ic_tork"
-                            android:padding="8dp" />
-
-                        <TextView
-                            android:id="@+id/detay_tork"
-                            android:layout_width="63dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/summit"
-                            android:maxLines="1"
-                            android:padding="8dp"
-                            android:text="Text"
-                            android:textAlignment="center"
-                            android:textColor="@color/beyaz"
-                            android:textSize="14sp"
-                            android:textStyle="normal|bold" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView5"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/ic_devir"
-                            android:padding="8dp" />
-
-                        <TextView
-                            android:id="@+id/detay_devir"
-                            android:layout_width="63dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/summit"
-                            android:maxLines="1"
-                            android:padding="8dp"
-                            android:text="Text"
-                            android:textAlignment="center"
-                            android:textColor="@color/beyaz"
-                            android:textSize="14sp"
-                            android:textStyle="normal|bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="3dp"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/ic_kg" />
-
-                        <TextView
-                            android:id="@+id/detay_agirlik"
-                            android:layout_width="63dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/summit"
-                            android:maxLines="1"
-                            android:padding="8dp"
-                            android:text="Text"
-                            android:textAlignment="center"
-                            android:textColor="@color/beyaz"
-                            android:textSize="14sp"
-                            android:textStyle="normal|bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="3dp"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/ic_yakitkap" />
-
-                        <TextView
-                            android:id="@+id/detay_yakitKap"
-                            android:layout_width="63dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/summit"
-                            android:maxLines="1"
-                            android:padding="8dp"
-                            android:text="Text"
-                            android:textAlignment="center"
-                            android:textColor="@color/beyaz"
-                            android:textSize="14sp"
-                            android:textStyle="normal|bold" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-        <View
-            android:id="@+id/view5"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/beyaz"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdi" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleProfileImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:background="@mipmap/ic_profile"
-            app:civ_border_color="@color/colorAccent"
-            app:civ_border_width="2dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view5">
-
-        </de.hdodenhof.circleimageview.CircleImageView>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tvProfilDuzenleButton"
             style="@style/btn_style"
             android:layout_width="130dp"
             android:layout_height="40dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/edit_profile_button_background"
             android:enabled="true"
             android:fontFamily="@font/summit"
             android:gravity="center"
             android:text="Profili Düzenle"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circleProfileImage" />
-
-        <TextView
-            android:id="@+id/tvKullaniciAdi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="10dp"
-            android:text="TextView"
-            android:textColor="@color/beyaz"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/mProgressBarActivityProfile"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
-            app:layout_constraintEnd_toEndOf="@+id/circleProfileImage"
-            app:layout_constraintStart_toStartOf="@+id/circleProfileImage"
-            app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
-
-        <TextView
-            android:id="@+id/tvPuan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="15"
-            android:textColor="@color/beyaz"
-            android:textSize="16sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
-            app:layout_constraintEnd_toEndOf="@+id/tvUnvan"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/tvUnvan"
-            app:layout_constraintTop_toBottomOf="@+id/tvUnvan" />
-
-        <TextView
-            android:id="@+id/tvUnvan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/summit"
-            android:text="Er"
-            android:textColor="@color/beyaz"
-            android:textSize="40sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvPuan"
-            app:layout_constraintEnd_toEndOf="@+id/tvProfilDuzenleButton"
-            app:layout_constraintStart_toStartOf="@+id/tvProfilDuzenleButton"
-            app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -469,3 +196,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -26,7 +26,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="Haberler"
-            android:textColor="@color/beyaz"
+            android:textColor="@color/genel_yazi_renkleri"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

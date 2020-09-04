@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardBackgroundColor="#F5F5F5"
+    app:cardBackgroundColor="#EBEBEB"
     app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,48 +15,59 @@
         android:layout_height="wrap_content"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tvMarka"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Marka"
-            android:textColor="@color/genel_renk"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/tvModel"
-            app:layout_constraintStart_toStartOf="@+id/tvModel"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvModel"
+        <LinearLayout
+            android:id="@+id/linearLayout5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:maxLength="10"
-            android:maxLines="1"
-            android:text="Model"
-            android:textColor="@color/genel_renk"
-            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMarka" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvMarka"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Marka"
+                android:textAlignment="center"
+                android:textColor="@color/mavi"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:text="Model"
+                android:textAlignment="center"
+                android:textColor="@color/mavi"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvSonMesaj"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif-medium"
             android:maxLines="2"
             android:text="Son Mesaj"
             android:textColor="@color/siyah"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/tvModel"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvModel"
-            app:layout_constraintTop_toTopOf="@+id/tvMarka" />
+            app:layout_constraintStart_toEndOf="@+id/linearLayout5"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout5" />
 
         <TextView
             android:id="@+id/tvSonYazanTarih"

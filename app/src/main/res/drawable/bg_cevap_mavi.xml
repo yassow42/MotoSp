@@ -4,9 +4,9 @@
 
     <gradient
         android:angle="315"
-        android:centerColor="#CE202749"
+        android:centerColor="#CE4E5FB1"
 
-        android:centerX="45%"
+        android:centerX="55%"
 
         android:endColor="#AEC30800"
         android:startColor="@color/colorPrimary"
@@ -18,7 +18,7 @@
         android:topRightRadius="10dp"/>
 
     <stroke
-        android:width="1dp"
+        android:width="0.7dp"
         android:color="@color/genel_renk"
 
 
