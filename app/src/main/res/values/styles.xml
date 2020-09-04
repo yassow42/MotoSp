@@ -11,7 +11,7 @@
     </style>
 
     <style name="btn_style" parent="Theme.AppCompat.Light.NoActionBar">
-      <item name="android:padding">5dp</item>
+        <item name="android:padding">5dp</item>
         <item name="android:textColor">@color/siyah</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
@@ -23,5 +23,14 @@
         <item name="colorControlActivated">#ff5722</item>
         <item name="colorControlHighlight">#f44336</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

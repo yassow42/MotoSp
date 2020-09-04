@@ -354,6 +354,9 @@ class ModelDetayiActivity : AppCompatActivity() {
             popup.show()
 
         }
+        imgGeri.setOnClickListener {
+            onBackPressed()
+        }
 
 
     }

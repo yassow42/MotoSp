@@ -11,13 +11,13 @@
         android:id="@+id/appBarConstraintL"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@color/mavi"
+        android:background="@color/genel_renk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imgGeri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -57,12 +57,14 @@
 
         <ImageView
             android:id="@+id/imgMarka"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="16dp"
-            android:background="@drawable/ic_honda"
+            android:background="@mipmap/ic_triumph"
+            android:backgroundTintMode="src_over"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toEndOf="@+id/imgGeri"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -88,7 +90,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/genel_renk">
 
 
             <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -96,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="auto"
-                app:color="@color/mavi"
+                app:color="@color/genel_renk"
                 app:fontSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -466,6 +469,7 @@
                 android:text="@string/motor_tanitim"
                 android:textColor="@color/siyah"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/cardView2"
                 app:layout_constraintStart_toStartOf="@+id/cardView2"
                 app:layout_constraintTop_toBottomOf="@+id/cardView2" />
@@ -492,6 +496,10 @@
                         android:id="@+id/rcYorum"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
                         android:maxHeight="250dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -535,7 +543,10 @@
                         android:id="@+id/rcYakit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -575,7 +586,10 @@
                         android:id="@+id/rcParca"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
                         android:layout_marginTop="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

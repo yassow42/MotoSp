@@ -26,7 +26,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@color/mavi"
+        android:background="@color/genel_renk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

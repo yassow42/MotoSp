@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/genel_renk">
 
     <EditText
         android:id="@+id/etEtkinlikAdi"
@@ -17,6 +18,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/etEtkinlikDetaylari"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Etkinlik Detaylari"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etEtkinlikAdi" />
+
+    <EditText
         android:id="@+id/etEtkinlikSehri"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +39,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEtkinlikAdi" />
+        app:layout_constraintTop_toBottomOf="@+id/etEtkinlikDetaylari" />
 
     <EditText
         android:id="@+id/etKatilimciSayisi"

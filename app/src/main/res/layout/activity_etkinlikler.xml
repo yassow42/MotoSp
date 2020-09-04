@@ -10,7 +10,7 @@
         android:id="@+id/constraintLayout6"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/mavi"
+        android:background="@color/genel_renk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,6 +25,7 @@
             android:padding="5dp"
             android:text="Etkinlikler"
             android:textColor="@color/beyaz"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:accessibilityLiveRegion="polite"
-        android:background="@color/colorPrimary"
+        android:background="@color/genel_renk"
         app:itemIconTint="@color/beyaz"
         app:itemTextColor="@color/beyaz"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -61,11 +62,10 @@
         android:id="@+id/rcEtkinlikler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_etkinlikler" />
 </androidx.constraintlayout.widget.ConstraintLayout>

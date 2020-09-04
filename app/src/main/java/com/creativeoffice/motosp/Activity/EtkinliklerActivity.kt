@@ -78,8 +78,8 @@ class EtkinliklerActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this).setView(dialogView).setTitle("Etkinlik Oluştur")
                 .setPositiveButton("Oluştur", DialogInterface.OnClickListener { dialog, which ->
                     var etkinlikKey = ref.child("Etkinlikler").push().key
-                    var data = EtkinlikData(dialogView.etEtkinlikAdi.text.toString(), cal.timeInMillis, System.currentTimeMillis(), dialogView.etEtkinlikSehri.text.toString(),
-                        dialogView.etEtkinlikNotu.text.toString(), dialogView.etKatilimciSayisi.text.toString().toInt(), userID, etkinlikKey)
+                    var data = EtkinlikData(dialogView.etEtkinlikAdi.text.toString(),dialogView.etEtkinlikDetaylari.text.toString(), cal.timeInMillis, System.currentTimeMillis(), dialogView.etEtkinlikSehri.text.toString(),
+                        dialogView.etEtkinlikNotu.text.toString(), dialogView.etKatilimciSayisi.text.toString().toInt(), userID, etkinlikKey,1)
 
                     ref.child("Etkinlikler").child(etkinlikKey.toString()).setValue(data)
 

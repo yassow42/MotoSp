@@ -3,8 +3,7 @@ package com.creativeoffice.motosp.Adapter
 import android.content.Context
 import android.content.Intent
 import android.os.CountDownTimer
-import android.os.Handler
-import android.provider.Settings.System.DATE_FORMAT
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.item_etkinlikler.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<EtkinlikData>) : RecyclerView.Adapter<EtkinliklerAdapter.MainHolder>() {
@@ -42,12 +42,14 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
 
 
         holder.setData(myContext, item)
-
+Log.e("zamn",item.etkinlik_zamani.toString())
         holder.itemView.setOnClickListener {
 
-            val intent = Intent(myContext, EtkinlikDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            val intent = Intent(myContext, EtkinlikDetayActivity::class.java)
             intent.putExtra("etkinlik_adi", item.etkinlik_adi)
             intent.putExtra("etkinlik_key", item.etkinlik_key)
+            intent.putExtra("etkinlik_zamani", item.etkinlik_zamani.toString())
+            intent.putExtra("etkinlik_detaylari", item.etkinlik_detaylari.toString())
 
             myContext.startActivity(intent)
         }
@@ -72,7 +74,16 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
         fun setData(myContext: Context, item: EtkinlikData) {
             etkinlikAdi.text = item.etkinlik_adi
             etkinlikSehir.text = "Şehir: " + item.etkinlik_sehir.toString()
-            etkinlikKatilimci.text = "Katılımcı Sayısı: " + item.etkinlik_katilimci_sayisi.toString() + "/23"
+            item.katilanlar_sayisi?.let {
+                item.etkinlik_katilimci_sayisi?.let {
+                    etkinlikKatilimci.text = "Katılımcı Sayısı: " + item.katilanlar_sayisi + "/" + item.etkinlik_katilimci_sayisi.toString() +
+                            " %" + (item.katilanlar_sayisi!!.toDouble() * 100 / item.etkinlik_katilimci_sayisi!!.toDouble()).toDouble()
+                    etkinlikKatilimci.isSelected = true
+                   // etkinlikKatilimci.setSingleLine()
+                }
+            }
+
+
             var zamanFarki: Long? = null
             item.etkinlik_zamani?.let {
                 etkinlikZaman.text = "Etkinlik Zamanı: " + formatDate(item.etkinlik_zamani).toString()
@@ -88,7 +99,7 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
                     override fun onTick(millisUntilFinished: Long) {
                         val gün = millisUntilFinished / 86400000
                         countDown.text = "$gün Gün Kaldı"
-                        if (gün <1){
+                        if (gün < 1) {
                             countDown.text = "Bugün"
                         }
 
@@ -96,16 +107,15 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
                 }.start()
             }
 
-            FirebaseDatabase.getInstance().reference.child("users").child(item.olusturan_key.toString()).addListenerForSingleValueEvent(object :ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.hasChildren()){
-                        snapshot.child("user_name").value.toString()?.let {
+            FirebaseDatabase.getInstance().reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.child("users").child(item.olusturan_key.toString()).hasChildren()) {
+                        p0.child("users").child(item.olusturan_key.toString()).child("user_name").value.toString()?.let {
                             etkinlikOlusturan.text = it
                         }
                     }
-                    else{
-                        etkinlikOlusturan.text = "it"
-                    }
+
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {

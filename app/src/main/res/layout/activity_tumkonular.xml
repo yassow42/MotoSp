@@ -10,7 +10,7 @@
         android:id="@+id/constraintLayout5"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/mavi"
+        android:background="@color/genel_renk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -45,7 +45,7 @@
                 android:id="@+id/textView18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/mavi"
+                android:background="@color/genel_renk"
                 android:padding="8dp"
                 android:text="\t Forum Kuralları;\n\t -  Forumda yazılan mesajlardan tamamen yazan forum üyesi sorumludur. Şahısların yazdıkları yazılardan dolayı forumumuz hiçbir sorumluluk kabul etmez.
                 \n\t -  Topluluklar hakkında tahrik edici ve küçük düşürücü yazılar yazılamaz. \n\t - Yorum amacı taşımayan salt propaganda içerikli parti ve siyaset yazıları yasaktır. "

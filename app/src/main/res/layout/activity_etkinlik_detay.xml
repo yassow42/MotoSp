@@ -6,12 +6,73 @@
     android:layout_height="match_parent"
     tools:context=".Activity.EtkinlikDetayActivity">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvEtkinlikDetaylari"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:text="Detaylarr"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvKatilimciSayisi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="150/25"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvEtkinlikDetaylari" />
+
+            <TextView
+                android:id="@+id/tvEtkinlikZamani"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="11 Eylül"
+                app:layout_constraintBottom_toBottomOf="@+id/tvEtkinlikSaati"
+                app:layout_constraintEnd_toStartOf="@+id/tvEtkinlikSaati"
+                app:layout_constraintTop_toTopOf="@+id/tvEtkinlikSaati" />
+
+            <TextView
+                android:id="@+id/tvEtkinlikSaati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="19:30"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvKatilimciSayisi" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:id="@+id/constraintLayout9"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_uzunluk"
-        android:background="@color/mavi"
+        android:background="@color/genel_renk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -48,42 +109,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:accessibilityLiveRegion="polite"
-        android:background="@color/colorPrimary"
+        android:background="@color/genel_renk"
         app:itemIconTint="@color/beyaz"
         app:itemTextColor="@color/beyaz"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
-
-    <TextView
-        android:id="@+id/tvEtkinlikZamani"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="11 Eylül"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
-
-    <TextView
-        android:id="@+id/tvEtkinlikSaati"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:text="19:30"
-        app:layout_constraintEnd_toEndOf="@+id/tvEtkinlikZamani"
-        app:layout_constraintStart_toStartOf="@+id/tvEtkinlikZamani"
-        app:layout_constraintTop_toBottomOf="@+id/tvEtkinlikZamani" />
-
-    <TextView
-        android:id="@+id/tvKatilimciSayisi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="150/25"
-        app:layout_constraintEnd_toEndOf="@+id/tvEtkinlikSaati"
-        app:layout_constraintStart_toStartOf="@+id/tvEtkinlikSaati"
-        app:layout_constraintTop_toBottomOf="@+id/tvEtkinlikSaati" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,7 @@
         />
 
     <stroke
-        android:color="@color/mavi"
+        android:color="@color/genel_renk"
         android:width="2dp"/>
 
 </shape>

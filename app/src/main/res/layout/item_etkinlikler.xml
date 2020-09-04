@@ -8,30 +8,18 @@
 
 
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="4dp">
+    app:cardUseCompatPadding="true">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="175dp"
+        android:background="@drawable/bg_etkinlik_item">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|bottom">
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/next"
-                android:backgroundTint="@color/mavi"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tvEtkinlikZamaniSaat"
@@ -39,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
-                android:textColor="@color/siyah"
+                android:textColor="@color/beyaz"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/tvEtkinlikZamani"
                 app:layout_constraintTop_toBottomOf="@+id/tvEtkinlikZamani" />
@@ -50,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
-                android:textColor="@color/siyah"
+                android:textColor="@color/beyaz"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
-                android:textColor="@color/siyah"
+                android:textColor="@color/beyaz"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/tvEtkinlikZamani"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -75,10 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textColor="@color/siyah"
+                android:textColor="@color/beyaz"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView6"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvEtkinlikSehir"
                 app:layout_constraintTop_toTopOf="@+id/tvEtkinlikSehir" />
 
@@ -87,9 +74,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="16dp"
-                android:text="TextView"
-                android:textColor="@color/mavi"
+                android:layout_marginBottom="24dp"
+                android:maxWidth="225dp"
+                android:maxLines="1"
+                android:text="Katılımcı Sayısı: 6/125 %4.5"
+                android:textColor="@color/beyaz"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -101,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +103,7 @@
 
                     android:layout_gravity="right"
                     android:text="Ahmet"
-                    android:textColor="@color/siyah"
+                    android:textColor="@color/beyaz"
                     android:textSize="12sp" />
 
                 <TextView
@@ -122,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:text="12 Eylül"
-                    android:textColor="@color/siyah"
+                    android:textColor="@color/beyaz"
                     android:textSize="12sp" />
 
                 <TextView
@@ -131,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:text="kalan 15 gün"
-                    android:textColor="@color/siyah"
+                    android:textColor="@color/beyaz"
                     android:textSize="12sp" />
             </LinearLayout>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mavi"
+    android:background="@color/genel_renk"
     tools:context="com.creativeoffice.motosp.Activity.ProfileSettingActivity">
 
 
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:accessibilityLiveRegion="polite"
-            android:background="@color/colorPrimary"
+            android:background="@color/genel_renk"
             app:itemIconTint="@color/beyaz"
             app:itemTextColor="@color/beyaz"
             app:layout_constraintBottom_toBottomOf="parent"

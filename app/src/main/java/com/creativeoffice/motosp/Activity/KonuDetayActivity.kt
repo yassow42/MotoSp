@@ -212,6 +212,7 @@ class KonuDetayActivity : AppCompatActivity() {
 
 
         }
+
     }
 
     private fun initVeri(konuKey: String?) {

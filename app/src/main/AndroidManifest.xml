@@ -14,7 +14,14 @@
         android:roundIcon="@mipmap/ic_motor_bike"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.EtkinlikDetayActivity"></activity>
+        <activity
+            android:name=".Activity.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
+        <activity android:name=".Activity.EtkinlikDetayActivity" />
         <activity android:name=".Activity.EtkinliklerActivity" />
         <activity android:name=".Activity.TumKonularActivity" />
         <activity android:name=".Activity.HaberDetaylariActivity" />

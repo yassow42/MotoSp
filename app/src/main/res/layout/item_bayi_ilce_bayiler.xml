@@ -22,7 +22,7 @@
         android:maxWidth="100dp"
         android:maxLines="1"
         android:text="TextView"
-        android:textColor="@color/mavi"
+        android:textColor="@color/genel_renk"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

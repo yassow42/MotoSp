@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Fotoğrafı Değiştir"
-                android:textColor="@color/mavi"
+                android:textColor="@color/genel_renk"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="@+id/circleEditProfileImage"
                 app:layout_constraintStart_toStartOf="@+id/circleEditProfileImage"

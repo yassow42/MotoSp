@@ -18,6 +18,7 @@ import com.creativeoffice.motosp.Datalar.SpinnerData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
 import com.creativeoffice.motosp.utils.LoadingDialog
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_motor.*
 
@@ -36,6 +37,8 @@ class MotorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_motor)
+
+
         secilenModeller = ArrayList()
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setupNavigationView()

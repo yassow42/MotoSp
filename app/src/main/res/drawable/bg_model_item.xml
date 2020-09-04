@@ -6,7 +6,7 @@
 
 
         android:endColor="#FFFFFF"
-        android:startColor="#DDDDDD"
+        android:startColor="#E3FFFF"
         android:type="linear" />
 
     <corners

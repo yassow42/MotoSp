@@ -56,7 +56,7 @@
                 android:layout_marginTop="5dp"
                 android:padding="8dp"
                 android:text="TextView"
-                android:textColor="@color/mavi"
+                android:textColor="@color/genel_renk"
                 android:textStyle="normal|bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
