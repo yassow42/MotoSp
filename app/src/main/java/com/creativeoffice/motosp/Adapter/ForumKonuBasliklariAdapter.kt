@@ -48,7 +48,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
             intent.putExtra("konuBasligi", gelenItem.konu_basligi.toString())
             intent.putExtra("konuCevabi", gelenItem.konu_sahibi_cevap.toString())
             intent.putExtra("userName", gelenItem.konuyu_acan.toString())
-         //   intent.putExtra("tarih", holder.formatDate(gelenItem.acilma_zamani).toString())
+            //   intent.putExtra("tarih", holder.formatDate(gelenItem.acilma_zamani).toString())
             intent.putExtra("konuKey", gelenItem.konu_key)
             intent.putExtra("konuyu_acan_key", gelenItem.konuyu_acan_key)
 
@@ -67,50 +67,50 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
         var tarih = itemView.tvZaman
         var circleProfileImage = itemView.circleProfileImage
 
-      //  var tvZamanCevap = itemView.tvZamanCevap
-       // var tvSonYazan = itemView.tvSonYazan
+        //  var tvZamanCevap = itemView.tvZamanCevap
+        // var tvSonYazan = itemView.tvSonYazan
         var tumLayout = itemView.clKonuBasliklari
         var cevapSayisi = itemView.tvCevapSayisi
 
-var ref = FirebaseDatabase.getInstance().reference
+        var ref = FirebaseDatabase.getInstance().reference
 
         fun setData(forumKonuData: ForumKonuData, myContext: Context) {
-            konuBasligi.text = forumKonuData.konu_basligi
-            userName.text =forumKonuData.konuyu_acan
+            konuBasligi.text = "  " + forumKonuData.konu_basligi
+            userName.text = forumKonuData.konuyu_acan
             tarih.text = formatDate(forumKonuData.acilma_zamani).toString()
 
 
-            Log.e("sad",forumKonuData.konuyu_acan)
+            Log.e("sad", forumKonuData.konuyu_acan)
             //foruma soncevap yazan verisi
-           ref.child("Forum").child(forumKonuData.konu_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener1 {
-                    override fun onCancelled(p0: DatabaseError) {
+            ref.child("Forum").child(forumKonuData.konu_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener1 {
+                override fun onCancelled(p0: DatabaseError) {
 
-                    }
+                }
 
-                    override fun onDataChange(p0: DataSnapshot) {
-                        if (p0.hasChildren()) {
-                            val gelenData = p0.child("son_cevap").getValue(ForumKonuData.son_cevap::class.java)!!
-                            var cevapZamani = gelenData.cevap_zamani
-                         //   tvZamanCevap.text = formatDate(cevapZamani).toString()
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.hasChildren()) {
+                        val gelenData = p0.child("son_cevap").getValue(ForumKonuData.son_cevap::class.java)!!
+                        var cevapZamani = gelenData.cevap_zamani
+                        //   tvZamanCevap.text = formatDate(cevapZamani).toString()
                         //    tvSonYazan.text = gelenData.cevap_yazan
 
-                           var sayi = p0.child("cevaplar").childrenCount
-                            cevapSayisi.text = "Cevaplar: " +sayi.toString()
+                        var sayi = p0.child("cevaplar").childrenCount
+                        cevapSayisi.text = "Cevaplar: " + sayi.toString()
 
 
-                        } else {
-                       //     tvZamanCevap.text = ""
-                       //     tvSonYazan.text = ""
-                        }
-
-
+                    } else {
+                        //     tvZamanCevap.text = ""
+                        //     tvSonYazan.text = ""
                     }
 
 
-                })
-            ref.child("users").child(forumKonuData.konuyu_acan_key.toString()).addListenerForSingleValueEvent(object :ValueEventListener1{
+                }
+
+
+            })
+            ref.child("users").child(forumKonuData.konuyu_acan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener1 {
                 override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.hasChildren()){
+                    if (p0.hasChildren()) {
 
                         var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                         if (imgURL != "default") {

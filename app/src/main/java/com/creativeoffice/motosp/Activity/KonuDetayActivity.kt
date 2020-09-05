@@ -23,12 +23,9 @@ import com.creativeoffice.motosp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_konu_detay.*
 import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
-import kotlinx.coroutines.Dispatchers
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -64,7 +61,7 @@ class KonuDetayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_konu_detay)
         // this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-       // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         cevapList = ArrayList()
         setupRecyclerViewCevap()
 
@@ -85,55 +82,66 @@ class KonuDetayActivity : AppCompatActivity() {
     private fun initBtn(konuKey: String?) {
         etCevapKonu.addTextChangedListener(watcherForumCevap)
 
+
         imgSend.setOnClickListener {
+            if (!etCevapKonu.text.isNullOrEmpty()) {
+                val konuyaVerilenCevap = etCevapKonu.text.toString()
+                //  var cevapKey = ref.child("Forum").child("cevaplar").push().key
+                ref.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
 
+                    }
 
-            val konuyaVerilenCevap = etCevapKonu.text.toString()
-            //  var cevapKey = ref.child("Forum").child("cevaplar").push().key
-            ref.child("users").child(userID.toString()).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    //cevaba bi key olusturduk
-                    val cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
-                    val cevapYazan = p0.value.toString()
-                    //ilk olarak cevap vereni son cevap olarak kaydediyruz.
-                    val soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
-                    ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
-                    ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
-                    //son cevap zamanı ekliyoruz
-                    ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
-
-                    //cevaba da eklıyruz
-                    val cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
-                    ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
-                    ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
-                        .addOnCompleteListener {
-                            etCevapKonu.text.clear()
-                            imgYorumFotosu.visibility = View.GONE
-
-
-                            if (yorumFotoUri != null) {
-
-
-                                FirebaseStorage.getInstance().reference.child("YorumFotolari").child(konuKey.toString()).child(cevapkey.toString()).putFile(yorumFotoUri!!) // burada fotografı kaydettik veritabanına.
-                                    .addOnSuccessListener { UploadTask ->
-                                        UploadTask.storage.downloadUrl.addOnSuccessListener { itUri ->
-                                            val downloadUrl = itUri.toString()
-                                            ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("Foto").setValue(downloadUrl)
-                                            Toast.makeText(this@KonuDetayActivity, "Yorumun Gönderildi", Toast.LENGTH_SHORT).show()
-                                            CevaplarAdapter.notifyDataSetChanged()
-                                        }
-                                    }
-                            }
+                    override fun onDataChange(p0: DataSnapshot) {
+                        var imgURL = p0.child("user_details/profile_picture").value.toString()
+                        Log.e("sadddd", imgURL)
+                        if (imgURL != "default") {
+                            Picasso.get().load(imgURL).into(imgUser)
                         }
-                }
-            })
+
+                        //cevaba bi key olusturduk
+                        val cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
+                        val cevapYazan = p0.child("user_name").value.toString()
+                        //ilk olarak cevap vereni son cevap olarak kaydediyruz.
+                        val soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
+                        ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
+                        ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                        //son cevap zamanı ekliyoruz
+                        ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
+
+                        //cevaba da eklıyruz
+                        val cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
+                        ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
+                        ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                            .addOnCompleteListener {
+                                etCevapKonu.text.clear()
+                                imgYorumFotosu.visibility = View.GONE
 
 
+                                if (yorumFotoUri != null) {
+                                    FirebaseStorage.getInstance().reference.child("YorumFotolari").child(konuKey.toString()).child(cevapkey.toString()).putFile(yorumFotoUri!!) // burada fotografı kaydettik veritabanına.
+                                        .addOnSuccessListener { UploadTask ->
+                                            UploadTask.storage.downloadUrl.addOnSuccessListener { itUri ->
+                                                val downloadUrl = itUri.toString()
+                                                ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("Foto").setValue(downloadUrl)
+                                                Toast.makeText(this@KonuDetayActivity, "Yorumun Gönderildi", Toast.LENGTH_SHORT).show()
+                                                CevaplarAdapter.notifyDataSetChanged()
+                                            }
+                                        }
+                                }
+
+                            }
+
+                        //kullanıcının yaptığı yorumu profiline ekledık.
+                        ref.child("users").child(userID.toString()).child("yorumlarim").child(cevapkey.toString()).setValue(cevapData)
+                        ref.child("users").child(userID.toString()).child("yorumlarim").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                    }
+                })
+
+
+            } else Toast.makeText(this, "Yorum yok :(", Toast.LENGTH_SHORT).show()
         }
+
 
         imgFoto.setOnClickListener {
             var intent = Intent()
@@ -237,14 +245,21 @@ class KonuDetayActivity : AppCompatActivity() {
             }
         })
 
-        ref.child("users").child(konuAcanKey.toString()).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("users").child(konuAcanKey.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                tvUserName.text = p0.value.toString()
-                konuSahibiUserName = p0.value.toString()
+                tvUserName.text = p0.child("user_name").value.toString()
+                konuSahibiUserName = p0.child("user_name").value.toString()
+
+
+                var imgURL = p0.child("user_details/profile_picture").value.toString()
+                Log.e("sadddd", imgURL)
+                if (imgURL != "default") {
+                    Picasso.get().load(imgURL).into(imgUser)
+                }
             }
 
         })
@@ -284,12 +299,15 @@ class KonuDetayActivity : AppCompatActivity() {
 
     }
 
-/*
-    override fun onBackPressed() {
-        super.onBackPressed()
-        onBackPressed()
-    }
-*/
+
+        override fun onBackPressed() {
+            super.onBackPressed()
+            val intent = Intent(this,HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+            startActivity(intent)
+            finish()
+        }
+
     override fun onResume() {
         super.onResume()
         if (userID == konuAcanKey) {

@@ -2,18 +2,17 @@ package com.creativeoffice.motosp.Adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+
 import androidx.recyclerview.widget.RecyclerView
 
 import com.creativeoffice.motosp.Activity.ModelDetayiActivity
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.R
+
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.tek_model_list.view.*
 import java.io.IOException
@@ -22,20 +21,27 @@ import java.io.IOException
 class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<ModelDetaylariData>) : RecyclerView.Adapter<MarkaModelAdapter.MyViewHolder>() {
 
     var ref = FirebaseDatabase.getInstance().reference
+
+
+
+
+
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
-        var viewHolder = LayoutInflater.from(myContext).inflate(R.layout.tek_model_list, p0, false)
+        var inflater = LayoutInflater.from(myContext)
+         var view = inflater.inflate(R.layout.tek_model_list, p0, false)
+       // var view = DataBindingUtil.inflate<ItemForumKonuBasliklari2BindingImpl>(inflater, R.layout.tek_model_list, p0, false)
+        //  viewHolder.scrollView.visibility = View.GONE
 
-      //  viewHolder.scrollView.visibility = View.GONE
 
-
-        return MyViewHolder(viewHolder, myContext)
+        return MyViewHolder(view, myContext)
     }
 
     override fun getItemCount(): Int {
         return tumModeller.size
     }
 
-    override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
+    override fun onBindViewHolder(p0: MyViewHolder, p1: Int){
+
 
         try {
             p0.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.scale))
@@ -75,14 +81,15 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
 
     }
 
-    class MyViewHolder(viewHolder: View, myContext: Context) : RecyclerView.ViewHolder(viewHolder!!) {
+
+    class MyViewHolder(viewHolder: View, myContext: Context) : RecyclerView.ViewHolder(viewHolder) {
+
         var tumLayout = viewHolder
         var tvMarka = tumLayout.tvMarka
         var tvModel = tumLayout.tvModel
         var tvFiyat = tumLayout.tvFiyat
         var rbYildiz = tumLayout.rbMotorList
-      //  var scrollView = tumLayout.scrollView
-
+        //  var scrollView = tumLayout.scrollView
 
 
         var detay_silindir = tumLayout.detay_silindirhacmi
@@ -98,7 +105,6 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
             setupModelFotolari(oAnkiModel)
             setupModelYazilari(oAnkiModel)
 
-
             if (oAnkiModel.fiyat.toString() == "1") {
                 //   FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(oAnkiModel.model.toString()).child("fiyat").setValue("1")
                 tvFiyat.visibility = View.INVISIBLE
@@ -108,9 +114,8 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         }
 
         private fun setupModelYazilari(oAnkiModel: ModelDetaylariData) {
-            tvMarka.text = oAnkiModel.marka.toString()
-            tvModel.text = oAnkiModel.model.toString()
-
+                tvMarka.text = oAnkiModel.marka.toString()
+              tvModel.text = oAnkiModel.model.toString()
 
 
             detay_silindir.text = oAnkiModel.silindirHacmi
@@ -158,7 +163,7 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
                 imgMarka.setBackgroundResource(R.drawable.suzuki)
             } else if (oAnkiModel.marka == "Triumph") {
                 imgMarka.setBackgroundResource(R.drawable.ic_triumph_background)
-            }else if (oAnkiModel.marka == "Bmw") {
+            } else if (oAnkiModel.marka == "Bmw") {
                 imgMarka.setBackgroundResource(R.drawable.bmw)
             }
         }

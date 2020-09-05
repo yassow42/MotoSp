@@ -3,10 +3,16 @@ package com.creativeoffice.motosp.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.creativeoffice.motosp.Adapter.CevaplarAdapter
+import com.creativeoffice.motosp.Adapter.ProfilYorumlarimAdapter
+import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
+import com.creativeoffice.motosp.Datalar.YorumlarData
 import com.creativeoffice.motosp.ProfileEditFragment
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
@@ -31,8 +37,8 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         mAuth = FirebaseAuth.getInstance()
-      //  this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-      //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //  this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
 
         setupAuthListener()
@@ -43,6 +49,7 @@ class ProfileActivity : AppCompatActivity() {
         imgProfileSetting.setOnClickListener {
             startActivity(Intent(this, ProfileSettingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
         }
+
 
     }
 
@@ -61,15 +68,9 @@ class ProfileActivity : AppCompatActivity() {
                     var model = p0.child("user_details").child("kullanilan_motor_model").value.toString()
                     var puan = p0.child("user_details").child("puan").value.toString().toInt()
 
-
-
                     tvPuan.text = puan.toString()
                     tvMarkaProfile.text = marka
                     tvModelProfile.text = model
-
-
-
-
 
                     var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                     if (imgURL != "default") {
@@ -78,8 +79,6 @@ class ProfileActivity : AppCompatActivity() {
                     } else {
                         mProgressBarActivityProfile.visibility = View.GONE
                     }
-
-
 
                     if (marka != "Marka Seçiniz" && model != "Model Seçiniz") {
 
@@ -96,14 +95,32 @@ class ProfileActivity : AppCompatActivity() {
                                 tvModelProfile.text = model
 
 
-
-
                             }
                         })
-                    }else{
+                    } else {
                         tvMarkaProfile.text = "Marka"
                         tvModelProfile.text = "Model"
                     }
+
+                    if (p0.child("yorumlarim").hasChildren()) {
+                        var yorumlarim = ArrayList<ForumKonuData.cevaplar>()
+                        for (ds in p0.child("yorumlarim").children) {
+                            var gelenData = ds.getValue(ForumKonuData.cevaplar::class.java)!!
+                            yorumlarim.add(gelenData)
+                        }
+
+                        rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                        rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                        rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+
+                        val adapter = ProfilYorumlarimAdapter(this@ProfileActivity, yorumlarim, userID)
+                        rcYorumlarim.adapter = adapter
+                        rcTecrubelerim.adapter = adapter
+                        rcMotorlarim.adapter = adapter
+
+
+                    }
+
                 }
             }
         })

@@ -27,18 +27,18 @@ import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
 import kotlinx.android.synthetic.main.dialog_photo.view.*
+import kotlinx.android.synthetic.main.profil_yorumlari.view.*
 
-import kotlinx.android.synthetic.main.item_konu_cevaplari.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonuData.cevaplar>, var userID: String?) : RecyclerView.Adapter<CevaplarAdapter.ForumCevapHolder>() {
+class ProfilYorumlarimAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonuData.cevaplar>, var userID: String?) : RecyclerView.Adapter<ProfilYorumlarimAdapter.ForumCevapHolder>() {
 
 
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ForumCevapHolder {
 
-        val view = LayoutInflater.from(myContext).inflate(R.layout.item_konu_cevaplari, p0, false)
+        val view = LayoutInflater.from(myContext).inflate(R.layout.profil_yorumlari, p0, false)
 
 
 
@@ -47,10 +47,13 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
     }
 
     override fun getItemCount(): Int {
+
         return cevapList.size
+
     }
 
     override fun onBindViewHolder(holder: ForumCevapHolder, position: Int) {
+
 
         var gelenItem = cevapList[position]
 
@@ -164,106 +167,27 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
         }
 
 
-        holder.imgProfile.setOnClickListener {
-            if (userID.equals(cevapList.get(position).cevap_yazan_key.toString())) {
-
-                val intent = Intent(myContext, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                myContext.startActivity(intent)
-            } else {
-                val intent = Intent(myContext, GidilenProfilActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                intent.putExtra("gidilenUserID", cevapList.get(position).cevap_yazan_key.toString())
-                myContext.startActivity(intent)
-            }
-        }
-
-        holder.userName.setOnClickListener {
-            if (userID.equals(cevapList.get(position).cevap_yazan_key.toString())) {
-
-                val intent = Intent(myContext, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                myContext.startActivity(intent)
-            } else {
-                val intent = Intent(myContext, GidilenProfilActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                intent.putExtra("gidilenUserID", cevapList.get(position).cevap_yazan_key.toString())
-                myContext.startActivity(intent)
-            }
-        }
-
-        holder.yorumFotosu.setOnClickListener {
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this.myContext)
-            var viewDialogg = inflate(myContext, R.layout.dialog_photo, null)
-            Picasso.get().load(gelenItem.Foto).into(viewDialogg.imgFoto)
-            viewDialogg.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            //viewDialogg.setBackgroundColor(ColorDrawable(Color.TRANSPARENT))
-
-            builder.setView(viewDialogg)
-            var dialogSiparisTuru: Dialog = builder.create()
-            dialogSiparisTuru.show()
-        }
 
 
     }
 
 
     inner class ForumCevapHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var userName = itemView.tvUserName
+
         var cevapZamani = itemView.tvCevapZamani
         var cevap = itemView.tvCevap
-        var imgProfile = itemView.circleProfileImage
-        var kullanilanMotor = itemView.tvKullanilanMotor
         var tumLayout = itemView.tumLayout
-        var tvUnvan = itemView.tvUnvan
-        var tvSahibi = itemView.tvKonuSahibi
-        var yorumFotosu = itemView.imgItemYorumFotosu
+
 
         var ref = FirebaseDatabase.getInstance().reference
         fun setData(gelenItemVerisi: ForumKonuData.cevaplar, myContext: Context) {
 
-            userName.text = gelenItemVerisi.cevap_yazan
+
             cevapZamani.text = formatDate(gelenItemVerisi.cevap_zamani).toString()
             cevap.text = gelenItemVerisi.cevap
 
             var cevap_yazan_key = gelenItemVerisi.cevap_yazan_key.toString()
-            ref.child("users").child(cevap_yazan_key).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
 
-                override fun onDataChange(p0: DataSnapshot) {
-                    var imgURL = p0.child("user_details").child("profile_picture").value.toString()
-                    if (imgURL != "default") {
-                        Picasso.get().load(imgURL).resize(200, 200).into(imgProfile)
-                        imgProfile.borderWidth = 1
-                    }
-
-                    var Marka = p0.child("user_details").child("kullanilan_motor_marka").value.toString()
-                    var Model = p0.child("user_details").child("kullanilan_motor_model").value.toString()
-                    kullanilanMotor.text = Marka.trim() + " " + Model.trim()
-
-                    val unvan = p0.child("user_unvan").value.toString()
-                    tvUnvan.text = unvan
-                }
-            })
-
-            ref.child("Forum").child(gelenItemVerisi.cevap_yazilan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    var konuyuAcan = p0.child("konuyu_acan").value.toString()
-                    var yorumFoto = p0.child("cevaplar").child(gelenItemVerisi.cevap_key.toString()).child("Foto").value.toString()
-                    if (yorumFoto != "null") {
-
-                        Picasso.get().load(yorumFoto).resize(350, 350).into(yorumFotosu)
-                        yorumFotosu.visibility = View.VISIBLE
-                    } else yorumFotosu.visibility = View.GONE
-
-                    if (konuyuAcan == gelenItemVerisi.cevap_yazan) {
-                        tvSahibi.visibility = View.VISIBLE
-                    }
-                }
-
-            })
 
 
         }
