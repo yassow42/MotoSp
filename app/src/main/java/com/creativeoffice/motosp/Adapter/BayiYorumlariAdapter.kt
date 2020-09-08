@@ -53,11 +53,10 @@ class BayiYorumlariAdapter(var myContext: Context, var bayiYorumList: ArrayList<
             FirebaseDatabase.getInstance().reference.child("users").child(item.yorum_yapan_key.toString()).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(p0: DataSnapshot) {
 
-                    yorumYapan.text = p0.value.toString()
+                    if (item.yorum_yapan_key.toString() !="Admin"){
+                        yorumYapan.text = p0.value.toString()
+                    }else  yorumYapan.text = "Admin"
 
-
-                    Log.e("sad", item.yorum_yapan_key.toString())
-                    Log.e("sadd", p0.value.toString())
 
                 }
 

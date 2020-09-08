@@ -50,7 +50,7 @@ class BottomnavigationViewHelper {
 
 
                             R.id.ic_motortanitim->{
-                                val intent = Intent(context, MotorActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                val intent = Intent(context, Motor2Activity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
 
                                 context.startActivity(intent)
                                 return true

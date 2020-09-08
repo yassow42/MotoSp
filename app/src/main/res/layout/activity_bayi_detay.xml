@@ -97,7 +97,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srb_clearRatingEnabled="true"
                 app:srb_isIndicator="false"
-                app:srb_minimumStars="1"
+                app:srb_minimumStars="0.5"
                 app:srb_numStars="5"
                 app:srb_scrollable="true"
                 app:srb_starHeight="20dp"
@@ -151,6 +151,20 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:background="@color/mavi" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
@@ -183,6 +197,8 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
                             android:background="@color/mavi" />
 
                     </LinearLayout>

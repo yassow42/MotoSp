@@ -58,10 +58,13 @@ class BayiDetayActivity : AppCompatActivity() {
         ref.child("Bayiler").child(sehir.toString()).child(ilce.toString()).child(bayiAdi.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
-                    for (ds in p0.child("yorumlar").children) {
-                        var gelenData = ds.getValue(BayilerData.BayiYorumlari::class.java)!!
-                        yorumlarList.add(gelenData)
-                    }
+                    if( p0.child("yorumlar").hasChildren()){
+                        for (ds in p0.child("yorumlar").children) {
+                            var gelenData = ds.getValue(BayilerData.BayiYorumlari::class.java)!!
+                            yorumlarList.add(gelenData)
+                        }
+                    }else yorumlarList.add(BayilerData.BayiYorumlari(5f,"İlk Yorumu Yapmak İster misin?",111111111,"sad","Admin"))
+
 
                     for (ds in p0.child("yildizlar").children) {
                         hizmetPuaniToplam += ds.value.toString().toFloat()
@@ -78,9 +81,6 @@ class BayiDetayActivity : AppCompatActivity() {
                     tvBayiAdi.text = bayiAdi
                     tvNumara.text = p0.child("numara").value.toString()
                     tvAdres.text = p0.child("adres").value.toString()
-
-
-
 
 
 
@@ -101,7 +101,7 @@ class BayiDetayActivity : AppCompatActivity() {
         imgEkle.setOnClickListener {
 
             val popup = PopupMenu(this, it)
-            popup.inflate(R.menu.popup_detay_menu)
+            popup.inflate(R.menu.popup_bayi_detay_menu)
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.popYorumYap -> {

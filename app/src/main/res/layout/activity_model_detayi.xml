@@ -504,7 +504,9 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView20"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_yorum" />
 
                     <TextView
                         android:id="@+id/textView20"
@@ -550,7 +552,9 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView22"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_yakit_tuk" />
 
                     <TextView
                         android:id="@+id/textView22"
