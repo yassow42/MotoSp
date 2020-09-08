@@ -22,7 +22,7 @@ class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.il
 
         val view = LayoutInflater.from(myContext).inflate(R.layout.item_bayi_ilce, p0, false)
 
-        view.rcBayiler.visibility = View.GONE
+       view.rcBayiler.visibility = View.GONE
         return IlceHolder(view)
     }
 
@@ -40,7 +40,7 @@ class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.il
 
 
         var ilkTik = false
-        holder.detaylariGizle.visibility = View.GONE
+
 
         holder.tumLayoutIlce.setOnClickListener {
 
@@ -49,14 +49,9 @@ class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.il
 
                 ilkTik = true
 
-                holder.detaylariGoster.visibility = View.GONE
-                holder.detaylariGizle.visibility = View.VISIBLE
                 holder.rcBayiler.visibility = View.VISIBLE
             } else {
                 ilkTik = false
-
-                holder.detaylariGoster.visibility = View.VISIBLE
-                holder.detaylariGizle.visibility = View.GONE
                 holder.rcBayiler.visibility = View.GONE
             }
 
@@ -71,8 +66,7 @@ class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.il
         var ilceIsmi = itemView.tvIlceAdi
         var rcBayiler = itemView.rcBayiler
 
-        var detaylariGizle = itemView.imgDetaylariGizle
-        var detaylariGoster = itemView.imgDetaylariGoster
+
 
         fun setData(oankiSehir: BayilerData.ilcelerData, myContext: Context) {
 
@@ -108,7 +102,7 @@ class ilceAdapter(val myContext: Context, val ilceList: ArrayList<BayilerData.il
             // rcBayiler.layoutManager = LinearLayoutManager(myContext, LinearLayoutManager.VERTICAL, false)
             BayiAdapter = BayiAdapter(myContext, bayiList)
             rcBayiler.adapter = BayiAdapter
-           // rcBayiler.setItemViewCacheSize(50)
+            rcBayiler.setItemViewCacheSize(50)
 
 
         }

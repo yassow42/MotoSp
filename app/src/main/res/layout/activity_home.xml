@@ -82,7 +82,9 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:paddingLeft="4dp"
-                        android:paddingRight="4dp" />
+                        android:paddingRight="4dp"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_forum_konu_basliklari2" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -155,7 +157,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_forum_yeni_konular" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -208,7 +212,9 @@
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_haber">
 
 
                 </androidx.recyclerview.widget.RecyclerView>
@@ -278,7 +284,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_son_model_mesajlari">
 
                 </androidx.recyclerview.widget.RecyclerView>
 

@@ -186,6 +186,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onResume()
     }
 
+
     override fun onStop() {
         super.onStop()
         if (mAuthListener != null) {

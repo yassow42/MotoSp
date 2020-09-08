@@ -1,6 +1,7 @@
 package com.creativeoffice.motosp.Activity
 
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -143,6 +144,16 @@ class MotorActivity : AppCompatActivity() {
     fun dialogCalistir() {
         dialogGizle()
         loading = LoadingDialog.startDialog(this)
+    }
+
+
+
+    override fun onBackPressed() {
+        val intent = Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+        startActivity(intent)
+        finish()
+        super.onBackPressed()
     }
 
 }

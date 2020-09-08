@@ -1,5 +1,6 @@
 package com.creativeoffice.motosp.Activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
@@ -20,13 +21,13 @@ class BayiActivity : AppCompatActivity() {
     private val ACTIVITY_NO = 3
     var sehirList = ArrayList<BayilerData>()
 
-
+var ref =  FirebaseDatabase.getInstance().reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bayi)
         //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
       //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
+        ref.child("Bayiler").keepSynced(true)
         sehirList = ArrayList()
 
 
@@ -71,5 +72,14 @@ class BayiActivity : AppCompatActivity() {
         var menu = bottomNavigationView.menu
         var menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
+    }
+
+
+    override fun onBackPressed() {
+        val intent = Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+        startActivity(intent)
+        finish()
+        super.onBackPressed()
     }
 }

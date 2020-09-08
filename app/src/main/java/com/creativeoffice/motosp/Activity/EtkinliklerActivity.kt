@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -126,6 +127,13 @@ class EtkinliklerActivity : AppCompatActivity() {
     }
 
 
+    override fun onBackPressed() {
+        val intent = Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+        startActivity(intent)
+        finish()
+        super.onBackPressed()
+    }
     fun setupNavigationView() {
 
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)

@@ -103,8 +103,7 @@ class SehirAdapter(val myContext: Context, val sehirList: ArrayList<BayilerData>
         var rcIlceler = itemView.rcIlceler
         var arIndicator = itemView.ar_indicator_ilce
 
-        var imgSol = itemView.imgSol
-        var imgSag = itemView.imgSag
+
 
 
         fun setData(oankiSehir: BayilerData, myContext: Context) {

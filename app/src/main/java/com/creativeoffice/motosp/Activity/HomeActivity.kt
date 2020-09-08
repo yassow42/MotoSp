@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-      //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mDelayHandler = Handler()
 
         mAuth = FirebaseAuth.getInstance()
@@ -86,7 +86,6 @@ class HomeActivity : AppCompatActivity() {
 
         initBtn()
         setupNavigationView()
-
 
 
     }
@@ -493,6 +492,9 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
 
     override fun onDestroy() {
         if (mDelayHandler != null) {

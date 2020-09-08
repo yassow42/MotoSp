@@ -1,22 +1,21 @@
 package com.creativeoffice.motosp.Adapter
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+
 import android.view.LayoutInflater
 
 import android.view.View
-import android.view.View.inflate
+
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.creativeoffice.motosp.Activity.BayiDetayActivity
 import com.creativeoffice.motosp.Datalar.BayilerData
 import com.creativeoffice.motosp.R
 
 import kotlinx.android.synthetic.main.item_bayi_ilce_bayiler.view.*
 import kotlinx.android.synthetic.main.item_bayi_ilce_bayiler.view.tvBayiAdi
-import kotlinx.android.synthetic.main.dialog_bayi_detay.view.*
+
 
 class BayiAdapter(val myContext: Context, val bayilerList: ArrayList<BayilerData.BayiDetaylari>) : RecyclerView.Adapter<BayiAdapter.BayilerHolder>() {
 
@@ -35,12 +34,21 @@ class BayiAdapter(val myContext: Context, val bayilerList: ArrayList<BayilerData
     }
 
     override fun onBindViewHolder(holder: BayilerHolder, position: Int) {
+        var item = bayilerList[position]
         holder.setData(bayilerList[position], myContext)
 
 
 
         holder.tumLayoutBayi.setOnClickListener {
 
+            val intent = Intent(myContext, BayiDetayActivity::class.java)
+
+            intent.putExtra("bayi_adi", item.bayiAdi)
+            intent.putExtra("sehir", item.sehirAdi)
+            intent.putExtra("ilce", item.ilceAdi)
+            myContext.startActivity(intent)
+
+            /*
             var builder: AlertDialog.Builder = AlertDialog.Builder(this.myContext)
 
             var view: View = inflate(myContext, R.layout.dialog_bayi_detay, null)
@@ -82,13 +90,11 @@ class BayiAdapter(val myContext: Context, val bayilerList: ArrayList<BayilerData
                 myContext.startActivity(intent)
             }
 
-
             builder.setView(view)
-
 
             var dialog: Dialog = builder.create()
             dialog.show()
-
+            */
         }
     }
 
