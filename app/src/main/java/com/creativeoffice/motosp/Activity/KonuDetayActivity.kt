@@ -94,7 +94,6 @@ class KonuDetayActivity : AppCompatActivity() {
 
                     override fun onDataChange(p0: DataSnapshot) {
                         var imgURL = p0.child("user_details/profile_picture").value.toString()
-                        Log.e("sadddd", imgURL)
                         if (imgURL != "default") {
                             Picasso.get().load(imgURL).into(imgUser)
                         }
@@ -256,7 +255,6 @@ class KonuDetayActivity : AppCompatActivity() {
 
 
                 var imgURL = p0.child("user_details/profile_picture").value.toString()
-                Log.e("sadddd", imgURL)
                 if (imgURL != "default") {
                     Picasso.get().load(imgURL).into(imgUser)
                 }

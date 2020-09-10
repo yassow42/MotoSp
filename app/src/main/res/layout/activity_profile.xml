@@ -66,7 +66,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdi" />
 
                     <TextView
-                        android:id="@+id/tvAdres"
+                        android:id="@+id/tvAdresSehir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -81,21 +81,21 @@
                         app:layout_constraintTop_toBottomOf="@+id/circleProfileImage" />
 
                     <TextView
-                        android:id="@+id/tvAdres2"
+                        android:id="@+id/tvAdresIlce"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="24dp"
                         android:fontFamily="sans-serif-light"
-                        android:text="10 KH 665"
+                        android:text="Fatih"
                         android:textColor="#E8EEF2"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:transitionName="trans_marka"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/tvAdres"
-                        app:layout_constraintStart_toStartOf="@+id/tvAdres"
-                        app:layout_constraintTop_toBottomOf="@+id/tvAdres" />
+                        app:layout_constraintEnd_toEndOf="@+id/tvAdresSehir"
+                        app:layout_constraintStart_toStartOf="@+id/tvAdresSehir"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdresSehir" />
 
                     <TextView
                         android:id="@+id/tvKullaniciAdi"
@@ -116,6 +116,7 @@
                         android:layout_height="110dp"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="16dp"
+                        android:src="@mipmap/ic_profile"
                         app:civ_border_color="@color/beyaz"
                         app:civ_border_width="2dp"
                         app:layout_constraintStart_toStartOf="parent"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,28 +10,63 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/genel_renk"
+        android:background="@color/genel_yazi_renkleri"
+        android:backgroundTintMode="src_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabSelectedTextColor="@color/beyaz"
-        app:tabTextColor="@color/siyah">
+        app:tabContentStart="42dp"
+        app:tabGravity="fill"
+        app:tabIndicatorAnimationDuration="500"
+        app:tabIndicatorColor="@color/genel_renk"
+        app:tabIndicatorGravity="bottom"
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="scrollable"
+        app:tabPaddingStart="16dp"
+        app:tabSelectedTextColor="@color/genel_renk"
+        tools:tabPaddingEnd="16dp">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabHonda"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/ic_honda"
             android:text="Honda" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/yamaha"
             android:text="Yamaha" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItem2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/kawasaki"
+            android:text="Kawasaki" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/suzuki"
+            android:text="Suzuki" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/bmw"
             android:text="Bmw" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItem3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@mipmap/ic_triumph"
+            android:text="Triumph" />
     </com.google.android.material.tabs.TabLayout>
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
@@ -38,9 +74,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/bottomNavigationView"
@@ -54,6 +91,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

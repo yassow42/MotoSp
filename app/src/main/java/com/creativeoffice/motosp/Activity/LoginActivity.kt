@@ -33,8 +33,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login2)
 
-      //  this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-       // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //  this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -53,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
                 var kullaniciSifre = view.etSifreLoginAlertDialog.text.toString()
                 var userNameKullanimi = false
 
+                FirebaseDatabase.getInstance().reference.child("users").keepSynced(true)
 
                 FirebaseDatabase.getInstance().reference.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
@@ -78,7 +79,8 @@ class LoginActivity : AppCompatActivity() {
                                 override fun onComplete(p0: Task<AuthResult>) {
                                     if (p0.isSuccessful) {
                                         var userID = mAuth.currentUser!!.uid.toString()
-                                        var user_detail = UserDetails(1, "Default", "Honda", "Activa S", "default", 1)
+                                        var user_detail = UserDetails(1, "Default", "Honda", "Activa S", "default",
+                                            "yok", "yok", 1)
                                         var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID, "Yeni", user_detail)
                                         FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers).addOnCompleteListener {
                                             setupAuthListener()
@@ -109,18 +111,18 @@ class LoginActivity : AppCompatActivity() {
             var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
             var kullaniciSifre = etSifreLogin.text.toString()
             mAuth.signInWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre)
-                    .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                        override fun onComplete(p0: Task<AuthResult>) {
-                            if (p0!!.isSuccessful) {
+                .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                    override fun onComplete(p0: Task<AuthResult>) {
+                        if (p0!!.isSuccessful) {
 
-                                setupAuthListener()
+                            setupAuthListener()
 
-                            } else {
-                                Toast.makeText(this@LoginActivity, " Kullanıcı Adı/Sifre Hatalı :", Toast.LENGTH_SHORT).show()
-                            }
+                        } else {
+                            Toast.makeText(this@LoginActivity, " Kullanıcı Adı/Sifre Hatalı :", Toast.LENGTH_SHORT).show()
                         }
+                    }
 
-                    })
+                })
         }
 
     }

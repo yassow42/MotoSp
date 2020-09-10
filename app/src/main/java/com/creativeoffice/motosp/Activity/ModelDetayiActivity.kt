@@ -2,6 +2,7 @@ package com.creativeoffice.motosp.Activity
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -59,7 +60,7 @@ class ModelDetayiActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_model_detayi)
         //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-       // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         userID = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -156,7 +157,7 @@ class ModelDetayiActivity : AppCompatActivity() {
                     for (ds in p0.children) {
                         var gelenYorumlar = ds.getValue(ModelDetaylariData.YakitTuketimi::class.java)!!
                         yakitListesi.add(gelenYorumlar)
-                        Log.e("yasit verisi",gelenYorumlar.motor_yili.toString() )
+                        Log.e("yasit verisi", gelenYorumlar.motor_yili.toString())
                     }
 
                 } else {
@@ -355,7 +356,10 @@ class ModelDetayiActivity : AppCompatActivity() {
 
         }
         imgGeri.setOnClickListener {
-            onBackPressed()
+            val intent = Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+            startActivity(intent)
+            finish()
         }
 
 
@@ -414,6 +418,15 @@ class ModelDetayiActivity : AppCompatActivity() {
         rcYakit.adapter = yakitAdapter
 
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        val intent = Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+        startActivity(intent)
+        finish()
     }
 
 

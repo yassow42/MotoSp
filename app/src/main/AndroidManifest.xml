@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MotoSp"
@@ -14,12 +15,9 @@
         android:roundIcon="@mipmap/ic_motor_bike"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.Motor2Activity"></activity>
+        <activity android:name=".Activity.Motor2Activity" />
         <activity android:name=".Activity.BayiDetayActivity" />
-        <activity
-            android:name=".Activity.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".Activity.EtkinlikDetayActivity" />
         <activity android:name=".Activity.EtkinliklerActivity" />
         <activity android:name=".Activity.TumKonularActivity" />
@@ -27,6 +25,7 @@
         <activity android:name=".Activity.GidilenProfilActivity" />
         <activity android:name=".Activity.KonuDetayActivity" />
         <activity android:name=".Activity.HomeActivity" />
+
         <activity android:name=".Activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".Activity.ProfileSettingActivity" />
         <activity android:name=".Activity.ProfileActivity" />
         <activity android:name=".Activity.LoginActivity" />

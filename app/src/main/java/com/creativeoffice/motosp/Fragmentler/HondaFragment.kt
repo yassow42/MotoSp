@@ -15,11 +15,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_honda.view.*
 
-class HondaFragment : Fragment() {
+class HondaFragment(markaa: String) : Fragment() {
 
     var tumModeller = ArrayList<ModelDetaylariData>()
     var myRef = FirebaseDatabase.getInstance().reference
     var modeller = ModelDetaylariData()
+    var markaa = markaa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,6 +34,7 @@ class HondaFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_honda, container, false)
         markaModelGetir(view)
 
+
         return view
     }
 
@@ -44,7 +46,7 @@ class HondaFragment : Fragment() {
                 if (p0.hasChildren()) {
                     for (ds in p0.children) {
                         modeller = ds.getValue(ModelDetaylariData::class.java)!!
-                        if (modeller.marka == "Honda") {
+                        if (modeller.marka == markaa) {
                             tumModeller.add(modeller)
                         }
                     }

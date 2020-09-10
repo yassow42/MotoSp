@@ -80,7 +80,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
             tarih.text = formatDate(forumKonuData.acilma_zamani).toString()
 
 
-            Log.e("sad", forumKonuData.konuyu_acan)
+
             //foruma soncevap yazan verisi
             ref.child("Forum").child(forumKonuData.konu_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener1 {
                 override fun onCancelled(p0: DatabaseError) {

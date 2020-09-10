@@ -3,16 +3,14 @@ package com.creativeoffice.motosp.Activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.creativeoffice.motosp.Adapter.CevaplarAdapter
 import com.creativeoffice.motosp.Adapter.ProfilYorumlarimAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
-import com.creativeoffice.motosp.Datalar.YorumlarData
+import com.creativeoffice.motosp.Datalar.UserDetails
+import com.creativeoffice.motosp.Datalar.Users
 import com.creativeoffice.motosp.ProfileEditFragment
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
@@ -23,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlin.Exception
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -31,7 +30,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
-
+    var ref = FirebaseDatabase.getInstance().reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -46,33 +45,47 @@ class ProfileActivity : AppCompatActivity() {
         kullaniciVerileriniGetir()
         setupToolbar()
 
-        imgProfileSetting.setOnClickListener {
-            startActivity(Intent(this, ProfileSettingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
-        }
-
 
     }
 
 
     private fun kullaniciVerileriniGetir() {
+
         var userID = mAuth.currentUser!!.uid
-        FirebaseDatabase.getInstance().reference.child("users").child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("users").child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
-                    // var gelenKullanici = p0.getValue(Users::class.java)!!
-                    tvKullaniciAdi.text = p0.child("user_name").value.toString()
-                    var marka = p0.child("user_details").child("kullanilan_motor_marka").value.toString()
-                    var model = p0.child("user_details").child("kullanilan_motor_model").value.toString()
-                    var puan = p0.child("user_details").child("puan").value.toString().toInt()
+                    var imgURL = "default"
+                    try {
+                        var users = p0.getValue(Users::class.java)!!
+                        var usersDetails = p0.child("user_details").getValue(UserDetails::class.java)!!
+                        imgURL = usersDetails.profile_picture.toString()
 
-                    tvPuan.text = puan.toString()
-                    tvMarkaProfile.text = marka
-                    tvModelProfile.text = model
+                        tvKullaniciAdi.text = users.user_name.toString()
+                        tvMarkaProfile.text = usersDetails.kullanilan_motor_marka.toString()
+                        tvModelProfile.text = usersDetails.kullanilan_motor_model.toString()
+                        tvPuan.text = usersDetails.puan.toString()
 
-                    var imgURL = p0.child("user_details").child("profile_picture").value.toString()
+                        tvAdresSehir.text = usersDetails.sehir.toString()
+                        tvAdresIlce.text = usersDetails.ilce.toString()
+
+                        if (usersDetails.sehir.toString() == "yok" || usersDetails.ilce.toString() == "yok"){
+                            tvAdresSehir.visibility = View.GONE
+                            tvAdresIlce.visibility = View.GONE
+                        }
+
+                    } catch (e: Exception) {
+                        var hataKey = ref.child("zz_Hatalar_zz").push().key.toString()
+                        ref.child("zz_Hatalar_zz").child(hataKey).push().setValue(e.message)
+                        ref.child("zz_Hatalar_zz").child(hataKey).push().setValue(e.localizedMessage)
+                        ref.child("zz_Hatalar_zz").child(hataKey).push().setValue("User verileri hatası")
+                    }
+
+
+
                     if (imgURL != "default") {
                         Picasso.get().load(imgURL).into(circleProfileImage)
                         mProgressBarActivityProfile.visibility = View.GONE
@@ -80,27 +93,6 @@ class ProfileActivity : AppCompatActivity() {
                         mProgressBarActivityProfile.visibility = View.GONE
                     }
 
-                    if (marka != "Marka Seçiniz" && model != "Model Seçiniz") {
-
-                        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model).addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onCancelled(p0: DatabaseError) {
-
-                            }
-
-                            override fun onDataChange(p0: DataSnapshot) {
-
-                                var gelenMotorDetaylari = p0.getValue(ModelDetaylariData::class.java)!!
-
-                                tvMarkaProfile.text = marka
-                                tvModelProfile.text = model
-
-
-                            }
-                        })
-                    } else {
-                        tvMarkaProfile.text = "Marka"
-                        tvModelProfile.text = "Model"
-                    }
 
                     if (p0.child("yorumlarim").hasChildren()) {
                         var yorumlarim = ArrayList<ForumKonuData.cevaplar>()
@@ -118,7 +110,6 @@ class ProfileActivity : AppCompatActivity() {
                         rcTecrubelerim.adapter = adapter
                         rcMotorlarim.adapter = adapter
 
-
                     }
 
                 }
@@ -127,7 +118,9 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-
+        imgProfileSetting.setOnClickListener {
+            startActivity(Intent(this, ProfileSettingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+        }
         tvProfilDuzenleButton.setOnClickListener {
             profileRoot.visibility = View.GONE
             profileContainer.visibility = View.VISIBLE
@@ -176,10 +169,6 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        mAuth.addAuthStateListener(mAuthListener)
-        super.onStart()
-    }
 
     override fun onResume() {
         setupNavigationView()
@@ -187,10 +176,4 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-    override fun onStop() {
-        super.onStop()
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener)
-        }
-    }
 }

@@ -45,7 +45,6 @@ class HomeActivity : AppCompatActivity() {
     lateinit var view: View
 
     lateinit var mAuth: FirebaseAuth
-    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var userID: String
     var ref = FirebaseDatabase.getInstance().reference
     private val ACTIVITY_NO = 0
@@ -57,47 +56,61 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        setupNavigationView()
         //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mDelayHandler = Handler()
-
         mAuth = FirebaseAuth.getInstance()
-        initMyAuthStateListener()
-        // mAuth.signOut()
+        HesapKontrolveKeepSynced()
+
+        initBtn()
+
+
+    }
+
+    private fun HesapKontrolveKeepSynced() {
+        ref.child("Forum").keepSynced(true)
+        ref.child("tum_motorlar").keepSynced(true)
+        ref.child("Haberler").keepSynced(true)
+        ref.child("users").keepSynced(true)
+        ref.child("users").child(mAuth.currentUser!!.uid).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.value.toString() == "null") {
+                    mAuth.signOut()
+                    var intent = Intent(this@HomeActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
+
         var user = mAuth.currentUser
         if (user != null) {
             userID = mAuth.currentUser!!.uid
             dialogCalistir()
         } else {
+            mAuth.signOut()
             var intent = Intent(this, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
         }
 
-        ref.child("Forum").keepSynced(true)
-        ref.child("tum_motorlar").keepSynced(true)
-        ref.child("Haberler").keepSynced(true)
 
+
+    }
+
+
+    private fun initVeri() {
         konularList = ArrayList()
         cevapYazilanKonuList = ArrayList()
         sonYorumlarList = ArrayList()
         tumModeller = ArrayList()
         tumHaberler = ArrayList()
 
-
-        initBtn()
-        setupNavigationView()
-
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialogCalistir()
-        Handler().postDelayed({ initVeri() }, 800)
-        Handler().postDelayed({ dialogGizle() }, 4000)
-    }
-
-    private fun initVeri() {
         val ref = FirebaseDatabase.getInstance().reference
 
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
@@ -413,6 +426,7 @@ class HomeActivity : AppCompatActivity() {
         val haberlerAdapter = HaberAdapter(this, tumHaberler)
         rcHaber.adapter = haberlerAdapter
 
+        rcHaber.setOnFlingListener(null)
         ar_indicator_haber.attachTo(rcHaber, true)
         ar_indicator_haber.isScrubbingEnabled = true
 
@@ -477,30 +491,22 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    private fun initMyAuthStateListener() {
 
-        mAuthListener = object : FirebaseAuth.AuthStateListener {
+    override fun onStart() {
+        super.onStart()
+        dialogCalistir()
+        FirebaseAuth.AuthStateListener {
+            val kullaniciGirisi = it.currentUser
+            if (kullaniciGirisi != null) { //eğer kişi giriş yaptıysa nul gorunmez. giriş yapmadıysa null olur
 
-            override fun onAuthStateChanged(p0: FirebaseAuth) {
-                val kullaniciGirisi = p0.currentUser
-                if (kullaniciGirisi != null) { //eğer kişi giriş yaptıysa nul gorunmez. giriş yapmadıysa null olur
-
-                } else {
-                    val intent = Intent(this@HomeActivity, LoginActivity::class.java)
-                    startActivity(intent)
-                }
+            } else {
+                val intent = Intent(this@HomeActivity, LoginActivity::class.java)
+                startActivity(intent)
             }
         }
+        Handler().postDelayed({ initVeri() }, 800)
+        Handler().postDelayed({ dialogGizle() }, 4000)
     }
 
 
-
-
-    override fun onDestroy() {
-        if (mDelayHandler != null) {
-            //  mDelayHandler!!.removeCallbacks(sonAktiflik)
-        }
-
-        super.onDestroy()
-    }
 }
