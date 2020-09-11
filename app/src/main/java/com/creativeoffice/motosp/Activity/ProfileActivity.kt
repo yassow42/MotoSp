@@ -69,13 +69,20 @@ class ProfileActivity : AppCompatActivity() {
                         tvModelProfile.text = usersDetails.kullanilan_motor_model.toString()
                         tvPuan.text = usersDetails.puan.toString()
 
-                        tvAdresSehir.text = usersDetails.sehir.toString()
-                        tvAdresIlce.text = usersDetails.ilce.toString()
-
-                        if (usersDetails.sehir.toString() == "yok" || usersDetails.ilce.toString() == "yok"){
-                            tvAdresSehir.visibility = View.GONE
-                            tvAdresIlce.visibility = View.GONE
+                        tvAdresSehir.visibility = View.GONE
+                        usersDetails.sehir?.let {
+                            tvAdresSehir.text = it.toString()
+                            tvAdresSehir.visibility = View.VISIBLE
                         }
+
+                        tvAdresIlce.visibility = View.GONE
+                        usersDetails.ilce?.let {
+                            tvAdresIlce.text =it.toString()
+                            tvAdresIlce.visibility = View.VISIBLE
+                        }
+
+
+
 
                     } catch (e: Exception) {
                         var hataKey = ref.child("zz_Hatalar_zz").push().key.toString()

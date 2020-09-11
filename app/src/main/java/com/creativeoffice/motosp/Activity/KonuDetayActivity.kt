@@ -20,12 +20,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Adapter.CevaplarAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_konu_detay.*
 import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
+import kotlinx.android.synthetic.main.fragment_profile_edit.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -116,6 +118,8 @@ class KonuDetayActivity : AppCompatActivity() {
                                 etCevapKonu.text.clear()
                                 imgYorumFotosu.visibility = View.GONE
 
+                                val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
+                                snackbar.show()
 
                                 if (yorumFotoUri != null) {
                                     FirebaseStorage.getInstance().reference.child("YorumFotolari").child(konuKey.toString()).child(cevapkey.toString()).putFile(yorumFotoUri!!) // burada fotografı kaydettik veritabanına.
@@ -129,6 +133,9 @@ class KonuDetayActivity : AppCompatActivity() {
                                         }
                                 }
 
+                            }.addOnFailureListener {
+                                val snackbar = Snackbar.make(tumLayout, "Yorum gönderilemedi... ", Snackbar.LENGTH_LONG)
+                                snackbar.show()
                             }
 
                         //kullanıcının yaptığı yorumu profiline ekledık.
@@ -159,7 +166,6 @@ class KonuDetayActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.popDüzenle -> {
                         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-
                         val view: View = View.inflate(this, R.layout.dialog_konu_cevap_duzenle, null)
 
                         view.etKonuCevabi.setText(konuBasligi)
@@ -298,13 +304,13 @@ class KonuDetayActivity : AppCompatActivity() {
     }
 
 
-        override fun onBackPressed() {
-            super.onBackPressed()
-            val intent = Intent(this,HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
 
-            startActivity(intent)
-            finish()
-        }
+        startActivity(intent)
+        finish()
+    }
 
     override fun onResume() {
         super.onResume()

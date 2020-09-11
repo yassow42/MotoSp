@@ -2,6 +2,7 @@
 
 
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/tumLayoutss"
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -71,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:fontFamily="sans-serif-light"
-                        android:text=" İstanbul"
+                        android:text="Şehir"
                         android:textColor="#E8EEF2"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -87,7 +88,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="24dp"
                         android:fontFamily="sans-serif-light"
-                        android:text="Fatih"
+                        android:text="İlçe"
                         android:textColor="#E8EEF2"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -188,7 +189,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="12dp"
+                android:elevation="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

@@ -46,7 +46,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
     implementation 'com.android.support:design:29.0.0'
     // bottom nav view
@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //foto sıkıstırma
-  //  implementation 'id.zelory:compressor:3.0.0'
+    implementation 'id.zelory:compressor:3.0.0'
 
     //eventBus
   //  implementation 'org.greenrobot:eventbus:3.1.1'
@@ -77,9 +77,12 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.4.2'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
+    implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'
 
     //room
     def room_version = "2.2.5"
     implementation "androidx.room:room-ktx:$room_version"
+
+
 
 }

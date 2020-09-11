@@ -1,8 +1,6 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +8,10 @@
         android:id="@+id/appbar"
 
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -24,9 +25,9 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                app:contentInsetStart="0dp"></androidx.appcompat.widget.Toolbar>
+                app:contentInsetStart="0dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -80,18 +81,18 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.cardview.widget.CardView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-
-
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tumLayouts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.creativeoffice.Profile.ProfileEditFragment">
+           >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleEditProfileImage"
@@ -132,97 +133,133 @@
                 app:layout_constraintStart_toStartOf="@+id/circleEditProfileImage"
                 app:layout_constraintTop_toBottomOf="@+id/circleEditProfileImage" />
 
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Motorsikletin"
-                android:textColor="@color/siyah"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFotografDegistir" />
 
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Biyografi"
-                android:textColor="@color/siyah"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView12"
-                app:layout_constraintStart_toStartOf="@+id/textView12"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerModel" />
-
-            <EditText
-                android:id="@+id/etUserBio"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:ems="10"
-                android:hint="Biyografi"
-                android:inputType="textPersonName"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView14"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-
-            <AutoCompleteTextView
-                android:id="@+id/spinnerModel"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:completionThreshold="1"
-                android:textColor="@color/siyah"
-                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFotografDegistir">
 
 
-            <AutoCompleteTextView
-                android:id="@+id/spinnerMarka"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:completionThreshold="1"
-                android:textColor="@color/siyah"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Marka"
+                    android:textColor="@color/siyah"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Marka"
-                android:textColor="@color/siyah"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/spinnerMarka"
-                app:layout_constraintStart_toStartOf="@+id/spinnerMarka"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Model"
-                android:textColor="@color/siyah"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/spinnerModel"
-                app:layout_constraintStart_toStartOf="@+id/spinnerModel"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerMarka" />
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerMarka"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+
+                    android:completionThreshold="1"
+                    android:textColor="@color/siyah"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Model"
+                    android:textColor="@color/siyah"
+                    android:textStyle="bold" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:completionThreshold="1"
+                    android:textColor="@color/siyah"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Biyografi"
+                    android:textColor="@color/siyah"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/spinnerModel"
+                    tools:layout_editor_absoluteX="30dp" />
+
+
+                <EditText
+                    android:id="@+id/etUserBio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:ems="10"
+                    android:hint="Biyografi"
+                    android:inputType="textPersonName"
+                    android:textColor="#000"
+                     />
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="Şehir"
+                    android:textColor="@color/siyah"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/spinnerModel"
+                    tools:layout_editor_absoluteX="30dp" />
+
+
+                <EditText
+                    android:id="@+id/etSehir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+
+                    android:ems="10"
+                    android:hint="Şehir"
+                    android:inputType="textPersonName"
+                    android:textColor="#000"
+                    />
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="İlçe"
+                    android:textColor="@color/siyah"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/spinnerModel"
+                    tools:layout_editor_absoluteX="30dp" />
+
+
+                <EditText
+                    android:id="@+id/etIlce"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:ems="10"
+                    android:hint="İlçe"
+                    android:inputType="textPersonName"
+                    android:textColor="#000"
+                    />
+
+
+            </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </androidx.cardview.widget.CardView>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
