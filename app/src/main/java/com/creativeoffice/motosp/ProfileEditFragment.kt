@@ -1,8 +1,11 @@
 package com.creativeoffice.motosp
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +19,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.iceteck.silicompressorr.FileUtils.getPath
-import com.iceteck.silicompressorr.PathUtil.getPath
+
 import com.squareup.picasso.Picasso
-import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 import kotlinx.android.synthetic.main.fragment_profile_edit.view.*
 import kotlinx.coroutines.delay
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 
@@ -82,9 +84,68 @@ class ProfileEditFragment : Fragment() {
         return fragmentView
     }
 
+
+    inner class BackgroundResimCompress() : AsyncTask<Uri, Double, ByteArray>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+        }
+
+        override fun doInBackground(vararg params: Uri?): ByteArray? {
+            var myBitmap = MediaStore.Images.Media.getBitmap(context!!.applicationContext.contentResolver, params[0])
+
+            Log.e("Test","orjinal: " + myBitmap!!.byteCount)
+            var resimBytes: ByteArray? = null
+
+            for (i in 1..5) {
+                resimBytes = convertBitmaptoByte(myBitmap, 50/i)
+                Log.e("Test","sıkısmıs: " + resimBytes!!.size.toString())
+
+            }
+
+            return  resimBytes
+        }
+
+
+        override fun onPostExecute(result: ByteArray?) {
+            super.onPostExecute(result)
+            uploadPhototoFirebase(result)
+        }
+
+    }
+
+
+
+
+    private fun convertBitmaptoByte(myBitmap: Bitmap?, i: Int): ByteArray? {
+        var stream = ByteArrayOutputStream()
+        myBitmap?.compress(Bitmap.CompressFormat.JPEG, i, stream)
+        return stream.toByteArray()
+    }
+
+    private fun uploadPhototoFirebase(result: ByteArray?) {
+        FirebaseStorage.getInstance().reference.child("users").child(userID.toString()).child("profile_picture").putBytes(result!!)
+            .addOnSuccessListener { UploadTask ->
+                UploadTask.storage.downloadUrl.addOnSuccessListener { itUri ->
+                    val downloadUrl = itUri.toString()
+                    ////////////Burada storageden veriyi databaseye attık.
+                    FirebaseDatabase.getInstance().reference.child("users").child(userID.toString())
+                        .child("user_details").child("profile_picture").setValue(downloadUrl)
+
+                }
+            }
+
+    }
+
+
+
+
     fun degisiklikleriKaydet(fragmentView: View) {
         if (profilPhotoUri != null) {
+            var comperessed = BackgroundResimCompress()
+            comperessed.execute(profilPhotoUri)
 
+/*
             var dialogYukleniyor = YukleniyorFragment()
             dialogYukleniyor.show(activity!!.supportFragmentManager, "yukleniyorFragmenti")
             //  dialogYukleniyor.isCancelable = false
@@ -111,6 +172,8 @@ class ProfileEditFragment : Fragment() {
                             }
                     }
                 }
+            */
+
         }
 
         var refDetails = ref.child("users").child(userID.toString()).child("user_details")

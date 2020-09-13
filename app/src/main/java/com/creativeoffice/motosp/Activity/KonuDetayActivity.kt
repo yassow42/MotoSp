@@ -134,7 +134,7 @@ class KonuDetayActivity : AppCompatActivity() {
                                 }
 
                             }.addOnFailureListener {
-                                val snackbar = Snackbar.make(tumLayout, "Yorum gönderilemedi... ", Snackbar.LENGTH_LONG)
+                                val snackbar = Snackbar.make(tumLayout, "Yorum Gönderilemedi... ", Snackbar.LENGTH_LONG)
                                 snackbar.show()
                             }
 
@@ -145,7 +145,11 @@ class KonuDetayActivity : AppCompatActivity() {
                 })
 
 
-            } else Toast.makeText(this, "Yorum yok :(", Toast.LENGTH_SHORT).show()
+            } else {
+                val snackbar = Snackbar.make(tumLayout, "Yorum yok... ", Snackbar.LENGTH_LONG)
+                snackbar.show()
+            }
+
         }
 
 

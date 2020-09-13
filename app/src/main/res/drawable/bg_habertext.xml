@@ -13,7 +13,7 @@
         android:type="linear" />
 
     <corners
-        android:bottomRightRadius="10dp"
+        android:topRightRadius="10dp"
         android:topLeftRadius="10dp"
         />
 

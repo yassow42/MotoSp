@@ -587,10 +587,7 @@ class ModelDetayiActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
 
-        val intent = Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-
-        startActivity(intent)
-        finish()
+       
     }
 
 

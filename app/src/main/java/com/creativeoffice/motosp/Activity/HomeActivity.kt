@@ -9,15 +9,14 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
-import com.creativeoffice.motosp.Adapter.HaberAdapter
-import com.creativeoffice.motosp.Adapter.SonMotorYorumAdapter
-import com.creativeoffice.motosp.Adapter.YeniAcilanKonuAdapter
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.creativeoffice.motosp.Adapter.*
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.Datalar.HaberlerData
 import com.creativeoffice.motosp.Datalar.ModelDetaylariData
@@ -36,11 +35,12 @@ import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity() {
 
-    lateinit var konularList: ArrayList<ForumKonuData>
-    lateinit var cevapYazilanKonuList: ArrayList<ForumKonuData>
-    lateinit var sonYorumlarList: ArrayList<YorumlarData>
-    lateinit var tumModeller: ArrayList<ModelDetaylariData>
-    lateinit var tumHaberler: ArrayList<HaberlerData>
+    var konularList = ArrayList<ForumKonuData>()
+    var cevapYazilanKonuList = ArrayList<ForumKonuData>()
+    var sonYorumlarList = ArrayList<YorumlarData>()
+    var tumModeller = ArrayList<ModelDetaylariData>()
+    var tumHaberler = ArrayList<HaberlerData>()
+
 
     lateinit var view: View
 
@@ -100,18 +100,24 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
-
     }
 
 
     private fun initVeri() {
-        konularList = ArrayList()
-        cevapYazilanKonuList = ArrayList()
-        sonYorumlarList = ArrayList()
-        tumModeller = ArrayList()
-        tumHaberler = ArrayList()
+        konularList.clear()
+        cevapYazilanKonuList.clear()
+        sonYorumlarList.clear()
+        tumModeller.clear()
+        tumHaberler.clear()
 
         val ref = FirebaseDatabase.getInstance().reference
+        var genelSayisi = 0
+        var tanismaSayisi = 0
+        var sohbetSayisi = 0
+        var ilGruplariSayisi = 0
+        var kampSayisi = 0
+        var kazalarSayisi = 0
+        var konuDisi = 0
 
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
@@ -123,9 +129,23 @@ class HomeActivity : AppCompatActivity() {
                         for (i in p0.children) {
                             gelenKonu = i.getValue(ForumKonuData::class.java)!!
                             konularList.add(gelenKonu)
-
+                            if (gelenKonu.kategori.toString() == "Genel") genelSayisi++
+                            if (gelenKonu.kategori.toString() == "Tanışma") tanismaSayisi++
+                            if (gelenKonu.kategori.toString() == "Sohbet") sohbetSayisi++
+                            if (gelenKonu.kategori.toString() == "İl Grupları") ilGruplariSayisi++
+                            if (gelenKonu.kategori.toString() == "Kamp") kampSayisi++
+                            if (gelenKonu.kategori.toString() == "Kazalar") kazalarSayisi++
+                            if (gelenKonu.kategori.toString() == "Konu Dışı") konuDisi++
                         }
-                        konularList.sortByDescending { it.son_cevap_zamani }
+
+                        ref.child("Sayisal_Veriler/Forum/Genel").setValue(genelSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Tanışma").setValue(tanismaSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Sohbet").setValue(sohbetSayisi)
+                        ref.child("Sayisal_Veriler/Forum/İl Grupları").setValue(ilGruplariSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Kamp").setValue(kampSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Kazalar").setValue(kazalarSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Konu Dışı").setValue(konuDisi)
+
                         if (konularList.size > 4) {
                             cevapYazilanKonuList.add(konularList[0])
                             cevapYazilanKonuList.add(konularList[1])
@@ -163,16 +183,21 @@ class HomeActivity : AppCompatActivity() {
                             yeniKonuList.add(konularList[0])
                         }
 
+
+                        konularList.sortByDescending { it.son_cevap_zamani }
                         yeniKonuList.sortByDescending { it.acilma_zamani }
                         cevapYazilanKonuList.sortByDescending { it.son_cevap_zamani }
 
                         setupRecyclerViewForumKonu(cevapYazilanKonuList)
                         setupRecyclerViewYeniKonu(yeniKonuList)
+                        setupRecyclerViewKategoriler()
                         dialogGizle()
 
                     } catch (ex: Exception) {
                         Log.e("initVeri exception", ex.toString())
                     }
+
+
                 }
             }
         })
@@ -261,6 +286,7 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+
     fun dialogGizle() {
         loading?.let { if (it.isShowing) it.cancel() }
     }
@@ -313,6 +339,29 @@ class HomeActivity : AppCompatActivity() {
             view = inflater.inflate(R.layout.dialog_konu_ac, null)
             view.etKonuBasligi.addTextChangedListener(watcherForumKonu)
             view.etKonuCevap.addTextChangedListener(watcherForumCevap)
+
+
+            val lessonsList: MutableList<String> = mutableListOf("Genel", "Tanışma", "Sohbet", "İl Grupları", "Kamp", "Kazalar", "Konu Dışı")
+
+            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, lessonsList)
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            view.spnKategoriler.adapter = adapter
+            var kategori = "Genel"
+            view.spnKategoriler.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+                    kategori = p0?.getItemAtPosition(p2).toString()
+
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    TODO()
+                }
+            }
+
             builder.setView(view)
             var dialog: Dialog = builder.create()
 
@@ -338,7 +387,7 @@ class HomeActivity : AppCompatActivity() {
                         var konuyuAcan = p0.value.toString()
 
                         if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
-                            var konuData = ForumKonuData(null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
+                            var konuData = ForumKonuData(kategori, null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
 
                             ref.child("Forum").child(konuKey.toString()).setValue(konuData)
                             //son cevap ekliyoruzkı sıralayabılelım.
@@ -386,18 +435,27 @@ class HomeActivity : AppCompatActivity() {
             rcForum.layoutParams.height = MATCH_PARENT
             */
             val intent = Intent(this, TumKonularActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-
+            intent.putExtra("kategori","Tüm Konular")
             startActivity(intent)
 
 
         }
+
+    }
+
+    private fun setupRecyclerViewKategoriler() {
+        val kategoriList: MutableList<String> = mutableListOf("Genel", "Tanışma", "Sohbet", "İl Grupları", "Kamp", "Kazalar", "Konu Dışı")
+        //  rcKategoriler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rcKategoriler.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val kategoriAdapter = KategoriAdapter(this, kategoriList, konularList)
+        rcKategoriler.adapter = kategoriAdapter
     }
 
     private fun setupRecyclerViewForumKonu(gonderilenKonuList: ArrayList<ForumKonuData>) {
         // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         rcForum.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val ForumKonuAdapter = ForumKonuBasliklariAdapter(this, gonderilenKonuList)
-        ForumKonuAdapter.notifyDataSetChanged()
+
         rcForum.adapter = ForumKonuAdapter
         rcForum.setItemViewCacheSize(20)
 

@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //foto sıkıstırma
-    implementation 'id.zelory:compressor:3.0.0'
+ //   implementation 'id.zelory:compressor:3.0.0'
 
     //eventBus
   //  implementation 'org.greenrobot:eventbus:3.1.1'
@@ -77,7 +77,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.4.2'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
-    implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'
+  //  implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'
 
     //room
     def room_version = "2.2.5"
