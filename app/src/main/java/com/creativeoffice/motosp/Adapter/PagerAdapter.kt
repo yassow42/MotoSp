@@ -1,9 +1,9 @@
-package com.creativeoffice.motosp.utils
+package com.creativeoffice.motosp.Adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.creativeoffice.motosp.Fragmentler.HondaFragment
+import com.creativeoffice.motosp.Fragmentler.MotorListFragment
 
 
 class PagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
@@ -38,26 +38,26 @@ class PagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         when (position) {
             0 -> {
-                return HondaFragment("Honda")
+                return MotorListFragment("Honda")
             }
             1 -> {
-                return HondaFragment("Yamaha")
+                return MotorListFragment("Yamaha")
             }
             2 -> {
-                return HondaFragment("Kawasaki")
+                return MotorListFragment("Kawasaki")
             }
             3 -> {
-                return HondaFragment("Suzuki")
+                return MotorListFragment("Suzuki")
             }
             4 -> {
-                return HondaFragment("Bmw")
+                return MotorListFragment("Bmw")
             }
             5 -> {
-                return HondaFragment("Triumph")
+                return MotorListFragment("Triumph")
             }
 
             else -> {
-                return HondaFragment("Honda")
+                return MotorListFragment("Honda")
             }
         }
     }

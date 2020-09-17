@@ -39,7 +39,7 @@ class YeniAcilanKonuAdapter(val myContext: Context, val yeniKonuList: ArrayList<
         holder.setData(gelenItem, myContext)
         holder.tumLayout.setOnClickListener {
 
-            val intent = Intent(myContext, KonuDetayActivity::class.java)
+            val intent = Intent(myContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putExtra("konuBasligi", gelenItem.konu_basligi.toString())
             intent.putExtra("konuCevabi", gelenItem.konu_sahibi_cevap.toString())
             intent.putExtra("userName", gelenItem.konuyu_acan.toString())

@@ -78,7 +78,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
   //  implementation 'com.iceteck.silicompressorr:silicompressor:2.2.3'
-
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.makeramen:roundedimageview:2.3.0'
     //room
     def room_version = "2.2.5"
     implementation "androidx.room:room-ktx:$room_version"

@@ -13,9 +13,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.fragment_honda.view.*
+import kotlinx.android.synthetic.main.fragment_motor_list.view.*
 
-class HondaFragment(markaa: String) : Fragment() {
+class MotorListFragment(markaa: String) : Fragment() {
 
     var tumModeller = ArrayList<ModelDetaylariData>()
     var myRef = FirebaseDatabase.getInstance().reference
@@ -31,7 +31,7 @@ class HondaFragment(markaa: String) : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_honda, container, false)
+        val view = inflater.inflate(R.layout.fragment_motor_list, container, false)
         markaModelGetir(view)
 
 

@@ -40,6 +40,7 @@ class KategoriAdapter(val myContext: Context, val kategoriList: MutableList<Stri
                 holder.tvKonuSayisi.text = "Konu sayisi: " + p0.child(item).value.toString()
 
 
+
             }
 
             override fun onCancelled(error: DatabaseError) {

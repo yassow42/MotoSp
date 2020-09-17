@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.creativeoffice.motosp.Activity.KonuDetayActivity
 import com.creativeoffice.motosp.Datalar.ForumKonuData
@@ -44,7 +45,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
         holder.setData(konuList[position], myContext)
         holder.tumLayout.setOnClickListener {
 
-            val intent = Intent(myContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            val intent = Intent(myContext.applicationContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putExtra("konuBasligi", gelenItem.konu_basligi.toString())
             intent.putExtra("konuCevabi", gelenItem.konu_sahibi_cevap.toString())
             intent.putExtra("userName", gelenItem.konuyu_acan.toString())
@@ -52,8 +53,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
             intent.putExtra("konuKey", gelenItem.konu_key)
             intent.putExtra("konuyu_acan_key", gelenItem.konuyu_acan_key)
 
-
-            myContext.startActivity(intent)
+            myContext.applicationContext.startActivity(intent)
 
         }
 
@@ -78,7 +78,6 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
             konuBasligi.text = "  " + forumKonuData.konu_basligi
             userName.text = forumKonuData.konuyu_acan
             tarih.text = formatDate(forumKonuData.acilma_zamani).toString()
-
 
 
             //foruma soncevap yazan verisi

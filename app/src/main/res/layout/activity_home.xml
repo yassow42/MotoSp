@@ -196,6 +196,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="1"
+                    android:visibility="gone"
                     android:minHeight="300dp"
                     tools:listitem="@layout/item_kategoriler">
 
@@ -210,7 +211,6 @@
                 android:background="@color/genel_renk">
 
                 <TextView
-
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -274,7 +274,7 @@
                     app:indicator_color="@color/colorAccent"
                     app:indicator_scrubbing="true"
                     app:indicator_shape="@drawable/blue_radius_gray"
-                    app:indicator_size="20"
+                    app:indicator_size="14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

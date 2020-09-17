@@ -9,13 +9,19 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.creativeoffice.motosp.Adapter.*
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.Datalar.HaberlerData
@@ -29,9 +35,7 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.dialog_haber_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
-import kotlinx.android.synthetic.main.dialog_konu_ac.view.tvGonder
-import java.lang.Exception
-import kotlin.collections.ArrayList
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -435,7 +439,7 @@ class HomeActivity : AppCompatActivity() {
             rcForum.layoutParams.height = MATCH_PARENT
             */
             val intent = Intent(this, TumKonularActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            intent.putExtra("kategori","Tüm Konular")
+            intent.putExtra("kategori", "Tüm Konular")
             startActivity(intent)
 
 
@@ -479,7 +483,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViewHaberler() {
-        // rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        rcForum.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         rcHaber.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val haberlerAdapter = HaberAdapter(this, tumHaberler)
         rcHaber.adapter = haberlerAdapter
@@ -488,7 +492,21 @@ class HomeActivity : AppCompatActivity() {
         ar_indicator_haber.attachTo(rcHaber, true)
         ar_indicator_haber.isScrubbingEnabled = true
 
+/*
+        rcHaberViewPager.adapter = HaberViewAdapter(this, tumHaberler, rcHaberViewPager)
+        rcHaberViewPager.setClipToPadding(false)
+        rcHaberViewPager.setClipChildren(false)
+        rcHaberViewPager.offscreenPageLimit = 5
+        rcHaberViewPager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        var compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(40))
+        compositePageTransformer.addTransformer(ViewPager2.PageTransformer() { page: View, position: Float ->
+            var r = 1 - Math.abs(position)
+            rcHaberViewPager.setScaleY(0.85f + r * 0.15f)
+        })
 
+        rcHaberViewPager.setPageTransformer(compositePageTransformer)
+*/
     }
 
 

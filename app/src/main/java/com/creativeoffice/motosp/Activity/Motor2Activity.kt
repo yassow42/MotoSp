@@ -4,8 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
-import com.creativeoffice.motosp.utils.PagerAdapter
-import kotlinx.android.synthetic.main.activity_motor.*
+import com.creativeoffice.motosp.Adapter.PagerAdapter
 import kotlinx.android.synthetic.main.activity_motor2.*
 import kotlinx.android.synthetic.main.activity_motor2.bottomNavigationView
 

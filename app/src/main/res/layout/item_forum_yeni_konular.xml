@@ -27,7 +27,7 @@
             android:maxLines="2"
             android:text="Konu Başligi"
             android:textAlignment="center"
-            android:textColor="@color/mavi"
+            android:textColor="@color/genel_yazi_renkleri_mavi"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
