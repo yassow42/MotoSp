@@ -8,7 +8,6 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-
         android:id="@+id/textInputLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,13 +35,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
 
-
         android:id="@+id/textInputLayout4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Cevap"
         android:textColorHint="#8E24AA"
+
         app:counterEnabled="true"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/spnKategoriler">
 
         <com.google.android.material.textfield.TextInputEditText
+
             android:id="@+id/etKonuCevap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

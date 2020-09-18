@@ -8,7 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardBackgroundColor="#F5F5F5"
+    app:cardBackgroundColor="@color/item_backgorund"
+    app:cardElevation="@dimen/cardElevation"
     app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +24,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:background="@mipmap/ic_profile"
+            android:background="@drawable/ic_profile"
             app:civ_border_color="@color/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

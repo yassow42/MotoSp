@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:background="@color/genel_renk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="6dp"
         app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,23 +47,28 @@
 
             <TextView
                 android:id="@+id/tvCevap"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:maxWidth="370dp"
                 android:text="Cevap"
-                app:layout_constraintBottom_toTopOf="@+id/imgUser"
-                app:layout_constraintEnd_toEndOf="@+id/tvKonuBasligi"
-                app:layout_constraintStart_toStartOf="@+id/tvKonuBasligi" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvKonuBasligi"
+                app:layout_constraintTop_toBottomOf="@+id/tvKonuBasligi" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgUser"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tvUserName"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvZaman"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCevap"
                 app:srcCompat="@drawable/ic_profile" />
 
             <TextView
@@ -70,38 +76,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="zmana"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvUserName" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="username"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imgUser"
-                app:layout_constraintEnd_toStartOf="@+id/tvZaman"
+                app:layout_constraintEnd_toStartOf="@+id/imgUser"
                 app:layout_constraintTop_toTopOf="@+id/imgUser" />
 
             <TextView
                 android:id="@+id/tvKonuBasligi"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:maxWidth="370dp"
                 android:padding="8dp"
                 android:text="Konu Basligi"
                 android:textColor="@color/siyah"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/tvCevap"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -112,7 +118,9 @@
         android:id="@+id/rcCevaplar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

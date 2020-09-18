@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#2837C8</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#000000</color>
-    <color name="siyah">#000000</color>
+    <color name="colorPrimaryDark">@color/genel_renk</color>
+    <color name="colorAccent">@color/siyah</color>
+    <color name="item_backgorund">#FAFAFA</color>
+    <color name="genel_renk">#3D5AFE</color>
     <color name="bgMotor">#C8C8C8</color>
+
+    <color name="siyah">#000000</color>
+
     <color name="mavi">#2837C8</color>
-    <color name="genel_renk">#244EF0</color>
+
     <color name="soluk_mavi">#5B89FB</color>
     <color name="genel_yazi_renkleri">#F4F4F4</color>
     <color name="genel_yazi_renkleri_mavi">#4A6CED</color>

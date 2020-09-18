@@ -6,8 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardBackgroundColor="#EBEBEB"
-    app:cardCornerRadius="12dp">
+    app:cardBackgroundColor="#f5f5f5"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="@dimen/cardElevation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tumLayout"
