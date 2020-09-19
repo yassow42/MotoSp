@@ -125,37 +125,34 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         private fun setupModelFotolari(oAnkiModel: ModelDetaylariData) {
             oAnkiModel.kategori?.let {
                 tvKategori.text = it
-                if (oAnkiModel.kategori == "Scooter") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_scooter)
-                } else if (oAnkiModel.kategori == "Sport" || oAnkiModel.kategori == "Racing") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_sport)
-                } else if (oAnkiModel.kategori == "Touring" || oAnkiModel.kategori == "Enduro" || oAnkiModel.kategori == "Adventure") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
-                } else if (oAnkiModel.kategori == "Cross") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_cross)
-                } else if (oAnkiModel.kategori == "Naked") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_naked)
-                } else if (oAnkiModel.kategori == "Chopper") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_chopper)
+                when(oAnkiModel.kategori){
+                    "Scooter" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_scooter)
+                    "Sport" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_sport)
+                    "Racing" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_sport)
+                    "Touring" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
+                    "Enduro" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
+                    "Adventure" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
+                    "Cross" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_cross)
+                    "Naked" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_naked)
+                    "Chopper" ->  imgMotorTipi.setBackgroundResource(R.drawable.ic_chopper)
+
                 }
 
+
             }
 
 
+            when (oAnkiModel.marka) {
 
-            if (oAnkiModel.marka == "Honda") {
-                imgMarka.setBackgroundResource(R.drawable.ic_honda)
-            } else if (oAnkiModel.marka == "Kawasaki") {
-                imgMarka.setBackgroundResource(R.drawable.kawasaki)
-            } else if (oAnkiModel.marka == "Yamaha") {
-                imgMarka.setBackgroundResource(R.drawable.yamaha)
-            } else if (oAnkiModel.marka == "Suzuki") {
-                imgMarka.setBackgroundResource(R.drawable.suzuki)
-            } else if (oAnkiModel.marka == "Triumph") {
-                imgMarka.setBackgroundResource(R.drawable.ic_triumph_background)
-            } else if (oAnkiModel.marka == "Bmw") {
-                imgMarka.setBackgroundResource(R.drawable.bmw)
+                "Honda" -> imgMarka.setBackgroundResource(R.drawable.ic_honda)
+                "Kawasaki" -> imgMarka.setBackgroundResource(R.drawable.kawasaki)
+                "Yamaha" -> imgMarka.setBackgroundResource(R.drawable.yamaha)
+                "Suzuki" -> imgMarka.setBackgroundResource(R.drawable.suzuki)
+                "Triumph" -> imgMarka.setBackgroundResource(R.drawable.ic_triumph_background)
+                "Bmw" -> imgMarka.setBackgroundResource(R.drawable.bmw )
+
             }
+
         }
 
 

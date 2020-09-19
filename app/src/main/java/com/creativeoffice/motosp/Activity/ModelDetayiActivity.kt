@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,13 +63,134 @@ class ModelDetayiActivity : AppCompatActivity() {
 
         init()
 
-        verileriGetir()
-        goruntulenmeSayisi()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        verileriGetir()
         yorumVerileri()
         yakitVerileri()
         parcaVerileri()
         yildizVerisi()
+    }
+
+    private fun verileriGetir() {
+        val ref = FirebaseDatabase.getInstance().reference
+        //  var intent = Intent()
+        //  val marka by lazy { intent.getStringExtra("Marka") }
+        yakitVerileri()
+        parcaVerileri()
+
+        marka = intent.getStringExtra("Marka")
+        model = intent.getStringExtra("Model")
+
+
+        ref.child("tum_motorlar").child(model.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+
+                var kategori = p0.child("kategori").value.toString()
+                var silindir = p0.child("silindirHacmi").value.toString()
+                var beygir = p0.child("beygir").value.toString()
+                var hiz = p0.child("hiz").value.toString()
+                var tork = p0.child("tork").value.toString()
+                var devir = p0.child("devir").value.toString()
+                var agirlik = p0.child("agirlik").value.toString()
+                var yakitKap = p0.child("yakitkap").value.toString()
+                var yakitTuk = p0.child("yakitTuk").value.toString()
+                var tanitim = p0.child("tanitim").value.toString()
+                var video = p0.child("motorVideo").value.toString()
+                var fiyat = p0.child("fiyat").value.toString()
+
+
+                if (p0.child("goruntulenme_sayisi").value.toString() != "null") {
+                    var eskiPuan = p0.child("goruntulenme_sayisi").value.toString().toInt()
+                    var yeniPuan = eskiPuan + 1
+                    ref.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(yeniPuan)
+
+                } else if (p0.value.toString() == "null") {
+                    ref.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(1)
+                }
+
+
+
+                tvFiyat.visibility = View.GONE
+                if (fiyat != "1") {
+                    tvFiyat.text = "₺ " + fiyat
+                    tvFiyat.visibility = View.VISIBLE
+                }
+
+
+                var currentSecond = 0f
+                ytTekModelList.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        youTubePlayer.cueVideo(video.toString(), 0f)
+                    }
+
+                    override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                        currentSecond = second
+                    }
+                })
+
+
+
+                if (tanitim == "" || tanitim.isNullOrEmpty()) {
+                    tvTanitim2.visibility = View.GONE
+                }
+
+                tvMarka.text = marka
+                tvModel.text = model
+                detay_agirlik.text = agirlik
+                detay_beygir.text = beygir
+                detay_devir.text = devir
+                detay_hiz.text = hiz
+                detay_kategori.text = kategori
+                detay_silindirhacmi.text = silindir
+                detay_tork.text = tork
+                detay_yakitKap.text = yakitKap
+                detay_yakitTuk.text = yakitTuk
+                tvTanitim2.text = tanitim
+
+
+
+                when (marka.toString()) {
+
+                    "Honda" -> imgMarka.setBackgroundResource(R.drawable.ic_honda)
+                    "Kawasaki" -> imgMarka.setBackgroundResource(R.drawable.kawasaki)
+                    "Yamaha" -> imgMarka.setBackgroundResource(R.drawable.yamaha)
+                    "Suzuki" -> imgMarka.setBackgroundResource(R.drawable.suzuki)
+                    "Triumph" -> imgMarka.setBackgroundResource(R.drawable.ic_triumph_background)
+                    "Bmw" -> imgMarka.setBackgroundResource(R.drawable.bmw)
+
+                }
+
+                imgMotorTipi.setAnimation(AnimationUtils.loadAnimation(this@ModelDetayiActivity, R.anim.olusma_sol))
+                kategori.let {
+                    when (kategori) {
+                        "Scooter" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_scooter)
+                        "Sport" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_sport)
+                        "Racing" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_sport)
+                        "Touring" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
+                        "Enduro" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
+                        "Adventure" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
+                        "Cross" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_cross)
+                        "Naked" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_naked)
+                        "Chopper" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_chopper)
+                    }
+                }
+
+
+            }
+
+
+        })
+
+
     }
 
     private fun yorumVerileri() {
@@ -151,18 +271,24 @@ class ModelDetayiActivity : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
 
                 yakitListesi.clear()
+                var yakitOrtList = ArrayList<Double>()
                 if (p0.hasChildren()) {
                     for (ds in p0.children) {
-                        var gelenYorumlar = ds.getValue(ModelDetaylariData.YakitTuketimi::class.java)!!
-                        yakitListesi.add(gelenYorumlar)
-                        Log.e("yasit verisi", gelenYorumlar.motor_yili.toString())
+                        var yakitTukVerisi = ds.getValue(ModelDetaylariData.YakitTuketimi::class.java)!!
+                        yakitListesi.add(yakitTukVerisi)
+                        yakitOrtList.add(yakitTukVerisi.yakitTuk!!.toDouble())
                     }
 
                 } else {
-                    yakitListesi.add(ModelDetaylariData.YakitTuketimi("0".toFloat(), "Admin", "2020"))
+                    yakitListesi.add(ModelDetaylariData.YakitTuketimi(0.0, "Admin", "2020"))
                 }
                 setupYakitRecyclerView()
                 yakitAdapter.notifyDataSetChanged()
+                if (yakitOrtList.size > 0) {
+                    var ortTuk = "${yakitOrtList.average().toDouble()} lt/100km"
+                    ref.child("tum_motorlar").child(model.toString()).child("yakitTuk").setValue(ortTuk)
+                }
+
             }
         })
 
@@ -199,12 +325,18 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     //butontıklamalarının hepsi burada
     private fun init() {
+        swipeRefreshLayout.setOnRefreshListener {
+            verileriGetir()
+            yorumVerileri()
+            yakitVerileri()
+            parcaVerileri()
+            yildizVerisi()
+            swipeRefreshLayout.isRefreshing = false
+        }
 
         val ref = FirebaseDatabase.getInstance().reference
-
         imgGeri.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-
+            val intent = Intent(this, Motor2Activity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
         }
@@ -309,10 +441,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                         if ((view.etParcaİsmi.text.isNullOrEmpty() || view.etParcaİsmi.text.isNullOrEmpty()) || view.etParcaİsmi.text.isNullOrEmpty()) {
                             Toast.makeText(this@ModelDetayiActivity, "Verilerde Hata Var", Toast.LENGTH_LONG).show()
-
-
                         } else {
-
                             var parcaIsmi = view.etParcaİsmi.text.toString()
                             var parcaModel = view.etParcaModelYili.text.toString()
                             var parcaYorum = view.etParcaUygunlugu.text.toString()
@@ -338,7 +467,6 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                 builder.setView(view)
 
-
                 builder.setNegativeButton("İptal", object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface?, which: Int) {
                         dialog!!.dismiss()
@@ -354,7 +482,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                         } else {
 
-                            var gelenYakit = view.etYakitVerisi.text.toString().toFloat()
+                            var gelenYakit = view.etYakitVerisi.text.toString().toDouble()
                             var motorYili = view.etModelYili.text.toString()
                             var yakitVerisi = ModelDetaylariData.YakitTuketimi(gelenYakit, kullaniciAdi, motorYili)
 
@@ -529,32 +657,6 @@ class ModelDetayiActivity : AppCompatActivity() {
 
     }
 
-    private fun goruntulenmeSayisi() {
-        val ref = FirebaseDatabase.getInstance().reference
-        ref.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                if (p0.value.toString() != "null") {
-                    var eskiPuan = p0.value.toString().toInt()
-
-                    var yeniPuan = eskiPuan + 1
-                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(yeniPuan)
-
-                } else if (p0.value.toString() == "null") {
-
-                    FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).child("goruntulenme_sayisi").setValue(1)
-                }
-
-            }
-
-
-        })
-
-    }
-
 
     fun setupYorumlarRecyclerView() {
 
@@ -580,122 +682,6 @@ class ModelDetayiActivity : AppCompatActivity() {
         rcYakit.layoutManager = LinearLayoutManager(this@ModelDetayiActivity, LinearLayoutManager.VERTICAL, false)
         yakitAdapter = YakitAdapter(this@ModelDetayiActivity, yakitListesi, userID)
         rcYakit.adapter = yakitAdapter
-
-
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-       
-    }
-
-
-    private fun verileriGetir() {
-        //  var intent = Intent()
-        //  val marka by lazy { intent.getStringExtra("Marka") }
-        yakitVerileri()
-        parcaVerileri()
-
-        marka = intent.getStringExtra("Marka")
-        model = intent.getStringExtra("Model")
-
-
-        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-
-
-                var kategori = p0.child("kategori").value.toString()
-                var silindir = p0.child("silindirHacmi").value.toString()
-                var beygir = p0.child("beygir").value.toString()
-                var hiz = p0.child("hiz").value.toString()
-                var tork = p0.child("tork").value.toString()
-                var devir = p0.child("devir").value.toString()
-                var agirlik = p0.child("agirlik").value.toString()
-                var yakitKap = p0.child("yakitkap").value.toString()
-                var yakitTuk = p0.child("yakitTuk").value.toString()
-                var tanitim = p0.child("tanitim").value.toString()
-                var video = p0.child("motorVideo").value.toString()
-                var fiyat = p0.child("fiyat").value.toString()
-
-
-
-
-                tvFiyat.visibility = View.GONE
-                if (fiyat != "1") {
-                    tvFiyat.text = "₺ " + fiyat
-                    tvFiyat.visibility = View.VISIBLE
-                }
-
-
-                var currentSecond = 0f
-                ytTekModelList.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                    override fun onReady(youTubePlayer: YouTubePlayer) {
-                        youTubePlayer.cueVideo(video.toString(), 0f)
-                    }
-
-                    override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-                        currentSecond = second
-                    }
-                })
-
-
-
-                if (tanitim == "" || tanitim.isNullOrEmpty()) {
-                    tvTanitim2.visibility = View.GONE
-                }
-
-                tvMarka.text = marka
-                tvModel.text = model
-                detay_agirlik.text = agirlik
-                detay_beygir.text = beygir
-                detay_devir.text = devir
-                detay_hiz.text = hiz
-                detay_kategori.text = kategori
-                detay_silindirhacmi.text = silindir
-                detay_tork.text = tork
-                detay_yakitKap.text = yakitKap
-                detay_yakitTuk.text = yakitTuk
-                tvTanitim2.text = tanitim
-
-                if (marka.toString() == "Bmw") {
-                    imgMarka.setBackgroundResource(R.mipmap.ic_bmw)
-                } else if (marka.toString() == "Honda") {
-                    imgMarka.setBackgroundResource(R.drawable.ic_honda)
-                } else if (marka.toString() == "Triumph") {
-                    imgMarka.setBackgroundResource(R.drawable.ic_tr)
-                } else if (marka.toString() == "Yamaha") {
-                    imgMarka.setBackgroundResource(R.drawable.yamaha)
-                } else if (marka.toString() == "Suzuki") {
-                    imgMarka.setBackgroundResource(R.drawable.suzuki)
-                } else if (marka.toString() == "Kawasaki") {
-                    imgMarka.setBackgroundResource(R.drawable.kawasaki)
-                }
-
-                imgMotorTipi.setAnimation(AnimationUtils.loadAnimation(this@ModelDetayiActivity, R.anim.olusma_sol))
-                if (kategori == "Scooter") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_scooter)
-                } else if (kategori == "Sport" || kategori == "Racing") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_sport)
-                } else if (kategori == "Touring" || kategori == "Enduro" || kategori == "Adventure") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_touring)
-                } else if (kategori == "Cross") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_cross)
-                } else if (kategori == "Naked") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_naked)
-                } else if (kategori == "Chopper") {
-                    imgMotorTipi.setBackgroundResource(R.drawable.ic_chopper)
-                }
-
-
-            }
-
-
-        })
 
 
     }

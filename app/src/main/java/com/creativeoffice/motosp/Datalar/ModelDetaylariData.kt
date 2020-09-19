@@ -88,7 +88,7 @@ class ModelDetaylariData {
     )
 
     data class YakitTuketimi(
-        val yakitTuk: Float? = null,
+        val yakitTuk: Double? = null,
         val kullanici_adi: String? = null,
         val motor_yili: String? = null
     )
