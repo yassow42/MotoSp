@@ -66,6 +66,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
         var userName = itemView.tvUserName
         var tarih = itemView.tvZaman
         var circleProfileImage = itemView.circleProfileImage
+        var progressBar = itemView.progressBar
 
         //  var tvZamanCevap = itemView.tvZamanCevap
         // var tvSonYazan = itemView.tvSonYazan
@@ -114,6 +115,10 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
                         var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                         if (imgURL != "default") {
                             Picasso.get().load(imgURL).into(circleProfileImage)
+                            progressBar.visibility = View.GONE
+                        }else{
+                            progressBar.visibility = View.GONE
+                            Picasso.get().load(R.drawable.ic_profile).into(circleProfileImage)
                         }
                     }
                 }

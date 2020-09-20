@@ -69,6 +69,15 @@ class ProfileActivity : AppCompatActivity() {
                         tvModelProfile.text = usersDetails.kullanilan_motor_model.toString()
                         tvPuan.text = usersDetails.puan.toString()
 
+                        if (usersDetails.biyografi.isNullOrEmpty() || usersDetails.biyografi=="Default"){
+                            tvBiyografi.visibility = View.GONE
+                        }else{
+                            tvBiyografi.visibility = View.VISIBLE
+                            tvBiyografi.text = usersDetails.biyografi.toString()
+                        }
+
+
+
                         tvAdresSehir.visibility = View.GONE
                         usersDetails.sehir?.let {
                             tvAdresSehir.text = it.toString()
