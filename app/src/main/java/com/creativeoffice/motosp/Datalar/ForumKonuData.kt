@@ -2,6 +2,7 @@ package com.creativeoffice.motosp.Datalar
 
 class ForumKonuData(
     var kategori: String? = null,
+    var konu_acik_mi: Boolean? = null,
     var acilma_zamani: Long? = null,
     var son_cevap_zamani: Long? = null,
     var konu_basligi: String? = null,

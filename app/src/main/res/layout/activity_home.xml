@@ -10,6 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:isScrollContainer="false"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,7 +147,7 @@
                     android:id="@+id/rcYeniKonular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-               android:layout_margin="8dp"
+                    android:layout_margin="8dp"
                     android:textAlignment="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +156,6 @@
                     tools:itemCount="1"
                     tools:listitem="@layout/item_forum_yeni_konular" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -263,8 +263,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -278,12 +276,12 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:minHeight="320dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="1"
-                    android:minHeight="320dp"
                     tools:listitem="@layout/item_kategoriler">
 
                 </androidx.recyclerview.widget.RecyclerView>

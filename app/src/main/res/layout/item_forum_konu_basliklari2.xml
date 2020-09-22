@@ -25,7 +25,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:civ_border_width="1dp"
-            app:civ_border_color="#D1568F"
+            app:civ_border_color="@color/img_border"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -42,7 +42,7 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
 
 
         holder.setData(myContext, item)
-Log.e("zamn",item.etkinlik_zamani.toString())
+
         holder.itemView.setOnClickListener {
 
             val intent = Intent(myContext, EtkinlikDetayActivity::class.java)

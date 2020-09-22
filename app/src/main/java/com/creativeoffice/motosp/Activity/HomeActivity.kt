@@ -35,6 +35,7 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.dialog_haber_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
+import kotlinx.coroutines.handleCoroutineException
 
 
 class HomeActivity : AppCompatActivity() {
@@ -44,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
     var sonYorumlarList = ArrayList<YorumlarData>()
     var tumModeller = ArrayList<ModelDetaylariData>()
     var tumHaberler = ArrayList<HaberlerData>()
-
+    var yeniKonuList = ArrayList<ForumKonuData>()
 
     lateinit var view: View
 
@@ -54,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
     private val ACTIVITY_NO = 0
     var loading: Dialog? = null
 
-    private var mDelayHandler: Handler? = null
+    var mDelayHandler = Handler()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,20 +63,26 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         setupNavigationView()
         //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        mDelayHandler = Handler()
+
         mAuth = FirebaseAuth.getInstance()
-        HesapKontrolveKeepSynced()
+        if (mAuth.currentUser.toString() != "null") {
+            HesapKontrolveKeepSynced()
+        } else {
+            mAuth.signOut()
+            var intent = Intent(this@HomeActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+            finish()
+        }
 
         initBtn()
-
 
     }
 
     private fun HesapKontrolveKeepSynced() {
-        ref.child("Forum").keepSynced(true)
-        ref.child("tum_motorlar").keepSynced(true)
-        ref.child("Haberler").keepSynced(true)
-        ref.child("users").keepSynced(true)
+        FirebaseDatabase.getInstance().reference.child("Forum").keepSynced(true)
+        FirebaseDatabase.getInstance().reference.child("tum_motorlar").keepSynced(true)
+        FirebaseDatabase.getInstance().reference.child("Haberler").keepSynced(true)
+        FirebaseDatabase.getInstance().reference.child("users").keepSynced(true)
         ref.child("users").child(mAuth.currentUser!!.uid).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.value.toString() == "null") {
@@ -109,46 +116,29 @@ class HomeActivity : AppCompatActivity() {
 
     private fun initVeri() {
         konularList.clear()
+        yeniKonuList.clear()
         cevapYazilanKonuList.clear()
         sonYorumlarList.clear()
         tumModeller.clear()
         tumHaberler.clear()
 
         val ref = FirebaseDatabase.getInstance().reference
-        var genelSayisi = 0
-        var tanismaSayisi = 0
-        var sohbetSayisi = 0
-        var ilGruplariSayisi = 0
-        var kampSayisi = 0
-        var kazalarSayisi = 0
-        var konuDisi = 0
 
         ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
                     try {
-                        var yeniKonuList = ArrayList<ForumKonuData>()
+
                         var gelenKonu: ForumKonuData
                         for (i in p0.children) {
-                            gelenKonu = i.getValue(ForumKonuData::class.java)!!
-                            konularList.add(gelenKonu)
-                            if (gelenKonu.kategori.toString() == "Genel") genelSayisi++
-                            if (gelenKonu.kategori.toString() == "Tanışma") tanismaSayisi++
-                            if (gelenKonu.kategori.toString() == "Sohbet") sohbetSayisi++
-                            if (gelenKonu.kategori.toString() == "İl Grupları") ilGruplariSayisi++
-                            if (gelenKonu.kategori.toString() == "Kamp") kampSayisi++
-                            if (gelenKonu.kategori.toString() == "Kazalar") kazalarSayisi++
-                            if (gelenKonu.kategori.toString() == "Konu Dışı") konuDisi++
+                            if (i.child("konu_acik_mi").value.toString().toBoolean()) {
+                                gelenKonu = i.getValue(ForumKonuData::class.java)!!
+                                konularList.add(gelenKonu)
+                            }
                         }
 
-                        ref.child("Sayisal_Veriler/Forum/Genel").setValue(genelSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Tanışma").setValue(tanismaSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Sohbet").setValue(sohbetSayisi)
-                        ref.child("Sayisal_Veriler/Forum/İl Grupları").setValue(ilGruplariSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Kamp").setValue(kampSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Kazalar").setValue(kazalarSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Konu Dışı").setValue(konuDisi)
+                        konularList.sortByDescending { it.son_cevap_zamani }
 
                         if (konularList.size > 4) {
                             cevapYazilanKonuList.add(konularList[0])
@@ -188,14 +178,15 @@ class HomeActivity : AppCompatActivity() {
                         }
 
 
-                        konularList.sortByDescending { it.son_cevap_zamani }
+
                         yeniKonuList.sortByDescending { it.acilma_zamani }
                         cevapYazilanKonuList.sortByDescending { it.son_cevap_zamani }
 
                         setupRecyclerViewForumKonu(cevapYazilanKonuList)
                         setupRecyclerViewYeniKonu(yeniKonuList)
                         setupRecyclerViewKategoriler()
-                        dialogGizle()
+                        mDelayHandler.postDelayed({ dialogGizle() }, 500)
+
 
                     } catch (ex: Exception) {
                         Log.e("initVeri exception", ex.toString())
@@ -283,6 +274,7 @@ class HomeActivity : AppCompatActivity() {
                     }
                     tumHaberler.sortByDescending { it.haber_eklenme_zamani }
                     setupRecyclerViewHaberler()
+
                 }
 
             }
@@ -291,11 +283,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
-    fun dialogGizle() {
+    private fun dialogGizle() {
         loading?.let { if (it.isShowing) it.cancel() }
+
     }
 
-    fun dialogCalistir() {
+    private fun dialogCalistir() {
         dialogGizle()
         loading = LoadingDialog.startDialog(this)
     }
@@ -391,7 +384,7 @@ class HomeActivity : AppCompatActivity() {
                         var konuyuAcan = p0.value.toString()
 
                         if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
-                            var konuData = ForumKonuData(kategori, null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
+                            var konuData = ForumKonuData(kategori, true, null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
 
                             ref.child("Forum").child(konuKey.toString()).setValue(konuData)
                             //son cevap ekliyoruzkı sıralayabılelım.
@@ -520,6 +513,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
+    var konuBasligiUzunluk = false
     var watcherForumKonu = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
 
@@ -530,14 +524,19 @@ class HomeActivity : AppCompatActivity() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s!!.length >= 5) {
-
-                view.tvGonder.visibility = View.VISIBLE
-                view.tvGonder.isEnabled = true
-                view.tvGonder.setBackgroundResource(R.color.yesil)
+            if (5 < s!!.length) {
+                if (s.length < 121) {
+                    konuBasligiUzunluk = true
+                } else {
+                    konuBasligiUzunluk = false
+                    view.tvGonder.isEnabled = false
+                    view.textInputLayout3.isHelperTextEnabled = true
+                    view.textInputLayout3.helperText = "Başlık Çok Uzun"
+                    view.tvGonder.setTextColor(resources.getColor(R.color.kirmizi))
+                }
             } else {
                 view.tvGonder.isEnabled = false
-                view.tvGonder.setBackgroundResource(R.color.beyaz)
+                //   view.tvGonder.setBackgroundResource(R.color.beyaz)
 
             }
         }
@@ -553,16 +552,18 @@ class HomeActivity : AppCompatActivity() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s!!.length >= 5) {
+            if (konuBasligiUzunluk) {
+                if (s!!.length >= 5) {
+                    view.tvGonder.visibility = View.VISIBLE
+                    view.tvGonder.isEnabled = true
+                    view.tvGonder.setTextColor(resources.getColor(R.color.yesil))
 
-                view.tvGonder.visibility = View.VISIBLE
-                view.tvGonder.isEnabled = true
-                view.tvGonder.setBackgroundResource(R.color.yesil)
-            } else {
-                view.tvGonder.isEnabled = false
-                view.tvGonder.setBackgroundResource(R.color.beyaz)
-
+                } else {
+                    view.tvGonder.isEnabled = false
+                    view.tvGonder.setTextColor(resources.getColor(R.color.kirmizi))
+                }
             }
+
         }
 
     }

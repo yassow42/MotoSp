@@ -143,7 +143,7 @@ class ForumFragment() : Fragment() {
                         var konuyuAcan = p0.value.toString()
 
                         if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
-                            var konuData = ForumKonuData(kategori, null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
+                            var konuData = ForumKonuData(kategori, true,null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
 
                             ref.child("Forum").child(konuKey.toString()).setValue(konuData)
                             //son cevap ekliyoruzkı sıralayabılelım.

@@ -117,9 +117,9 @@ class ProfileActivity : AppCompatActivity() {
                             yorumlarim.add(gelenData)
                         }
 
-                        rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
-                        rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
-                        rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+           //             rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+            //            rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+            //            rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
 
                         val adapter = ProfilYorumlarimAdapter(this@ProfileActivity, yorumlarim, userID)
                         rcYorumlarim.adapter = adapter

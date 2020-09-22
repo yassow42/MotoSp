@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -16,16 +17,19 @@ import android.view.WindowManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Adapter.CevaplarAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
+import com.creativeoffice.motosp.utils.LoadingDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_konu_detay.*
+import kotlinx.android.synthetic.main.activity_model_detayi.*
 import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
 import kotlinx.android.synthetic.main.fragment_profile_edit.view.*
 import java.text.SimpleDateFormat
@@ -53,10 +57,12 @@ class KonuDetayActivity : AppCompatActivity() {
     var userID: String? = null
     val ref = FirebaseDatabase.getInstance().reference
 
+    var loading: Dialog? = null
+    var handler = Handler()
+
     init {
         mAuth = FirebaseAuth.getInstance()
         userID = mAuth.currentUser!!.uid
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,11 +83,32 @@ class KonuDetayActivity : AppCompatActivity() {
         tvKonuBasligi.text = konuBasligi
         tvCevap.text = konuCevabi
 
+        dialogCalistir()
+        handler.postDelayed({ initVeri(konuKey) }, 800)
         initBtn(konuKey)
-        initVeri(konuKey)
+
+    }
+
+
+    private fun dialogGizle() {
+        handler.postDelayed({ loading?.let { if (it.isShowing) it.cancel() } }, 800)
+
+    }
+
+    private fun dialogCalistir() {
+        dialogGizle()
+        loading = LoadingDialog.startDialog(this)
     }
 
     private fun initBtn(konuKey: String?) {
+
+        swKonuDetay.setOnRefreshListener {
+            dialogCalistir()
+            initVeri(konuKey)
+            swKonuDetay.isRefreshing = false
+        }
+
+
         etCevapKonu.addTextChangedListener(watcherForumCevap)
 
 
@@ -115,9 +142,8 @@ class KonuDetayActivity : AppCompatActivity() {
                         ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
                         ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
                             .addOnCompleteListener {
-                                etCevapKonu.text.clear()
+                                etCevapKonu.text!!.clear()
                                 imgYorumFotosu.visibility = View.GONE
-
                                 val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
                                 snackbar.show()
 
@@ -206,7 +232,7 @@ class KonuDetayActivity : AppCompatActivity() {
                             .setPositiveButton("Sil", object : DialogInterface.OnClickListener {
                                 override fun onClick(p0: DialogInterface?, p1: Int) {
 
-                                    ref.child("Forum").child(konuKey.toString()).removeValue().addOnCompleteListener {
+                                    ref.child("Forum").child(konuKey.toString()).child("konu_acik_mi").setValue(false).addOnCompleteListener {
                                         val intent = Intent(this@KonuDetayActivity, HomeActivity::class.java)//.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                         startActivity(intent)
                                     }
@@ -244,13 +270,15 @@ class KonuDetayActivity : AppCompatActivity() {
                         val gelenKonu = i.getValue(ForumKonuData.cevaplar::class.java)
                         cevapList.add(gelenKonu!!)
                     }
-                    cevapList.sortByDescending { it.cevap_zamani }
+                    cevapList.sortBy { it.cevap_zamani }
                 }
                 val tarih = p0.child("acilma_zamani").value
                 tarih?.let {
                     tvZaman.text = formatDate(tarih.toString().toLong()).toString()
                 }
                 CevaplarAdapter.notifyDataSetChanged()
+
+                dialogGizle()
             }
         })
 
@@ -277,19 +305,18 @@ class KonuDetayActivity : AppCompatActivity() {
 
 
     private fun setupRecyclerViewCevap() {
-        rcCevaplar.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        //   rcBayi.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        // rcCevaplar.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        rcCevaplar.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         CevaplarAdapter = CevaplarAdapter(this, cevapList, userID)
+        rcCevaplar.suppressLayout(true)
         rcCevaplar.setHasFixedSize(true)
         rcCevaplar.adapter = CevaplarAdapter
-        rcCevaplar.setItemViewCacheSize(20)
-
     }
 
     private fun formatDate(miliSecond: Long?): String? {
         if (miliSecond == null) return "0"
         val date = Date(miliSecond)
-        val sdf = SimpleDateFormat("h:mm E MM/dd ", Locale("tr"))
+        val sdf = SimpleDateFormat("h:mm  E MM/dd ", Locale("tr"))
         return sdf.format(date)
 
     }

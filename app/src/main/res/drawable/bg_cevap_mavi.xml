@@ -6,9 +6,9 @@
         android:angle="315"
         android:centerColor="#CE4E5FB1"
 
-        android:centerX="55%"
+        android:centerX="60%"
 
-        android:endColor="#AEC30800"
+        android:endColor="@color/img_border"
         android:startColor="@color/colorPrimary"
         android:type="linear" />
 

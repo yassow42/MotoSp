@@ -31,6 +31,7 @@ class TumKonularActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var userID: String
 
+    var ref = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +94,7 @@ class TumKonularActivity : AppCompatActivity() {
             view.tvGonder.setOnClickListener {
 
 
-                var ref = FirebaseDatabase.getInstance().reference
+
                 var konuBasligi = view.etKonuBasligi.text.toString()
                 var konuCevap = view.etKonuCevap.text.toString()
                 var konuKey = ref.child("Forum").push().key
@@ -108,7 +109,7 @@ class TumKonularActivity : AppCompatActivity() {
                             var konuyuAcan = p0.value.toString()
 
                             if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
-                                var konuData = ForumKonuData(secilenKategori, null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
+                                var konuData = ForumKonuData(secilenKategori, true, null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
 
                                 ref.child("Forum").child(konuKey.toString()).setValue(konuData)
                                 //son cevap ekliyoruzkı sıralayabılelım.
@@ -153,7 +154,17 @@ class TumKonularActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        FirebaseDatabase.getInstance().reference.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
+        var genelSayisi = 0
+        var tanismaSayisi = 0
+        var sohbetSayisi = 0
+        var ilGruplariSayisi = 0
+        var kampSayisi = 0
+        var kazalarSayisi = 0
+        var konuDisi = 0
+
+
+
+        ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
@@ -161,14 +172,31 @@ class TumKonularActivity : AppCompatActivity() {
 
                     var gelenKonu: ForumKonuData
                     for (i in p0.children) {
-                        gelenKonu = i.getValue(ForumKonuData::class.java)!!
-                        if (kategori == "Tüm Konular") {
-                            konularList.add(gelenKonu)
-                        }
-                        if (gelenKonu.kategori.toString() == kategori) {
-                            konularList.add(gelenKonu)
+                        if (i.child("konu_acik_mi").value.toString().toBoolean()) {
+                            gelenKonu = i.getValue(ForumKonuData::class.java)!!
+                            if (kategori == "Tüm Konular") {
+                                konularList.add(gelenKonu)
+                            }
+                            if (gelenKonu.kategori.toString() == kategori) {
+                                konularList.add(gelenKonu)
+                            }
+                            if (gelenKonu.kategori.toString() == "Genel") genelSayisi++
+                            if (gelenKonu.kategori.toString() == "Tanışma") tanismaSayisi++
+                            if (gelenKonu.kategori.toString() == "Sohbet") sohbetSayisi++
+                            if (gelenKonu.kategori.toString() == "İl Grupları") ilGruplariSayisi++
+                            if (gelenKonu.kategori.toString() == "Kamp") kampSayisi++
+                            if (gelenKonu.kategori.toString() == "Kazalar") kazalarSayisi++
+                            if (gelenKonu.kategori.toString() == "Konu Dışı") konuDisi++
+
                         }
 
+                        ref.child("Sayisal_Veriler/Forum/Genel").setValue(genelSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Tanışma").setValue(tanismaSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Sohbet").setValue(sohbetSayisi)
+                        ref.child("Sayisal_Veriler/Forum/İl Grupları").setValue(ilGruplariSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Kamp").setValue(kampSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Kazalar").setValue(kazalarSayisi)
+                        ref.child("Sayisal_Veriler/Forum/Konu Dışı").setValue(konuDisi)
 
                     }
                     konularList.sortByDescending { it.son_cevap_zamani }
