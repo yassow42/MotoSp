@@ -100,7 +100,7 @@ class KonuDetayActivity : AppCompatActivity() {
         loading = LoadingDialog.startDialog(this)
     }
 
-    private fun initBtn(konuKey: String?) {
+    private fun initBtn(konuKey: String) {
 
         swKonuDetay.setOnRefreshListener {
             dialogCalistir()
@@ -132,21 +132,18 @@ class KonuDetayActivity : AppCompatActivity() {
                         val cevapYazan = p0.child("user_name").value.toString()
                         //ilk olarak cevap vereni son cevap olarak kaydediyruz.
                         val soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
-                        ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
-                        ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                        ref.child("Forum").child(konuKey).child("son_cevap").setValue(soncevapData)
+                        ref.child("Forum").child(konuKey).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
                         //son cevap zamanı ekliyoruz
-                        ref.child("Forum").child(konuKey.toString()).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                        ref.child("Forum").child(konuKey).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
                         //cevaba da eklıyruz
-                        val cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
-                        ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
-                        ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
-                            .addOnCompleteListener {
+                        val cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, System.currentTimeMillis(), userID, konuKey.toString())
+                        ref.child("Forum").child(konuKey).child("cevaplar").child(cevapkey.toString()).setValue(cevapData).addOnCompleteListener {
                                 etCevapKonu.text!!.clear()
                                 imgYorumFotosu.visibility = View.GONE
                                 val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
                                 snackbar.show()
-
                                 if (yorumFotoUri != null) {
                                     FirebaseStorage.getInstance().reference.child("YorumFotolari").child(konuKey.toString()).child(cevapkey.toString()).putFile(yorumFotoUri!!) // burada fotografı kaydettik veritabanına.
                                         .addOnSuccessListener { UploadTask ->
@@ -165,8 +162,11 @@ class KonuDetayActivity : AppCompatActivity() {
                             }
 
                         //kullanıcının yaptığı yorumu profiline ekledık.
-                        ref.child("users").child(userID.toString()).child("yorumlarim").child(cevapkey.toString()).setValue(cevapData)
-                        ref.child("users").child(userID.toString()).child("yorumlarim").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                        var yorumRef = ref.child("users").child(userID.toString()).child("yorumlarim")
+                        yorumRef.child(cevapkey.toString()).setValue(cevapData)
+                        yorumRef.child(cevapkey.toString()).child("konu_basligi").setValue(konuBasligi)
+                        yorumRef.child(cevapkey.toString()).child("konu_sahibi_cevap").setValue(konuCevabi)
+                        yorumRef.child(cevapkey.toString()).child("konuyu_acan_key").setValue(konuAcanKey)
                     }
                 })
 

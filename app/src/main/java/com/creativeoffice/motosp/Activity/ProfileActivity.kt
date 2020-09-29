@@ -59,46 +59,38 @@ class ProfileActivity : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
                     var imgURL = "default"
-                    try {
-                        var users = p0.getValue(Users::class.java)!!
-                        var usersDetails = p0.child("user_details").getValue(UserDetails::class.java)!!
-                        imgURL = usersDetails.profile_picture.toString()
 
-                        tvKullaniciAdi.text = users.user_name.toString()
-                        tvMarkaProfile.text = usersDetails.kullanilan_motor_marka.toString()
-                        tvModelProfile.text = usersDetails.kullanilan_motor_model.toString()
-                        tvPuan.text = usersDetails.puan.toString()
+                    var users = p0.getValue(Users::class.java)!!
+                    var usersDetails = p0.child("user_details").getValue(UserDetails::class.java)!!
+                    imgURL = usersDetails.profile_picture.toString()
 
-                        if (usersDetails.biyografi.isNullOrEmpty() || usersDetails.biyografi=="Default"){
-                            tvBiyografi.visibility = View.GONE
-                        }else{
-                            tvBiyografi.visibility = View.VISIBLE
-                            tvBiyografi.text = usersDetails.biyografi.toString()
-                        }
+                    tvKullaniciAdi.text = users.user_name.toString()
+                    tvMarkaProfile.text = usersDetails.kullanilan_motor_marka.toString()
+                    tvModelProfile.text = usersDetails.kullanilan_motor_model.toString()
+                    tvPuan.text = usersDetails.puan.toString()
 
-
-
-                        tvAdresSehir.visibility = View.GONE
-                        usersDetails.sehir?.let {
-                            tvAdresSehir.text = it.toString()
-                            tvAdresSehir.visibility = View.VISIBLE
-                        }
-
-                        tvAdresIlce.visibility = View.GONE
-                        usersDetails.ilce?.let {
-                            tvAdresIlce.text =it.toString()
-                            tvAdresIlce.visibility = View.VISIBLE
-                        }
-
-
-
-
-                    } catch (e: Exception) {
-                        var hataKey = ref.child("zz_Hatalar_zz").push().key.toString()
-                        ref.child("zz_Hatalar_zz").child(hataKey).push().setValue(e.message)
-                        ref.child("zz_Hatalar_zz").child(hataKey).push().setValue(e.localizedMessage)
-                        ref.child("zz_Hatalar_zz").child(hataKey).push().setValue("User verileri hatası")
+                    if (usersDetails.biyografi.isNullOrEmpty() || usersDetails.biyografi == "Default") {
+                        tvBiyografi.visibility = View.GONE
+                    } else {
+                        tvBiyografi.visibility = View.VISIBLE
+                        tvBiyografi.text = usersDetails.biyografi.toString()
                     }
+
+
+
+                    tvAdresSehir.visibility = View.GONE
+                    usersDetails.sehir?.let {
+                        tvAdresSehir.text = it.toString()
+                        tvAdresSehir.visibility = View.VISIBLE
+                    }
+
+                    tvAdresIlce.visibility = View.GONE
+                    usersDetails.ilce?.let {
+                        tvAdresIlce.text = it.toString()
+                        tvAdresIlce.visibility = View.VISIBLE
+                    }
+
+
 
 
 
@@ -117,9 +109,9 @@ class ProfileActivity : AppCompatActivity() {
                             yorumlarim.add(gelenData)
                         }
 
-           //             rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
-            //            rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
-            //            rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                                     rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                        //            rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                        //            rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
 
                         val adapter = ProfilYorumlarimAdapter(this@ProfileActivity, yorumlarim, userID)
                         rcYorumlarim.adapter = adapter

@@ -62,11 +62,11 @@ class SehirAdapter(val myContext: Context, val sehirList: ArrayList<BayilerData>
                 p0.rcIlceler.adapter = markaAdapter
                 p0.rcIlceler.setHasFixedSize(false)
                 p0.rcIlceler.setItemViewCacheSize(50)
-                p0.arIndicator.removeIndicators()
+              //  p0.arIndicator.removeIndicators()
 
-                p0.rcIlceler.setOnFlingListener(null)
-                p0.arIndicator.attachTo(p0.rcIlceler, true)
-                p0.arIndicator.isScrubbingEnabled = true
+              //  p0.rcIlceler.setOnFlingListener(null)
+              //  p0.arIndicator.attachTo(p0.rcIlceler, true)
+              //  p0.arIndicator.isScrubbingEnabled = true
 
 
             }

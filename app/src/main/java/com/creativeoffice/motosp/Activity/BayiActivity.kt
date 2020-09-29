@@ -1,46 +1,90 @@
 package com.creativeoffice.motosp.Activity
 
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Adapter.SehirAdapter
 import com.creativeoffice.motosp.Datalar.BayilerData
+import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_bayi.*
+import kotlinx.android.synthetic.main.dialog_bayi_ekle.view.*
+import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
 
 class BayiActivity : AppCompatActivity() {
 
     private val ACTIVITY_NO = 3
     var sehirList = ArrayList<BayilerData>()
-
-var ref =  FirebaseDatabase.getInstance().reference
+    lateinit var view: View
+    var ref = FirebaseDatabase.getInstance().reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bayi)
         //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-      //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         ref.child("Bayiler").keepSynced(true)
         sehirList = ArrayList()
 
 
 
-
+        butonlar()
         initVeri()
         setupNavigationView()
     }
 
+    private fun butonlar() {
+        imgPlus.setOnClickListener {
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var inflater: LayoutInflater = layoutInflater
+            view = inflater.inflate(R.layout.dialog_bayi_ekle, null)
+            builder.setPositiveButton("Gönder", DialogInterface.OnClickListener { dialog, which ->
+
+                var sehir = view.etSehir.text.toString()
+                var ilce = view.etIlce.text.toString()
+                var bayiAdi = view.etBayiAdi.text.toString()
+                var adres = view.etAdres.text.toString()
+                var tel = view.etTel.text.toString()
+
+                var data = BayilerData.BayiDetaylari(bayiAdi, tel, adres, sehir, ilce, "Veri Saglanamadı")
+                var onayKey = ref.child("OnayBekleyen_Bayiler").push().key.toString()
+                ref.child("OnayBekleyen_Bayiler").child(onayKey).setValue(data)
+
+
+                dialog.dismiss()
+            })
+
+            builder.setNegativeButton("İptal", DialogInterface.OnClickListener { dialog, which ->
+
+
+            })
+
+            builder.setView(view)
+            var dialog: Dialog = builder.create()
+
+
+
+
+
+
+            dialog.show()
+        }
+    }
+
     private fun initVeri() {
 
-
-        FirebaseDatabase.getInstance().reference.child("Bayiler").addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("Bayiler").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
             override fun onDataChange(p0: DataSnapshot) {
@@ -61,7 +105,7 @@ var ref =  FirebaseDatabase.getInstance().reference
         rcBayi.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         val SehirAdapter = SehirAdapter(this, sehirList)
         rcBayi.adapter = SehirAdapter
-      //  rcBayi.setItemViewCacheSize(50)
+        //  rcBayi.setItemViewCacheSize(50)
     }
 
 

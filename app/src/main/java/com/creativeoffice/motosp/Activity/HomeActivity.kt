@@ -79,10 +79,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun HesapKontrolveKeepSynced() {
-        FirebaseDatabase.getInstance().reference.child("Forum").keepSynced(true)
-        FirebaseDatabase.getInstance().reference.child("tum_motorlar").keepSynced(true)
-        FirebaseDatabase.getInstance().reference.child("Haberler").keepSynced(true)
-        FirebaseDatabase.getInstance().reference.child("users").keepSynced(true)
+        ref.child("Forum").keepSynced(true)
+        ref.child("tum_motorlar").keepSynced(true)
+        ref.child("Haberler").keepSynced(true)
+        ref.child("users").keepSynced(true)
         ref.child("users").child(mAuth.currentUser!!.uid).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.value.toString() == "null") {
@@ -402,15 +402,21 @@ class HomeActivity : AppCompatActivity() {
                             }
 
                             //ilk olarak konuyu acanı son cevaba kaydedıyoruz...
-                            var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, null, userID, konuKey.toString())
+                            var soncevapData = ForumKonuData.son_cevap(konuCevap, konuKey, konuyuAcan, System.currentTimeMillis(), userID, konuKey.toString())
                             ref.child("Forum").child(konuKey.toString()).child("son_cevap").setValue(soncevapData)
                             ref.child("Forum").child(konuKey.toString()).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
                             //cevaba da eklıyruz kı ılk gorunsun
                             var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
-                            var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, null, userID, konuKey.toString())
+                            var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, System.currentTimeMillis(), userID, konuKey.toString())
                             ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
                             ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+                            //kullanıcının yaptığı yorumu profiline ekledık.
+                            var yorumRef = ref.child("users").child(userID.toString()).child("yorumlarim")
+                            yorumRef.child(cevapkey.toString()).setValue(cevapData)
+                            yorumRef.child(cevapkey.toString()).child("konu_basligi").setValue(konuBasligi)
+                            yorumRef.child(cevapkey.toString()).child("konu_sahibi_cevap").setValue(konuData.konu_sahibi_cevap.toString())
+                            yorumRef.child(cevapkey.toString()).child("konuyu_acan_key").setValue(konuData.konuyu_acan_key)
                             dialog.dismiss()
                         } else {
                             Toast.makeText(this@HomeActivity, "Başlık veya Cevap çok kısa", Toast.LENGTH_LONG).show()

@@ -1,21 +1,26 @@
 package com.creativeoffice.motosp.Activity
 
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.BayiYorumlariAdapter
 import com.creativeoffice.motosp.Datalar.BayilerData
 import com.creativeoffice.motosp.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_bayi_detay.*
 import kotlinx.android.synthetic.main.dialog_yorum.view.*
-import kotlin.collections.ArrayList
 
 
 class BayiDetayActivity : AppCompatActivity() {
@@ -25,7 +30,6 @@ class BayiDetayActivity : AppCompatActivity() {
 
 
     var ref = FirebaseDatabase.getInstance().reference
-
     var sehir: String? = null
     var ilce: String? = null
     var bayiAdi: String? = null
@@ -52,18 +56,20 @@ class BayiDetayActivity : AppCompatActivity() {
 
 
         var yorumlarList = ArrayList<BayilerData.BayiYorumlari>()
+        yorumlarList.clear()
 
         var hizmetPuaniToplam = 0f
         var yildizSayisi = 0
+        var gelenData: BayilerData.BayiYorumlari
         ref.child("Bayiler").child(sehir.toString()).child(ilce.toString()).child(bayiAdi.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
-                    if( p0.child("yorumlar").hasChildren()){
+                    if (p0.child("yorumlar").hasChildren()) {
                         for (ds in p0.child("yorumlar").children) {
-                            var gelenData = ds.getValue(BayilerData.BayiYorumlari::class.java)!!
+                            gelenData = ds.getValue(BayilerData.BayiYorumlari::class.java)!!
                             yorumlarList.add(gelenData)
                         }
-                    }else yorumlarList.add(BayilerData.BayiYorumlari(5f,"İlk Yorumu Yapmak İster misin?",111111111,"sad","Admin"))
+                    } else yorumlarList.add(BayilerData.BayiYorumlari("dsa", "dsa", "dsads", 5f, "İlk Yorumu Yapmak İster misin?", 111111111, "sad", "Admin"))
 
 
                     for (ds in p0.child("yildizlar").children) {
@@ -79,13 +85,29 @@ class BayiDetayActivity : AppCompatActivity() {
                     }
 
                     tvBayiAdi.text = bayiAdi
-                    tvNumara.text = p0.child("numara").value.toString()
-                    tvAdres.text = p0.child("adres").value.toString()
+                    p0.child("numara").value.toString()?.let {
+                        tvNumara.text = it
+                        tvNumara.setOnClickListener {
+
+                            val arama = Intent(Intent.ACTION_DIAL)//Bu kod satırımız bizi rehbere telefon numarası ile yönlendiri.
+                            arama.data = Uri.parse("tel:" + p0.child("numara").value.toString())
+
+                            startActivity(arama)
+                        }
+                    }
+                    p0.child("adres").value.toString()?.let {
+                        tvAdres.text = it
+                        tvAdres.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse("google.navigation:q= " +  p0.child("adres").value.toString())
+                            startActivity(intent)
+                        }
+                    }
 
 
 
                     rcBayiYorum.layoutManager = LinearLayoutManager(this@BayiDetayActivity, LinearLayoutManager.VERTICAL, false)
-                    val adapter = BayiYorumlariAdapter(this@BayiDetayActivity, yorumlarList)
+                    val adapter = BayiYorumlariAdapter(this@BayiDetayActivity, yorumlarList, userID)
                     rcBayiYorum.adapter = adapter
                 }
             }
@@ -97,6 +119,12 @@ class BayiDetayActivity : AppCompatActivity() {
     }
 
     private fun butonlar() {
+
+        swipeRefreshLayoutBayi.setOnRefreshListener {
+            veriler()
+            swipeRefreshLayoutBayi.isRefreshing = false
+        }
+
 
         imgEkle.setOnClickListener {
 
@@ -125,7 +153,7 @@ class BayiDetayActivity : AppCompatActivity() {
                         view.tvGonder.setOnClickListener {
 
                             var yorum = view.etYorum.text.toString()
-                            var data = BayilerData.BayiYorumlari(rbYorumYap, yorum, System.currentTimeMillis(), key, userID)
+                            var data = BayilerData.BayiYorumlari(bayiAdi, sehir, ilce, rbYorumYap, yorum, System.currentTimeMillis(), key, userID)
 
                             ref.child("Bayiler").child(sehir.toString()).child(ilce.toString()).child(bayiAdi.toString()).child("yorumlar").child(key).setValue(data)
                             ref.child("Bayiler").child(sehir.toString()).child(ilce.toString()).child(bayiAdi.toString()).child("yildizlar").child(userID).setValue(rbYorumYap)

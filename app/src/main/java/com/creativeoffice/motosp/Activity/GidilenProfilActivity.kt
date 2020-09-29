@@ -62,45 +62,6 @@ class GidilenProfilActivity : AppCompatActivity() {
                         mProgressBarActivityProfile.visibility = View.GONE
                     }
 
-
-
-                    if (marka != "Marka Seçiniz" && model != "Model Seçiniz") {
-
-                        FirebaseDatabase.getInstance().reference.child("tum_motorlar").child(model).addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onCancelled(p0: DatabaseError) {
-
-                            }
-
-                            override fun onDataChange(p0: DataSnapshot) {
-
-                                var gelenMotorDetaylari = p0.getValue(ModelDetaylariData::class.java)!!
-
-                                var agirlik = gelenMotorDetaylari.agirlik.toString()
-                                var beygir = gelenMotorDetaylari.beygir.toString()
-                                var devir = gelenMotorDetaylari.devir.toString()
-                                var hiz = gelenMotorDetaylari.hiz.toString()
-                                var kategori = gelenMotorDetaylari.kategori.toString()
-                                var silindir = gelenMotorDetaylari.silindirHacmi.toString()
-                                var tork = gelenMotorDetaylari.tork.toString()
-                                var yakitKap = gelenMotorDetaylari.yakitkap.toString()
-                              //  var yakitTuk = gelenMotorDetaylari.yakitTuk.toString()
-
-                                tvMarkaProfile.text = marka
-                                tvModelProfile.text = model
-                                detay_agirlik.text = agirlik
-                                detay_beygir.text = beygir
-                                detay_devir.text = devir
-                                detay_hiz.text = hiz
-                                detay_kategori.text = kategori
-                                detay_silindirhacmi.text = silindir
-                                detay_tork.text = tork
-                                detay_yakitKap.text = yakitKap
-                                //  detay_yakitTuk.text = yakitTuk
-
-
-                            }
-                        })
-                    }
                 }
             }
         })

@@ -28,11 +28,16 @@ class BayilerData {
     )
 
     data class BayiYorumlari(
+        var bayiAdi: String? = null,
+        var sehirAdi: String? = null,
+        var ilceAdi: String? = null,
         var yildiz: Float? = null,
         var yorum: String? = null,
         var yorum_zamani: Long? = null,
         var yorum_key: String? = null,
         var yorum_yapan_key: String? = null
-    )
+    ) {
+
+    }
 
 }

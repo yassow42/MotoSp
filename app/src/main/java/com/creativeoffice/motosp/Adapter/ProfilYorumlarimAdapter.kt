@@ -47,8 +47,9 @@ class ProfilYorumlarimAdapter(val myContext: Context, val cevapList: ArrayList<F
     }
 
     override fun getItemCount(): Int {
-
-        return cevapList.size
+        if (cevapList.size < 5) {
+            return cevapList.size
+        } else return 5
 
     }
 
@@ -56,11 +57,41 @@ class ProfilYorumlarimAdapter(val myContext: Context, val cevapList: ArrayList<F
 
 
         var gelenItem = cevapList[position]
+        var konu_basligi = ""
+        var konu_sahibi_cevap = ""
+        var konuyu_acan_key = ""
+        FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("yorumlarim").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                konu_basligi = p0.child(gelenItem.cevap_key.toString()).child("konu_basligi").value.toString()
+                konu_sahibi_cevap = p0.child(gelenItem.cevap_key.toString()).child("konu_sahibi_cevap").value.toString()
+                konuyu_acan_key = p0.child(gelenItem.cevap_key.toString()).child("konuyu_acan_key").value.toString()
 
+Log.e("saddd",konu_basligi)
+Log.e("saddd",konu_sahibi_cevap)
+Log.e("userıd",userID)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
         holder.setData(gelenItem, myContext)
+
+        holder.tumLayout.setOnClickListener {
+            val intent = Intent(myContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            intent.putExtra("konuBasligi", konu_basligi)
+            intent.putExtra("konuCevabi", konu_sahibi_cevap)
+
+            intent.putExtra("konuKey", gelenItem.cevap_yazilan_key)
+            intent.putExtra("konuyu_acan_key", konuyu_acan_key)
+            myContext.startActivity(intent)
+        }
+
 
         holder.tumLayout.setOnLongClickListener {
 
+/*
             if (gelenItem.cevap_yazan_key.equals(userID)) {
 
                 val popup = PopupMenu(myContext, holder.tumLayout)
@@ -162,11 +193,9 @@ class ProfilYorumlarimAdapter(val myContext: Context, val cevapList: ArrayList<F
                     return@OnMenuItemClickListener true
                 })
                 popup.show()
-            }
+            }*/
             return@setOnLongClickListener true
         }
-
-
 
 
     }
@@ -187,7 +216,6 @@ class ProfilYorumlarimAdapter(val myContext: Context, val cevapList: ArrayList<F
             cevap.text = gelenItemVerisi.cevap
 
             var cevap_yazan_key = gelenItemVerisi.cevap_yazan_key.toString()
-
 
 
         }
