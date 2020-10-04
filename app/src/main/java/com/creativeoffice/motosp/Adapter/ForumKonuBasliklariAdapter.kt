@@ -40,7 +40,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
     override fun onBindViewHolder(holder: ForumKonuBasligiHolder, position: Int) {
 
         var gelenItem = konuList[position]
-        holder.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme_anti))
+      //  holder.tumLayout.setAnimation(AnimationUtils.loadAnimation(myContext, R.anim.ustten_inme_anti))
 
         holder.setData(konuList[position], myContext)
         holder.tumLayout.setOnClickListener {

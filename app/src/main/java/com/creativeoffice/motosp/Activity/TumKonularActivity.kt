@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -16,18 +17,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
+import com.creativeoffice.motosp.utils.EventBusDataEvents
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_tumkonular.*
 import kotlinx.android.synthetic.main.activity_tumkonular.imgPlus
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
+import org.greenrobot.eventbus.EventBus
+
+import org.greenrobot.eventbus.Subscribe
 
 
 class TumKonularActivity : AppCompatActivity() {
 
     lateinit var view: View
     var konularList = ArrayList<ForumKonuData>()
-    var kategori = "Tum Konular"
+    var kategori = "Tüm Konular"
     lateinit var mAuth: FirebaseAuth
     lateinit var userID: String
 
@@ -43,7 +48,6 @@ class TumKonularActivity : AppCompatActivity() {
 
         kategori = intent.getStringExtra("kategori")
         tvBaslik.text = kategori
-        init()
         btn()
     }
 
@@ -92,7 +96,6 @@ class TumKonularActivity : AppCompatActivity() {
             }
 
             view.tvGonder.setOnClickListener {
-
 
 
                 var konuBasligi = view.etKonuBasligi.text.toString()
@@ -153,7 +156,15 @@ class TumKonularActivity : AppCompatActivity() {
         }
     }
 
-    private fun init() {
+
+
+
+
+    @Subscribe(sticky = true)
+    internal fun onKonularListEvent(konular: EventBusDataEvents.KonulariGonder) {
+        var gelenList = konular.konuListEventBus
+        Log.e("saddd", gelenList.size.toString())
+
         var genelSayisi = 0
         var tanismaSayisi = 0
         var sohbetSayisi = 0
@@ -163,55 +174,45 @@ class TumKonularActivity : AppCompatActivity() {
         var konuDisi = 0
 
 
-
-        ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
-            override fun onDataChange(p0: DataSnapshot) {
-                if (p0.hasChildren()) {
-
-
-                    var gelenKonu: ForumKonuData
-                    for (i in p0.children) {
-                        if (i.child("konu_acik_mi").value.toString().toBoolean()) {
-                            gelenKonu = i.getValue(ForumKonuData::class.java)!!
-                            if (kategori == "Tüm Konular") {
-                                konularList.add(gelenKonu)
-                            }
-                            if (gelenKonu.kategori.toString() == kategori) {
-                                konularList.add(gelenKonu)
-                            }
-                            if (gelenKonu.kategori.toString() == "Genel") genelSayisi++
-                            if (gelenKonu.kategori.toString() == "Tanışma") tanismaSayisi++
-                            if (gelenKonu.kategori.toString() == "Sohbet") sohbetSayisi++
-                            if (gelenKonu.kategori.toString() == "İl Grupları") ilGruplariSayisi++
-                            if (gelenKonu.kategori.toString() == "Kamp") kampSayisi++
-                            if (gelenKonu.kategori.toString() == "Kazalar") kazalarSayisi++
-                            if (gelenKonu.kategori.toString() == "Konu Dışı") konuDisi++
-
-                        }
-
-                        ref.child("Sayisal_Veriler/Forum/Genel").setValue(genelSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Tanışma").setValue(tanismaSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Sohbet").setValue(sohbetSayisi)
-                        ref.child("Sayisal_Veriler/Forum/İl Grupları").setValue(ilGruplariSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Kamp").setValue(kampSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Kazalar").setValue(kazalarSayisi)
-                        ref.child("Sayisal_Veriler/Forum/Konu Dışı").setValue(konuDisi)
-
-                    }
-                    konularList.sortByDescending { it.son_cevap_zamani }
-
-
-                    rcTumKonular.layoutManager = LinearLayoutManager(this@TumKonularActivity, LinearLayoutManager.VERTICAL, false)
-                    var tumKonularAdapter = ForumKonuBasliklariAdapter(this@TumKonularActivity, konularList)
-                    rcTumKonular.adapter = tumKonularAdapter
-                    rcTumKonular.setItemViewCacheSize(20)
-
+        for (konu in gelenList) {
+            Log.e("kategori",konu.kategori.toString())
+            if (konu.konu_acik_mi!!) {
+                //     gelenKonu = i.getValue(ForumKonuData::class.java)!!
+                if (kategori == "Tüm Konular") {
+                    konularList.add(konu)
                 }
+                if (konu.kategori == kategori) {
+                    konularList.add(konu)
+                }
+
+                if (konu.kategori == "Genel") genelSayisi++
+                if (konu.kategori == "Tanışma") tanismaSayisi++
+                if (konu.kategori == "Sohbet") sohbetSayisi++
+                if (konu.kategori == "İl Grupları") ilGruplariSayisi++
+                if (konu.kategori == "Kamp") kampSayisi++
+                if (konu.kategori == "Kazalar") kazalarSayisi++
+                if (konu.kategori == "Konu Dışı") konuDisi++
             }
-        })
+        }
+        konularList.sortByDescending { it.son_cevap_zamani }
+        rcTumKonular.layoutManager = LinearLayoutManager(this@TumKonularActivity, LinearLayoutManager.VERTICAL, false)
+        var tumKonularAdapter = ForumKonuBasliklariAdapter(this@TumKonularActivity, konularList)
+        rcTumKonular.adapter = tumKonularAdapter
+        rcTumKonular.setItemViewCacheSize(20)
     }
 
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+
+    }
 
     var watcherForumKonu = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -259,4 +260,7 @@ class TumKonularActivity : AppCompatActivity() {
         }
 
     }
+
+
+
 }

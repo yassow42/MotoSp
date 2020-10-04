@@ -28,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
 
+    var ref = FirebaseDatabase.getInstance().reference
     override fun onCreate(savedInstanceState: Bundle?) {
         setupAuthListener()
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         mAuth = FirebaseAuth.getInstance()
+        ref.child("users").keepSynced(true)
 
         btnRegister.setOnClickListener {
 
@@ -53,9 +55,8 @@ class LoginActivity : AppCompatActivity() {
                 var kullaniciSifre = view.etSifreLoginAlertDialog.text.toString()
                 var userNameKullanimi = false
 
-                FirebaseDatabase.getInstance().reference.child("users").keepSynced(true)
 
-                FirebaseDatabase.getInstance().reference.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+                ref.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                     }
 
@@ -79,10 +80,12 @@ class LoginActivity : AppCompatActivity() {
                                 override fun onComplete(p0: Task<AuthResult>) {
                                     if (p0.isSuccessful) {
                                         var userID = mAuth.currentUser!!.uid.toString()
-                                        var user_detail = UserDetails(1, "Default", "Honda", "Activa S", "default",
-                                            "yok", "yok", 1)
+                                        var user_detail = UserDetails(
+                                            1, "Default", "Honda", "Activa S", "default",
+                                            "yok", "yok", 1
+                                        )
                                         var kaydedilecekUsers = Users(kullaniciAdiEmail, kullaniciSifre, kullaniciAdi, userID, "Yeni", user_detail)
-                                        FirebaseDatabase.getInstance().reference.child("users").child(userID).setValue(kaydedilecekUsers).addOnCompleteListener {
+                                        ref.child("users").child(userID).setValue(kaydedilecekUsers).addOnCompleteListener {
                                             setupAuthListener()
                                         }
 

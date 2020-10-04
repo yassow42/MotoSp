@@ -1,89 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:background="@drawable/bg_dialog_tumlayout"
-    android:padding="3dp">
-
-    <com.willy.ratingbar.ScaleRatingBar
-        android:id="@+id/rbYorumYap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:transformPivotX="0dp"
-        app:layout_constraintEnd_toEndOf="@+id/etYorum"
-        app:layout_constraintStart_toStartOf="@+id/etYorum"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:srb_clearRatingEnabled="true"
-        app:srb_isIndicator="false"
-        app:srb_minimumStars="1"
-        app:srb_numStars="5"
-        app:srb_rating="2.5"
-        app:srb_scrollable="true"
-        app:srb_starHeight="25dp"
-        app:srb_starPadding="8dp"
-        app:srb_starWidth="25dp"
-        app:srb_stepSize="0.5" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Yorumun"
-        android:textColor="@color/siyah"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/etYorum"
-        android:layout_width="0dp"
-
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/bg_edit_text"
-        android:ems="10"
-        android:padding="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvGonder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rbYorumYap" />
-
-    <TextView
-        android:id="@+id/tvIptal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:padding="8dp"
-        android:text="İptal"
-        android:textColor="@color/siyah"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvGonder"
-        app:layout_constraintEnd_toStartOf="@+id/tvGonder"
-        app:layout_constraintTop_toTopOf="@+id/tvGonder" />
-
-    <TextView
-        android:id="@+id/tvGonder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:text="Gönder"
-        android:textColor="@color/siyah"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    app:cardCornerRadius="13dp"
+    app:cardElevation="@dimen/cardElevation">
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.willy.ratingbar.ScaleRatingBar
+            android:id="@+id/rbYorumYap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:transformPivotX="0dp"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout3"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+            app:srb_clearRatingEnabled="true"
+            app:srb_isIndicator="false"
+            app:srb_minimumStars="1"
+            app:srb_numStars="5"
+            app:srb_rating="2.5"
+            app:srb_scrollable="true"
+            app:srb_starHeight="20dp"
+            app:srb_starPadding="6dp"
+            app:srb_starWidth="20dp"
+            app:srb_stepSize="0.5" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Yorum"
+            app:counterEnabled="true"
+            app:counterMaxLength="150"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etYorum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/tvIptal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:padding="8dp"
+            android:text="İptal"
+            android:textColor="@color/siyah"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvGonder"
+            app:layout_constraintEnd_toStartOf="@+id/tvGonder"
+            app:layout_constraintTop_toTopOf="@+id/tvGonder" />
+
+        <TextView
+            android:id="@+id/tvGonder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:padding="8dp"
+            android:text="Gönder"
+            android:textColor="@color/siyah"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rbYorumYap" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

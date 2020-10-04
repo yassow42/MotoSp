@@ -29,6 +29,7 @@ import com.creativeoffice.motosp.Datalar.ModelDetaylariData
 import com.creativeoffice.motosp.Datalar.YorumlarData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
+import com.creativeoffice.motosp.utils.EventBusDataEvents
 import com.creativeoffice.motosp.utils.LoadingDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -36,6 +37,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.dialog_haber_ekle.view.*
 import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
 import kotlinx.coroutines.handleCoroutineException
+import org.greenrobot.eventbus.EventBus
 
 
 class HomeActivity : AppCompatActivity() {
@@ -63,7 +65,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         setupNavigationView()
         //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
+        dialogCalistir()
         mAuth = FirebaseAuth.getInstance()
         if (mAuth.currentUser.toString() != "null") {
             HesapKontrolveKeepSynced()
@@ -111,6 +113,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
+
     }
 
 
@@ -124,7 +127,7 @@ class HomeActivity : AppCompatActivity() {
 
         val ref = FirebaseDatabase.getInstance().reference
 
-        ref.child("Forum").addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("Forum").limitToLast(50).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
@@ -137,6 +140,9 @@ class HomeActivity : AppCompatActivity() {
                                 konularList.add(gelenKonu)
                             }
                         }
+
+                        EventBus.getDefault().postSticky(EventBusDataEvents.KonulariGonder(konularList))
+
 
                         konularList.sortByDescending { it.son_cevap_zamani }
 
@@ -151,7 +157,8 @@ class HomeActivity : AppCompatActivity() {
                             yeniKonuList.add(konularList[2])
                             yeniKonuList.add(konularList[3])
                             yeniKonuList.add(konularList[4])
-                        } else if (konularList.size > 3) {
+                        }
+                        else if (konularList.size > 3) {
                             cevapYazilanKonuList.add(konularList[0])
                             cevapYazilanKonuList.add(konularList[1])
                             cevapYazilanKonuList.add(konularList[2])
@@ -160,19 +167,22 @@ class HomeActivity : AppCompatActivity() {
                             yeniKonuList.add(konularList[1])
                             yeniKonuList.add(konularList[2])
                             yeniKonuList.add(konularList[3])
-                        } else if (konularList.size > 2) {
+                        }
+                        else if (konularList.size > 2) {
                             cevapYazilanKonuList.add(konularList[0])
                             cevapYazilanKonuList.add(konularList[1])
                             cevapYazilanKonuList.add(konularList[2])
                             yeniKonuList.add(konularList[0])
                             yeniKonuList.add(konularList[1])
                             yeniKonuList.add(konularList[2])
-                        } else if (konularList.size > 1) {
+                        }
+                        else if (konularList.size > 1) {
                             cevapYazilanKonuList.add(konularList[0])
                             cevapYazilanKonuList.add(konularList[1])
                             yeniKonuList.add(konularList[0])
                             yeniKonuList.add(konularList[1])
-                        } else if (konularList.size > 0) {
+                        }
+                        else if (konularList.size > 0) {
                             cevapYazilanKonuList.add(konularList[0])
                             yeniKonuList.add(konularList[0])
                         }
@@ -207,61 +217,51 @@ class HomeActivity : AppCompatActivity() {
                         tumModeller.add(modeller)
 
                     }
-                    ref.child("tum_motorlar").child("yorumlar_son").addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError) {
+
+                    if (p0.child("yorumlar_son").hasChildren()) {
+
+                        var sonYorumlarTumList = ArrayList<YorumlarData>()
+                        for (ds in p0.child("yorumlar_son").children) {
+                            var gelenVeri = ds.getValue(YorumlarData::class.java)!!
+                            sonYorumlarTumList.add(gelenVeri)
+                        }
+                        sonYorumlarTumList.sortByDescending { it.yorum_zaman }
+
+                        if (sonYorumlarTumList.size > 4) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                            sonYorumlarList.add(sonYorumlarTumList[1])
+                            sonYorumlarList.add(sonYorumlarTumList[2])
+                            sonYorumlarList.add(sonYorumlarTumList[3])
+
+                        } else if (sonYorumlarTumList.size > 3) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                            sonYorumlarList.add(sonYorumlarTumList[1])
+                            sonYorumlarList.add(sonYorumlarTumList[2])
+
+                        } else if (sonYorumlarTumList.size > 2) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                            sonYorumlarList.add(sonYorumlarTumList[1])
+
+                        } else if (sonYorumlarTumList.size > 1) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+                            sonYorumlarList.add(sonYorumlarTumList[1])
+
+                        } else if (sonYorumlarTumList.size > 0) {
+                            sonYorumlarList.add(sonYorumlarTumList[0])
+
+                        } else {
+                            Log.e("HataHome", "son yorum yok")
                         }
 
-                        override fun onDataChange(p0: DataSnapshot) {
-                            if (p0.hasChildren()) {
-                                try {
-                                    var sonYorumlarTumList = ArrayList<YorumlarData>()
-                                    for (ds in p0.children) {
-                                        var gelenVeri = ds.getValue(YorumlarData::class.java)!!
-                                        sonYorumlarTumList.add(gelenVeri)
-                                    }
-                                    sonYorumlarTumList.sortByDescending { it.yorum_zaman }
-
-                                    if (sonYorumlarTumList.size > 4) {
-                                        sonYorumlarList.add(sonYorumlarTumList[0])
-                                        sonYorumlarList.add(sonYorumlarTumList[1])
-                                        sonYorumlarList.add(sonYorumlarTumList[2])
-                                        sonYorumlarList.add(sonYorumlarTumList[3])
-
-                                    } else if (sonYorumlarTumList.size > 3) {
-                                        sonYorumlarList.add(sonYorumlarTumList[0])
-                                        sonYorumlarList.add(sonYorumlarTumList[1])
-                                        sonYorumlarList.add(sonYorumlarTumList[2])
-
-                                    } else if (sonYorumlarTumList.size > 2) {
-                                        sonYorumlarList.add(sonYorumlarTumList[0])
-                                        sonYorumlarList.add(sonYorumlarTumList[1])
-
-                                    } else if (sonYorumlarTumList.size > 1) {
-                                        sonYorumlarList.add(sonYorumlarTumList[0])
-                                        sonYorumlarList.add(sonYorumlarTumList[1])
-
-                                    } else if (sonYorumlarTumList.size > 0) {
-                                        sonYorumlarList.add(sonYorumlarTumList[0])
-
-                                    } else {
-                                        Log.e("HataHome", "son yorum yok")
-                                    }
-
-                                    setupRecyclerViewSonYorum()
-                                } catch (e: Exception) {
-                                    Log.e("CatchHata", e.message + " homeActivity")
-                                }
-
-                            }
-                        }
+                        setupRecyclerViewSonYorum()
 
 
-                    })
+                    }
+
 
                 }
             }
         })
-
         ref.child("Haberler").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
@@ -374,7 +374,7 @@ class HomeActivity : AppCompatActivity() {
                 var konuCevap = view.etKonuCevap.text.toString()
                 var konuKey = ref.child("Forum").push().key
 
-
+Log.e("sadsadsa",userID.toString())
                 ref.child("users").child(userID).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
 
@@ -433,11 +433,7 @@ class HomeActivity : AppCompatActivity() {
 
         tvTumKonular.setOnClickListener {
 
-            /*
-            setupRecyclerViewForumKonu(konularList)
-            rcForum.layoutParams.height = MATCH_PARENT
-            */
-            val intent = Intent(this, TumKonularActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            val intent = Intent(this, TumKonularActivity::class.java)
             intent.putExtra("kategori", "Tüm Konular")
             startActivity(intent)
 
@@ -487,6 +483,7 @@ class HomeActivity : AppCompatActivity() {
         val haberlerAdapter = HaberAdapter(this, tumHaberler)
         rcHaber.adapter = haberlerAdapter
 
+        ar_indicator_haber.removeIndicators()
         rcHaber.setOnFlingListener(null)
         ar_indicator_haber.attachTo(rcHaber, true)
         ar_indicator_haber.isScrubbingEnabled = true
@@ -577,7 +574,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        dialogCalistir()
+
         FirebaseAuth.AuthStateListener {
             val kullaniciGirisi = it.currentUser
             if (kullaniciGirisi != null) { //eğer kişi giriş yaptıysa nul gorunmez. giriş yapmadıysa null olur
@@ -587,7 +584,7 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-        Handler().postDelayed({ initVeri() }, 800)
+        Handler().postDelayed({ initVeri() }, 200)
         Handler().postDelayed({ dialogGizle() }, 4000)
     }
 

@@ -33,7 +33,7 @@ import java.text.DecimalFormat
 
 
 class ModelDetayiActivity : AppCompatActivity() {
-
+    val ref = FirebaseDatabase.getInstance().reference
     var marka: String? = null
     var model: String? = null
     var userID: String? = null
@@ -228,6 +228,9 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                 setupYorumlarRecyclerView()
 
+
+
+
             }
         })
     }
@@ -334,7 +337,7 @@ class ModelDetayiActivity : AppCompatActivity() {
             swipeRefreshLayout.isRefreshing = false
         }
 
-        val ref = FirebaseDatabase.getInstance().reference
+
         imgGeri.setOnClickListener {
             val intent = Intent(this, Motor2Activity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)

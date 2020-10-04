@@ -66,7 +66,7 @@ class BayiActivity : AppCompatActivity() {
             })
 
             builder.setNegativeButton("İptal", DialogInterface.OnClickListener { dialog, which ->
-
+                dialog.dismiss()
 
             })
 

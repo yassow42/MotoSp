@@ -633,14 +633,13 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingGenel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/genel_renk"
+        android:backgroundTint="#5E35B1"
         android:clickable="true"
         android:elevation="10dp"
         android:src="@drawable/ic_add_circle_16"
@@ -654,7 +653,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="12dp"
-        android:backgroundTint="@color/genel_renk"
+        android:backgroundTint="#5E35B1"
         android:clickable="true"
         android:elevation="10dp"
         android:padding="4dp"
@@ -670,7 +669,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="12dp"
-        android:backgroundTint="@color/genel_renk"
+        android:backgroundTint="#5E35B1"
         android:clickable="true"
         android:elevation="10dp"
 
@@ -687,7 +686,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="12dp"
-        android:backgroundTint="@color/genel_renk"
+        android:backgroundTint="#5E35B1"
         android:clickable="true"
         android:elevation="10dp"
 

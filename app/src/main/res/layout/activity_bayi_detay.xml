@@ -30,7 +30,7 @@
             android:id="@+id/tvBayiAdi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif-black"
             android:maxLines="1"
@@ -39,20 +39,11 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imgGeri"
-            app:layout_constraintEnd_toStartOf="@+id/imgEkle"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgGeri"
             app:layout_constraintTop_toTopOf="@+id/imgGeri" />
 
 
-        <ImageView
-            android:id="@+id/imgEkle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_plus" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -402,6 +393,37 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingYorumYap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#5E35B1"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_edit_16"
+        android:visibility="invisible"
+        app:fabSize="auto"
+        app:layout_constraintBottom_toTopOf="@+id/floatingGenel"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingGenel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#5E35B1"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:src="@drawable/ic_add_circle_16"
+        app:fabSize="normal"
+        app:rippleColor="@color/beyaz"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
