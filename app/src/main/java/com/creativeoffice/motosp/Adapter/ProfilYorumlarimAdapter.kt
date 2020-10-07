@@ -35,7 +35,7 @@ import kotlin.collections.ArrayList
 
 class ProfilYorumlarimAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonuData.cevaplar>, var userID: String?) : RecyclerView.Adapter<ProfilYorumlarimAdapter.ForumCevapHolder>() {
 
-
+val ref =FirebaseDatabase.getInstance().reference
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ForumCevapHolder {
 
         val view = LayoutInflater.from(myContext).inflate(R.layout.profil_yorumlari, p0, false)
@@ -60,15 +60,12 @@ class ProfilYorumlarimAdapter(val myContext: Context, val cevapList: ArrayList<F
         var konu_basligi = ""
         var konu_sahibi_cevap = ""
         var konuyu_acan_key = ""
-        FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("yorumlarim").addListenerForSingleValueEvent(object : ValueEventListener {
+       ref.child("users").child(userID.toString()).child("yorumlarim").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 konu_basligi = p0.child(gelenItem.cevap_key.toString()).child("konu_basligi").value.toString()
                 konu_sahibi_cevap = p0.child(gelenItem.cevap_key.toString()).child("konu_sahibi_cevap").value.toString()
                 konuyu_acan_key = p0.child(gelenItem.cevap_key.toString()).child("konuyu_acan_key").value.toString()
 
-Log.e("saddd",konu_basligi)
-Log.e("saddd",konu_sahibi_cevap)
-Log.e("userıd",userID)
             }
 
             override fun onCancelled(error: DatabaseError) {

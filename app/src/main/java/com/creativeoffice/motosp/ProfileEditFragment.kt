@@ -173,7 +173,6 @@ class ProfileEditFragment : Fragment() {
                     }
                 }
             */
-
         }
 
         var refDetails = ref.child("users").child(userID.toString()).child("user_details")

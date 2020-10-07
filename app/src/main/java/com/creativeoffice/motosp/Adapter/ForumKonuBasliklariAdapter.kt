@@ -18,8 +18,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.item_forum_konu_basliklari2.view.*
+import kotlinx.coroutines.Delay
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.logging.Handler
 import kotlin.collections.ArrayList
 import com.google.firebase.database.ValueEventListener as ValueEventListener1
 
@@ -107,6 +109,9 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
 
 
             })
+
+
+
             ref.child("users").child(forumKonuData.konuyu_acan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener1 {
                 override fun onDataChange(p0: DataSnapshot) {
                     if (p0.hasChildren()) {
@@ -123,7 +128,7 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+
                 }
             })
         }

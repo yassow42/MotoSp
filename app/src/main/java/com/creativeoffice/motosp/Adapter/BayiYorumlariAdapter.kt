@@ -134,7 +134,7 @@ class BayiYorumlariAdapter(var myContext: Context, var bayiYorumList: ArrayList<
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+
                 }
 
             })

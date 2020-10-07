@@ -12,7 +12,7 @@ object LoadingDialog {
     fun startDialog(context: Context): Dialog? {
         val progressDialog = Dialog(context)
 
-        progressDialog.let {
+        progressDialog?.let {
             it.show()
             it.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             it.setContentView(R.layout.proggres_dialog)

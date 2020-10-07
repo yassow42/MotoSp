@@ -94,7 +94,7 @@ class BayiDetayActivity : AppCompatActivity() {
                         var hizmetPuani = hizmetPuaniToplam / yildizSayisi
                         rbBayi.rating = hizmetPuani
                         tvHizmetPuani.text = hizmetPuani.toDouble().toString()
-                        tvYildizKisi.text = "(" + yorumlarList.size + ")"
+                        tvYildizKisi.setText("(" + yorumlarList.size + ")")
                     }
 
                     tvBayiAdi.text = bayiAdi
@@ -180,7 +180,7 @@ class BayiDetayActivity : AppCompatActivity() {
 
                 view.tvGonder.setOnClickListener {
                     var yorum = view.etYorum.text.toString()
-                    if (view.etYorum.length()>1){
+                    if (view.etYorum.length() > 1) {
                         var key = ref.child("Bayiler").child(sehir.toString()).child(ilce.toString()).child(bayiAdi.toString()).push().key.toString()
                         var data = BayilerData.BayiYorumlari(bayiAdi, sehir, ilce, rbYorumYap, yorum, System.currentTimeMillis(), key, userID)
 
@@ -195,7 +195,7 @@ class BayiDetayActivity : AppCompatActivity() {
                     }
 
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        if (1< s!!.length && s!!.length < 150) view.tvGonder.isClickable = true
+                        if (1 < s!!.length && s!!.length < 150) view.tvGonder.isClickable = true
                         else view.tvGonder.isClickable = false
 
 

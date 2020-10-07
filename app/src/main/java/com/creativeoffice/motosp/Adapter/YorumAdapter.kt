@@ -88,7 +88,7 @@ class YorumAdapter(val myContext: Context, val yorumlar: ArrayList<ModelDetaylar
         val comment = itemView.comment
         val date = itemView.date
 
-        val yorumCL = itemView.yorumCL
+        val yorumCL = itemView.tumLayout
         val rbYorumItem = itemView.rbYorumItem
 
 

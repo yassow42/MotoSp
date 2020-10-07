@@ -5,20 +5,21 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.creativeoffice.motosp.Adapter.CevaplarAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
@@ -29,9 +30,8 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_konu_detay.*
-import kotlinx.android.synthetic.main.activity_model_detayi.*
 import kotlinx.android.synthetic.main.dialog_konu_cevap_duzenle.view.*
-import kotlinx.android.synthetic.main.fragment_profile_edit.view.*
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -48,7 +48,7 @@ class KonuDetayActivity : AppCompatActivity() {
     lateinit var konuAcanKey: String
 
     lateinit var CevaplarAdapter: CevaplarAdapter
-
+    lateinit var cevapKey: String
     var yorumFotoUri: Uri? = null
 
     lateinit var data: ByteArray
@@ -128,45 +128,44 @@ class KonuDetayActivity : AppCompatActivity() {
                         }
 
                         //cevaba bi key olusturduk
-                        val cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
+                        cevapKey = ref.child("Forum").child(konuKey).child("cevaplar").push().key.toString()
                         val cevapYazan = p0.child("user_name").value.toString()
+
                         //ilk olarak cevap vereni son cevap olarak kaydediyruz.
-                        val soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, null, userID, konuKey.toString())
+                        val soncevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapKey, cevapYazan, System.currentTimeMillis(), userID, konuKey.toString())
                         ref.child("Forum").child(konuKey).child("son_cevap").setValue(soncevapData)
                         ref.child("Forum").child(konuKey).child("son_cevap").child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
+
                         //son cevap zamanı ekliyoruz
                         ref.child("Forum").child(konuKey).child("son_cevap_zamani").setValue(ServerValue.TIMESTAMP)
 
-                        //cevaba da eklıyruz
-                        val cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapkey, cevapYazan, System.currentTimeMillis(), userID, konuKey.toString())
-                        ref.child("Forum").child(konuKey).child("cevaplar").child(cevapkey.toString()).setValue(cevapData).addOnCompleteListener {
-                                etCevapKonu.text!!.clear()
-                                imgYorumFotosu.visibility = View.GONE
-                                val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
-                                snackbar.show()
-                                if (yorumFotoUri != null) {
-                                    FirebaseStorage.getInstance().reference.child("YorumFotolari").child(konuKey.toString()).child(cevapkey.toString()).putFile(yorumFotoUri!!) // burada fotografı kaydettik veritabanına.
-                                        .addOnSuccessListener { UploadTask ->
-                                            UploadTask.storage.downloadUrl.addOnSuccessListener { itUri ->
-                                                val downloadUrl = itUri.toString()
-                                                ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("Foto").setValue(downloadUrl)
-                                                Toast.makeText(this@KonuDetayActivity, "Yorumun Gönderildi", Toast.LENGTH_SHORT).show()
-                                                CevaplarAdapter.notifyDataSetChanged()
-                                            }
-                                        }
-                                }
-
-                            }.addOnFailureListener {
-                                val snackbar = Snackbar.make(tumLayout, "Yorum Gönderilemedi... ", Snackbar.LENGTH_LONG)
-                                snackbar.show()
+                        //cevabı da eklıyruz
+                        val cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapKey, cevapYazan, System.currentTimeMillis(), userID, konuKey)
+                        ref.child("Forum").child(konuKey).child("cevaplar").child(cevapKey).setValue(cevapData)
+                        ref.child("Forum").child(konuKey).child("cevaplar").child(cevapKey).child("Foto").setValue("null").addOnCompleteListener {
+                            etCevapKonu.text!!.clear()
+                            imgYorumFotosu.visibility = View.GONE
+                            val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
+                            snackbar.show()
+                            if (yorumFotoUri != null) {
+                                Picasso.get().load(R.drawable.photo).into(imgFoto)
+                                imgFoto.setPadding(16,16,16,16)
+                                var comperessed = BackgroundResimCompress()
+                                comperessed.execute(yorumFotoUri)
+                                yorumFotoUri = null
                             }
+
+                        }.addOnFailureListener {
+                            val snackbar = Snackbar.make(tumLayout, "Yorum Gönderilemedi... ", Snackbar.LENGTH_LONG)
+                            snackbar.show()
+                        }
 
                         //kullanıcının yaptığı yorumu profiline ekledık.
                         var yorumRef = ref.child("users").child(userID.toString()).child("yorumlarim")
-                        yorumRef.child(cevapkey.toString()).setValue(cevapData)
-                        yorumRef.child(cevapkey.toString()).child("konu_basligi").setValue(konuBasligi)
-                        yorumRef.child(cevapkey.toString()).child("konu_sahibi_cevap").setValue(konuCevabi)
-                        yorumRef.child(cevapkey.toString()).child("konuyu_acan_key").setValue(konuAcanKey)
+                        yorumRef.child(cevapKey).setValue(cevapData)
+                        yorumRef.child(cevapKey).child("konu_basligi").setValue(konuBasligi)
+                        yorumRef.child(cevapKey).child("konu_sahibi_cevap").setValue(konuCevabi)
+                        yorumRef.child(cevapKey).child("konuyu_acan_key").setValue(konuAcanKey)
                     }
                 })
 
@@ -303,6 +302,62 @@ class KonuDetayActivity : AppCompatActivity() {
 
     }
 
+    inner class BackgroundResimCompress() : AsyncTask<Uri, Double, ByteArray>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+        }
+
+        override fun doInBackground(vararg params: Uri?): ByteArray? {
+
+            var myBitmap: Bitmap? = null
+            var resimBytes: ByteArray? = null
+
+            try {
+                if (Build.VERSION.SDK_INT >= 29) {
+                    var source = ImageDecoder.createSource(applicationContext.contentResolver, params[0]!!)
+                    myBitmap = ImageDecoder.decodeBitmap(source)
+                } else myBitmap = MediaStore.Images.Media.getBitmap(contentResolver, params[0])
+            } catch (e: Exception) {
+                ref.child("Hatalar/KonuDetayActivity/BackgroundResimCompress").push().setValue(e.message)
+            }
+
+            for (i in 1..6) {
+                resimBytes = convertBitmaptoByte(myBitmap, 50 / i)
+                Log.e("Test", "sıkısmıs: " + resimBytes!!.size.toString())
+            }
+
+            return resimBytes
+        }
+
+
+        override fun onPostExecute(result: ByteArray?) {
+            super.onPostExecute(result)
+            uploadPhototoFirebase(result)
+        }
+
+    }
+
+    private fun convertBitmaptoByte(myBitmap: Bitmap?, i: Int): ByteArray? {
+        var stream = ByteArrayOutputStream()
+        myBitmap?.compress(Bitmap.CompressFormat.JPEG, i, stream)
+        return stream.toByteArray()
+    }
+
+    private fun uploadPhototoFirebase(result: ByteArray?) {
+
+        FirebaseStorage.getInstance().reference.child("YorumFotolari").child(konuKey.toString()).child(cevapKey).putBytes(result!!) // burada fotografı kaydettik veritabanına.
+            .addOnSuccessListener { UploadTask ->
+                UploadTask.storage.downloadUrl.addOnSuccessListener { itUri ->
+                    val downloadUrl = itUri.toString()
+                    ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapKey).child("Foto").setValue(downloadUrl)
+                  //  Toast.makeText(this@KonuDetayActivity, "Yorumun Gönderildi", Toast.LENGTH_SHORT).show()
+                    CevaplarAdapter.notifyDataSetChanged()
+                }
+            }
+
+    }
+
 
     private fun setupRecyclerViewCevap() {
         // rcCevaplar.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -357,8 +412,9 @@ class KonuDetayActivity : AppCompatActivity() {
 
         if (requestCode == RESIM_SEC && resultCode == RESULT_OK && data!!.data != null) {
             yorumFotoUri = data.data
-            imgYorumFotosu.visibility = View.VISIBLE
-            imgYorumFotosu.setImageURI(yorumFotoUri)
+            imgFoto.visibility = View.VISIBLE
+            imgFoto.setPadding(0,4,0,4)
+            imgFoto.setImageURI(yorumFotoUri)
 
 
         }

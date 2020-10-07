@@ -38,11 +38,12 @@ class LoginActivity : AppCompatActivity() {
         // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         mAuth = FirebaseAuth.getInstance()
+
         ref.child("users").keepSynced(true)
 
         btnRegister.setOnClickListener {
 
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this)//,android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
             var inflater: LayoutInflater = layoutInflater
             var view: View = inflater.inflate(R.layout.dialog_register2, null)
 

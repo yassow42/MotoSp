@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -18,6 +19,7 @@ import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.EventBusDataEvents
+import com.creativeoffice.motosp.utils.LoadingDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_tumkonular.*
@@ -36,6 +38,8 @@ class TumKonularActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var userID: String
 
+    var mDelayHandler = Handler()
+    var loading: Dialog? = null
     var ref = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,8 +49,9 @@ class TumKonularActivity : AppCompatActivity() {
         userID = mAuth.currentUser!!.uid
         //    this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         //   this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        dialogCalistir()
 
-        kategori = intent.getStringExtra("kategori")
+        kategori = intent?.getStringExtra("kategori").toString()
         tvBaslik.text = kategori
         btn()
     }
@@ -79,7 +84,7 @@ class TumKonularActivity : AppCompatActivity() {
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
-                        TODO()
+
                     }
                 }
             } else {
@@ -157,13 +162,20 @@ class TumKonularActivity : AppCompatActivity() {
     }
 
 
+    private fun dialogGizle() {
+        loading?.let { if (it.isShowing) it.cancel() }
 
+    }
+
+    private fun dialogCalistir() {
+        dialogGizle()
+        loading = LoadingDialog.startDialog(this)
+    }
 
 
     @Subscribe(sticky = true)
     internal fun onKonularListEvent(konular: EventBusDataEvents.KonulariGonder) {
         var gelenList = konular.konuListEventBus
-        Log.e("saddd", gelenList.size.toString())
 
         var genelSayisi = 0
         var tanismaSayisi = 0
@@ -175,7 +187,7 @@ class TumKonularActivity : AppCompatActivity() {
 
 
         for (konu in gelenList) {
-            Log.e("kategori",konu.kategori.toString())
+
             if (konu.konu_acik_mi!!) {
                 //     gelenKonu = i.getValue(ForumKonuData::class.java)!!
                 if (kategori == "Tüm Konular") {
@@ -199,6 +211,8 @@ class TumKonularActivity : AppCompatActivity() {
         var tumKonularAdapter = ForumKonuBasliklariAdapter(this@TumKonularActivity, konularList)
         rcTumKonular.adapter = tumKonularAdapter
         rcTumKonular.setItemViewCacheSize(20)
+        mDelayHandler.postDelayed({ dialogGizle() }, 1000)
+
     }
 
 
@@ -208,10 +222,10 @@ class TumKonularActivity : AppCompatActivity() {
         EventBus.getDefault().register(this)
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
-
     }
 
     var watcherForumKonu = object : TextWatcher {

@@ -9,7 +9,7 @@
         android:centerX="60%"
 
         android:endColor="@color/img_border"
-        android:startColor="@color/colorPrimary"
+        android:startColor="@color/genel_renk"
         android:type="linear" />
 
     <corners
@@ -19,7 +19,7 @@
 
     <stroke
         android:width="0.7dp"
-        android:color="@color/genel_renk"
+        android:color="@color/beyaz"
 
 
 

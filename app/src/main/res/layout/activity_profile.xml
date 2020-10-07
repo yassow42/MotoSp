@@ -77,7 +77,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSehirIlce">
 
                         <TextView
                             android:id="@+id/tvMarkaProfile"
@@ -104,7 +104,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/linearLayout6"
+                        android:id="@+id/linearLayoutSehirIlce"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"

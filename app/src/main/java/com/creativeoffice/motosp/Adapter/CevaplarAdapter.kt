@@ -75,7 +75,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
 
 
                             view.btnKaydet.setOnClickListener {
-                                var yeniCevap = view.etKonuCevabi.text
+                                var yeniCevap = view.etKonuCevabi.text.toString()
                                 FirebaseDatabase.getInstance().reference.child("Forum").child(gelenItem.cevap_yazilan_key.toString()).child("cevaplar").child(gelenItem.cevap_key.toString())
                                     .child("cevap").setValue(yeniCevap.toString()).addOnCompleteListener {
                                         Toast.makeText(myContext, "Cevanın Güncelleniyor :) Biraz Bekle ", Toast.LENGTH_SHORT).show()
@@ -166,7 +166,6 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
 
         holder.imgProfile.setOnClickListener {
             if (userID.equals(cevapList.get(position).cevap_yazan_key.toString())) {
-
                 val intent = Intent(myContext, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 myContext.startActivity(intent)
             } else {
@@ -189,7 +188,7 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
         }
 
         holder.yorumFotosu.setOnClickListener {
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this.myContext)
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this.myContext, android.R.style.Theme_DeviceDefault_Light_NoActionBar)
             var viewDialogg = inflate(myContext, R.layout.dialog_photo, null)
             Picasso.get().load(gelenItem.Foto).into(viewDialogg.imgFoto)
             viewDialogg.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -243,27 +242,19 @@ class CevaplarAdapter(val myContext: Context, val cevapList: ArrayList<ForumKonu
                 }
             })
 
-            ref.child("Forum").child(gelenItemVerisi.cevap_yazilan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
 
-                }
 
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    var konuyuAcan = p0.child("konuyu_acan").value.toString()
-                    var yorumFoto = p0.child("cevaplar").child(gelenItemVerisi.cevap_key.toString()).child("Foto").value.toString()
+                    var konuyuAcan = gelenItemVerisi.cevap_yazan
+                    var yorumFoto = gelenItemVerisi.Foto
                     if (yorumFoto != "null") {
-
                         Picasso.get().load(yorumFoto).resize(350, 350).into(yorumFotosu)
                         yorumFotosu.visibility = View.VISIBLE
                     } else yorumFotosu.visibility = View.GONE
 
-                    if (konuyuAcan == gelenItemVerisi.cevap_yazan) {
-                        tvSahibi.visibility = View.VISIBLE
-                    }
-                }
+                    if (konuyuAcan == gelenItemVerisi.cevap_yazan) tvSahibi.visibility = View.VISIBLE
 
-            })
+
+
 
 
         }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.fragment.app.DialogFragment
+import com.creativeoffice.motosp.Activity.LoginActivity
 import com.creativeoffice.motosp.Activity.ProfileActivity
 
 
@@ -31,6 +32,7 @@ class SignOutFragment : DialogFragment() {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
                     FirebaseAuth.getInstance().signOut()
                     activity!!.finish()
+                    startActivity(Intent(activity!!.applicationContext,LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
                 }
 
             })

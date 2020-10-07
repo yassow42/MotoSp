@@ -5,19 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
 import com.creativeoffice.motosp.Adapter.HaberYorumlariAdapter
 import com.creativeoffice.motosp.Datalar.HaberlerData
 import com.creativeoffice.motosp.R
+import com.creativeoffice.motosp.utils.EventBusDataEvents
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_haber_detaylari.*
+import kotlinx.android.synthetic.main.activity_konu_detay.*
+import kotlinx.android.synthetic.main.activity_tumkonular.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,6 +36,8 @@ class HaberDetaylariActivity : AppCompatActivity() {
     var haber_video: String? = null
     var haber_videolumu: String? = null
 
+    val ref = FirebaseDatabase.getInstance().reference
+
 
     var userID: String? = null
     var userName: String? = null
@@ -41,20 +48,21 @@ class HaberDetaylariActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_haber_detaylari)
-     //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-      //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //   this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         mAuth = FirebaseAuth.getInstance()
         userID = mAuth.currentUser!!.uid
 
 
-        initVeri()
+        initGelenVeriler()
+        initList()
         init()
 
 
     }
 
-    private fun initVeri() {
+    private fun initGelenVeriler() {
 
         haber_altbaslik = intent.getStringExtra("haber_altbaslik")
         haber_baslik = intent.getStringExtra("haber_baslik")
@@ -64,22 +72,11 @@ class HaberDetaylariActivity : AppCompatActivity() {
         haber_video = intent.getStringExtra("haber_video")
         haber_videolumu = intent.getStringExtra("haber_videolumu")
 
-        FirebaseDatabase.getInstance().reference.child("users").child(userID.toString()).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
 
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-
-                userName = p0.value.toString()
-            }
-
-        })
     }
 
 
     private fun init() {
-        val ref = FirebaseDatabase.getInstance().reference
         tvHaberBaslik.text = haber_baslik.toString()
         tvHaberAltBaslik.text = haber_altbaslik.toString()
         tvHaberZamani.text = formatDate(haber_eklenme.toString().toLong()).toString()
@@ -87,14 +84,18 @@ class HaberDetaylariActivity : AppCompatActivity() {
         etYorum.addTextChangedListener(watcher)
         tvGonder.setOnClickListener {
             var yorumKey = ref.child("Haberler").child(haber_key.toString()).child("yorumlar").push().key
-            var yapılanYorum = HaberlerData.Yorumlar(haber_key, userName, null, etYorum.text.toString(), yorumKey, userID)
+            var yapılanYorum = HaberlerData.Yorumlar(haber_key, userName, System.currentTimeMillis(), etYorum.text.toString(), yorumKey, userID)
 
             ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).setValue(yapılanYorum).addOnCompleteListener {
                 ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).child("tarih").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
-                    setupRec()
-                    etYorum.text.clear()
+                    initList()
+                    etYorum.text?.clear()
+                    val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
+                    snackbar.show()
+
                 }
             }
+
 
         }
 
@@ -121,34 +122,6 @@ class HaberDetaylariActivity : AppCompatActivity() {
 
         }
 
-
-
-        FirebaseDatabase.getInstance().reference.child("Haberler").child(haber_key.toString()).child("yorumlar").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                yorumListesi.clear()
-                if (p0.hasChildren()) {
-
-                    for (ds in p0.children) {
-                        var gelenYorumlar = ds.getValue(HaberlerData.Yorumlar::class.java)!!
-                        yorumListesi.add(gelenYorumlar)
-
-                    }
-
-                    setupHaberYorumlarRecyclerView()
-
-                } else {
-
-                    yorumListesi.add(HaberlerData.Yorumlar("ilk", "Admin", 1, "İlk Yorumu Yapmak İster Misin?", "key", "admin"))
-                    setupHaberYorumlarRecyclerView()
-                }
-
-            }
-
-        })
     }
 
     var watcher = object : TextWatcher {
@@ -161,30 +134,22 @@ class HaberDetaylariActivity : AppCompatActivity() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s!!.length >= 5) {
+            if (s!!.length in 5..150) {
 
                 tvGonder.visibility = View.VISIBLE
                 tvGonder.isEnabled = true
-                tvGonder.setBackgroundResource(R.color.yesil)
+                //   tvGonder.(R.color.yesil)
             } else {
                 tvGonder.isEnabled = false
-                tvGonder.setBackgroundResource(R.color.gri)
+                //      tvGonder.setBackgroundResource(R.color.gri)
 
             }
         }
 
     }
 
-    fun formatDate(miliSecond: Long?): String? {
-        if (miliSecond == null) return "0"
-        val date = Date(miliSecond)
-        val sdf = SimpleDateFormat("EEE, d MMM, ''yy", Locale("tr"))
-        return sdf.format(date)
 
-    }
-
-
-    fun setupHaberYorumlarRecyclerView() {
+    private fun setupHaberYorumlarRecyclerView() {
         yorumListesi.sortBy { it.tarih }
         rcHaberDetaylari.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
         val yorumAdapter = HaberYorumlariAdapter(this, yorumListesi, userID)
@@ -192,8 +157,8 @@ class HaberDetaylariActivity : AppCompatActivity() {
 
     }
 
-    fun setupRec() {
-        FirebaseDatabase.getInstance().reference.child("Haberler").child(haber_key.toString()).child("yorumlar").addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun initList() {
+        ref.child("Haberler").child(haber_key.toString()).child("yorumlar").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
@@ -219,6 +184,34 @@ class HaberDetaylariActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+
+    @Subscribe(sticky = true)
+    internal fun onUserName(gelenUserName: EventBusDataEvents.KullaniciAdi) {
+        userName = gelenUserName.userName
+
+
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
+    private fun formatDate(miliSecond: Long?): String? {
+        if (miliSecond == null) return "0"
+        val date = Date(miliSecond)
+        val sdf = SimpleDateFormat("EEE, d MMM, ''yy", Locale("tr"))
+        return sdf.format(date)
+
     }
 
     override fun onBackPressed() {

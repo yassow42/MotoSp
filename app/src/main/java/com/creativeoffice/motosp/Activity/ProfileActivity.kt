@@ -3,6 +3,7 @@ package com.creativeoffice.motosp.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -71,24 +72,24 @@ class ProfileActivity : AppCompatActivity() {
 
                     if (usersDetails.biyografi.isNullOrEmpty() || usersDetails.biyografi == "Default") {
                         tvBiyografi.visibility = View.GONE
-                    } else {
+                    } else{
                         tvBiyografi.visibility = View.VISIBLE
                         tvBiyografi.text = usersDetails.biyografi.toString()
                     }
 
 
 
-                    tvAdresSehir.visibility = View.GONE
-                    usersDetails.sehir?.let {
-                        tvAdresSehir.text = it.toString()
-                        tvAdresSehir.visibility = View.VISIBLE
+
+                    linearLayoutSehirIlce.visibility = View.GONE
+                    if (usersDetails.sehir.toString() != "yok") {
+                        tvAdresSehir.text = usersDetails.sehir.toString()
+                        linearLayoutSehirIlce.visibility = View.VISIBLE
+                    }
+                    if (usersDetails.ilce.toString() != "yok") {
+                        tvAdresIlce.text = usersDetails.ilce.toString()
+                        linearLayoutSehirIlce.visibility = View.VISIBLE
                     }
 
-                    tvAdresIlce.visibility = View.GONE
-                    usersDetails.ilce?.let {
-                        tvAdresIlce.text = it.toString()
-                        tvAdresIlce.visibility = View.VISIBLE
-                    }
 
 
 
@@ -97,9 +98,8 @@ class ProfileActivity : AppCompatActivity() {
                     if (imgURL != "default") {
                         Picasso.get().load(imgURL).into(circleProfileImage)
                         mProgressBarActivityProfile.visibility = View.GONE
-                    } else {
-                        mProgressBarActivityProfile.visibility = View.GONE
-                    }
+                    } else mProgressBarActivityProfile.visibility = View.GONE
+
 
 
                     if (p0.child("yorumlarim").hasChildren()) {
@@ -109,7 +109,7 @@ class ProfileActivity : AppCompatActivity() {
                             yorumlarim.add(gelenData)
                         }
 
-                                     rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                        rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
                         //            rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
                         //            rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
 

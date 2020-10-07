@@ -5,12 +5,14 @@
     android:id="@+id/tumLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/genel_renk"
     tools:context=".Activity.KonuDetayActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swKonuDetay"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -142,7 +144,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginEnd="8dp"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_konu_cevaplari" />
 
             </LinearLayout>
         </ScrollView>
@@ -153,7 +157,7 @@
         android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/beyaz"
+        android:background="@drawable/bg_ust_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -162,9 +166,11 @@
             android:id="@+id/textInputLayoutYorum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
             android:hint="Yorum Yap"
             app:endIconMode="clear_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imgSend"
             app:layout_constraintStart_toEndOf="@+id/imgFoto"
             app:layout_constraintTop_toTopOf="parent">

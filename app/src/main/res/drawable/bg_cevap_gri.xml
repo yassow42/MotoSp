@@ -9,7 +9,8 @@
         android:centerX="25%"
 
 
-        android:startColor="#C8C8C8"
+        android:startColor="#DCDCDC"
+        android:endColor="@color/beyaz"
         android:type="linear" />
 
     <corners
@@ -20,7 +21,7 @@
         />
 
     <stroke
-        android:width="0.3dp"
+        android:width="0.7dp"
         android:color="#FFFFFF"
         />
 

@@ -19,7 +19,7 @@ public class TimeAgo {
             return "şimdi";
         }
 
-        // TODO: localize
+
         final long diff = now - time;
         if (diff < MINUTE_MILLIS) {
             return "Az önce";
@@ -51,7 +51,7 @@ public class TimeAgo {
             return "şimdi";
         }
 
-        // TODO: localize
+
         final long diff = now - time;
         if (diff < MINUTE_MILLIS) {
             return "Az önce";

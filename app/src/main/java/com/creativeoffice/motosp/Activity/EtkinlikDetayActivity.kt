@@ -33,8 +33,8 @@ class EtkinlikDetayActivity : AppCompatActivity() {
         userID = mAuth.currentUser!!.uid
 
 
-        var etkinlikKey = intent.getStringExtra("etkinlik_key").toString()
-        var etkinlikZamani = intent.getStringExtra("etkinlik_zamani").toString()
+        var etkinlikKey = intent?.getStringExtra("etkinlik_key").toString()
+        var etkinlikZamani = intent?.getStringExtra("etkinlik_zamani").toString()
 
 
 
@@ -44,9 +44,9 @@ class EtkinlikDetayActivity : AppCompatActivity() {
         setupNavigationView()
     }
 
-    private fun setupString(etkinlikZamani: String) {
-        tvEtkinlikAdi.text = intent.getStringExtra("etkinlik_adi").toString()
-        tvEtkinlikDetaylari.text = intent.getStringExtra("etkinlik_detaylari").toString()
+    private fun setupString(etkinlikZamani: String?) {
+        tvEtkinlikAdi.text = intent?.getStringExtra("etkinlik_adi").toString()
+        tvEtkinlikDetaylari.text = intent?.getStringExtra("etkinlik_detaylari").toString()
 
         etkinlikZamani?.let {
             tvEtkinlikSaati.text = formatDateSaat(it.toLong()).toString()
