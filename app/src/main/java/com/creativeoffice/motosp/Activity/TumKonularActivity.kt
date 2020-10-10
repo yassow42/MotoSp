@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.dialog_konu_ac.view.*
 import org.greenrobot.eventbus.EventBus
 
 import org.greenrobot.eventbus.Subscribe
+import kotlin.math.tan
 
 
 class TumKonularActivity : AppCompatActivity() {
@@ -143,6 +144,7 @@ class TumKonularActivity : AppCompatActivity() {
                                 var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
                                 var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, null, userID, konuKey.toString())
                                 ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
+                                ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("Foto").setValue("null")
                                 ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
                                 dialog.dismiss()
                             } else {
@@ -206,12 +208,23 @@ class TumKonularActivity : AppCompatActivity() {
                 if (konu.kategori == "Konu Dışı") konuDisi++
             }
         }
+
+
         konularList.sortByDescending { it.son_cevap_zamani }
         rcTumKonular.layoutManager = LinearLayoutManager(this@TumKonularActivity, LinearLayoutManager.VERTICAL, false)
         var tumKonularAdapter = ForumKonuBasliklariAdapter(this@TumKonularActivity, konularList)
         rcTumKonular.adapter = tumKonularAdapter
         rcTumKonular.setItemViewCacheSize(20)
         mDelayHandler.postDelayed({ dialogGizle() }, 1000)
+
+        ref.child("Sayisal_Veriler/Forum").child("Tüm Konular").setValue(konularList.size)
+        ref.child("Sayisal_Veriler/Forum").child("Genel").setValue(genelSayisi)
+        ref.child("Sayisal_Veriler/Forum").child("Tanışma").setValue(tanismaSayisi)
+        ref.child("Sayisal_Veriler/Forum").child("Sohbet").setValue(sohbetSayisi)
+        ref.child("Sayisal_Veriler/Forum").child("İl Grupları").setValue(ilGruplariSayisi)
+        ref.child("Sayisal_Veriler/Forum").child("Kamp").setValue(kampSayisi)
+        ref.child("Sayisal_Veriler/Forum").child("Kazalar").setValue(kazalarSayisi)
+        ref.child("Sayisal_Veriler/Forum").child("Konu Dışı").setValue(konuDisi)
 
     }
 

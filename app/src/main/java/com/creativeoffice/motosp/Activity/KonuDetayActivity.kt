@@ -2,6 +2,7 @@ package com.creativeoffice.motosp.Activity
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -16,7 +17,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -114,6 +117,10 @@ class KonuDetayActivity : AppCompatActivity() {
 
         imgSend.setOnClickListener {
             if (!etCevapKonu.text.isNullOrEmpty()) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(getCurrentFocus()?.getWindowToken(), 0)
+
+
                 val konuyaVerilenCevap = etCevapKonu.text.toString()
                 //  var cevapKey = ref.child("Forum").child("cevaplar").push().key
                 ref.child("users").child(userID.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -145,7 +152,13 @@ class KonuDetayActivity : AppCompatActivity() {
                         ref.child("Forum").child(konuKey).child("cevaplar").child(cevapKey).child("Foto").setValue("null").addOnCompleteListener {
                             etCevapKonu.text!!.clear()
                             imgYorumFotosu.visibility = View.GONE
+
+
+
                             val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
+                            val snackBarView = snackbar.view
+                            val textView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                            textView.textSize = 16f
                             snackbar.show()
                             if (yorumFotoUri != null) {
                                 Picasso.get().load(R.drawable.photo).into(imgFoto)

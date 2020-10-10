@@ -2,19 +2,28 @@ package com.creativeoffice.motosp.Activity
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.creativeoffice.motosp.Datalar.UserDetails
 import com.creativeoffice.motosp.Datalar.Users
 import com.creativeoffice.motosp.R
+import com.creativeoffice.motosp.utils.LoadingDialog
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -27,8 +36,9 @@ import kotlinx.android.synthetic.main.dialog_register2.view.*
 class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-
+    var loading: Dialog? = null
     var ref = FirebaseDatabase.getInstance().reference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setupAuthListener()
         super.onCreate(savedInstanceState)
@@ -42,8 +52,15 @@ class LoginActivity : AppCompatActivity() {
         ref.child("users").keepSynced(true)
 
         btnRegister.setOnClickListener {
+            dialogCalistir()
+            Handler().postDelayed({
+                startActivity(Intent(this, RegisterActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                finish()
+                dialogGizle()
+            },1200)
 
-            var builder: AlertDialog.Builder = AlertDialog.Builder(this)//,android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
+/*
+            var builder: AlertDialog.Builder = AlertDialog.Builder(this,android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
             var inflater: LayoutInflater = layoutInflater
             var view: View = inflater.inflate(R.layout.dialog_register2, null)
 
@@ -108,26 +125,60 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-            dialog.show()
+            dialog.show()*/
         }
         btnLogin.setOnClickListener {
-            var kullaniciAdi = etKullaniciAdiLogin.text.toString()
-            var kullaniciAdiEmail = kullaniciAdi + "@gmail.com"
-            var kullaniciSifre = etSifreLogin.text.toString()
-            mAuth.signInWithEmailAndPassword(kullaniciAdiEmail, kullaniciSifre)
-                .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                    override fun onComplete(p0: Task<AuthResult>) {
-                        if (p0!!.isSuccessful) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(getCurrentFocus()?.getWindowToken(), 0)
 
-                            setupAuthListener()
+            var eMail = etEpostaLogin.text.toString().trim()
+            var kullaniciSifre = etSifreLogin.text.toString().trim()
+            if (!eMail.isNullOrEmpty() && !kullaniciSifre.isNullOrEmpty()){
 
-                        } else {
-                            Toast.makeText(this@LoginActivity, " Kullanıcı Adı/Sifre Hatalı :", Toast.LENGTH_SHORT).show()
+
+                mAuth.signInWithEmailAndPassword(eMail, kullaniciSifre)
+                    .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                        override fun onComplete(p0: Task<AuthResult>) {
+                            if (p0.isSuccessful) {
+                                setupAuthListener()
+                            } else {
+                                val snackbar = Snackbar.make(tumLayout,"Kullanıcı Adı/Sifre Hatalı",2500)
+                                val snackbarView = snackbar.view
+                                val textView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                                textView.setTextColor(Color.WHITE)
+                                textView.textSize = 16f
+                                snackbar.show()
+                            }
                         }
-                    }
 
-                })
+                    })
+            }else{
+                val snackbar = Snackbar.make(tumLayout,"Kullanıcı Adı veya Sifre Boş",2500)
+                val snackbarView = snackbar.view
+                val textView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                textView.setTextColor(Color.WHITE)
+                textView.textSize = 16f
+                snackbar.show()
+            }
+
         }
+
+    }
+
+    private fun dialogGizle() {
+        loading?.let { if (it.isShowing) it.cancel() }
+
+    }
+
+    private fun dialogCalistir() {
+        dialogGizle()
+        loading = LoadingDialog.startDialog(this)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        finish()
 
     }
 
@@ -157,6 +208,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        dialogGizle()
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener)
         }

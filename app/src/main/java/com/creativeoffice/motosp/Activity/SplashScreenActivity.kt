@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 class SplashScreenActivity : AppCompatActivity() {
     private var mDelayHandler: Handler? = null
-    private val SPLASH_DELAY: Long = 1250 //1.25 seconds
+    private val SPLASH_DELAY: Long = 1450 //1.25 seconds
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener

@@ -70,17 +70,17 @@ class HomeActivity : AppCompatActivity() {
         //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mAuth = FirebaseAuth.getInstance()
 
-        Log.e("hesapHata", mAuth.currentUser.toString())
 
         var user = mAuth.currentUser
-        Log.e("hesapHataUser",user.toString())
+
         if (user != null) {
             userID = mAuth.currentUser!!.uid
             HesapKontrolveKeepSynced()
             dialogCalistir()
-            Handler().postDelayed({ initVeri() }, 250)
+            Handler().postDelayed({ initVeri() }, 350)
             Handler().postDelayed({ dialogGizle() }, 4000)
         } else {
+            dialogGizle()
             mAuth.signOut()
             var intent = Intent(this, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
@@ -405,6 +405,7 @@ class HomeActivity : AppCompatActivity() {
                     var cevapkey = ref.child("Forum").child(konuKey.toString()).child("cevaplar").push().key
                     var cevapData = ForumKonuData.son_cevap(konuCevap, cevapkey, konuyuAcan, System.currentTimeMillis(), userID, konuKey.toString())
                     ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).setValue(cevapData)
+                    ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("Foto").setValue("null")
                     ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapkey.toString()).child("cevap_zamani").setValue(ServerValue.TIMESTAMP)
                     //kullanıcının yaptığı yorumu profiline ekledık.
                     var yorumRef = ref.child("users").child(userID.toString()).child("yorumlarim")
@@ -436,7 +437,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViewKategoriler() {
-        val kategoriList: MutableList<String> = mutableListOf("Genel", "Tanışma", "Sohbet", "İl Grupları", "Kamp", "Kazalar", "Konu Dışı")
+        val kategoriList: MutableList<String> = mutableListOf("Tüm Konular","Genel", "Tanışma", "Sohbet", "İl Grupları", "Kamp", "Kazalar", "Konu Dışı")
         //  rcKategoriler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rcKategoriler.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rcKategoriler.setHasFixedSize(true)
@@ -574,7 +575,6 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         FirebaseAuth.AuthStateListener {
             val kullaniciGirisi = it.currentUser
             if (kullaniciGirisi != null) { //eğer kişi giriş yaptıysa nul gorunmez. giriş yapmadıysa null olur

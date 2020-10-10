@@ -26,13 +26,14 @@ class SignOutFragment : DialogFragment() {
 
 
         var alert = AlertDialog.Builder(activity)
-            .setTitle("Instagram'dan Çıkış Yap")
+            .setTitle("Hesaptan Çıkış Yap")
             .setMessage("Emin Misiniz ?")
             .setPositiveButton("Çıkış Yap", object : DialogInterface.OnClickListener {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
                     FirebaseAuth.getInstance().signOut()
                     activity!!.finish()
                     startActivity(Intent(activity!!.applicationContext,LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION))
+                    activity!!.finish()
                 }
 
             })

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MotoSp"
@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_motor_bike"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".Activity.RegisterActivity"></activity>
         <activity android:name=".Activity.Motor2Activity" />
         <activity android:name=".Activity.BayiDetayActivity" />
         <activity android:name=".Activity.EtkinlikDetayActivity" />
