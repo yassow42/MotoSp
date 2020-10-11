@@ -71,12 +71,16 @@ class MarkaModelAdapter(val myContext: Context, val tumModeller: ArrayList<Model
         }
 
 
+
+
+
     }
 
 
     class MyViewHolder(viewHolder: View, myContext: Context) : RecyclerView.ViewHolder(viewHolder) {
 
         var tumLayout = viewHolder
+
         var tvMarka = tumLayout.tvMarka
         var tvModel = tumLayout.tvModel
         var tvFiyat = tumLayout.tvFiyat

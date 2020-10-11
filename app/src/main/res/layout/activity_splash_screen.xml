@@ -34,4 +34,13 @@
         app:lottie_autoPlay="true"
         app:lottie_fileName="motobike.json"
         app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/tvDuyuru"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/beyaz"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgIcon2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

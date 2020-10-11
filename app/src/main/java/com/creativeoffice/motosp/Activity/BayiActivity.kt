@@ -17,6 +17,7 @@ import com.creativeoffice.motosp.Datalar.BayilerData
 import com.creativeoffice.motosp.Datalar.ForumKonuData
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_bayi.*
 import kotlinx.android.synthetic.main.dialog_bayi_ekle.view.*
@@ -61,6 +62,8 @@ class BayiActivity : AppCompatActivity() {
                 var onayKey = ref.child("OnayBekleyen_Bayiler").push().key.toString()
                 ref.child("OnayBekleyen_Bayiler").child(onayKey).setValue(data)
 
+                val snackbar = Snackbar.make(textView13,"Bayiniz incelenip onay verildikten sonra eklenecektir. Teşekkürler...",5000)
+                snackbar.show()
 
                 dialog.dismiss()
             })

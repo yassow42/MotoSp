@@ -163,6 +163,10 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        tvSifremiUnuttum.setOnClickListener {
+            Snackbar.make(it,"Yakında aktif olacak. Anlayışınız için teşekkürler.",2500).show()
+        }
+
     }
 
     private fun dialogGizle() {

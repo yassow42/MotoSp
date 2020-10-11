@@ -69,14 +69,11 @@ class HomeActivity : AppCompatActivity() {
         setupNavigationView()
         //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mAuth = FirebaseAuth.getInstance()
-
-
         var user = mAuth.currentUser
-
         if (user != null) {
+            dialogCalistir()
             userID = mAuth.currentUser!!.uid
             HesapKontrolveKeepSynced()
-            dialogCalistir()
             Handler().postDelayed({ initVeri() }, 350)
             Handler().postDelayed({ dialogGizle() }, 4000)
         } else {
@@ -261,15 +258,16 @@ class HomeActivity : AppCompatActivity() {
         ref.child("Haberler").keepSynced(true)
         ref.child("users").keepSynced(true)
 
-        ref.child("users").child(mAuth.currentUser!!.uid).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("users").child(userID).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.value == null) {
-                    Log.e("HesapHataNull267",p0.value.toString())
+                    Log.e("HesapHataNull267", p0.value.toString())
                     mAuth.signOut()
                     var intent = Intent(this@HomeActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     finish()
-                } else{
+                } else {
+                    ref.child("users").child(userID).child("user_details/son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
                     userName = p0.value.toString()
                     EventBus.getDefault().postSticky(EventBusDataEvents.KullaniciAdi(userName))
                 }
@@ -437,7 +435,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViewKategoriler() {
-        val kategoriList: MutableList<String> = mutableListOf("Tüm Konular","Genel", "Tanışma", "Sohbet", "İl Grupları", "Kamp", "Kazalar", "Konu Dışı")
+        val kategoriList: MutableList<String> = mutableListOf("Tüm Konular", "Genel", "Tanışma", "Sohbet", "İl Grupları", "Kamp", "Kazalar", "Konu Dışı")
         //  rcKategoriler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rcKategoriler.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rcKategoriler.setHasFixedSize(true)

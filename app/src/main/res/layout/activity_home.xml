@@ -8,6 +8,7 @@
     tools:context=".Activity.HomeActivity">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:isScrollContainer="false"
@@ -80,7 +81,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView7"
-                    tools:itemCount="1"
+                    tools:itemCount="4"
                     tools:listitem="@layout/item_forum_konu_basliklari2" />
 
                 <TextView
@@ -324,11 +325,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:scrollbars="none"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:itemCount="1"
+                    tools:itemCount="4"
                     tools:listitem="@layout/item_son_model_mesajlari">
 
                 </androidx.recyclerview.widget.RecyclerView>

@@ -6,11 +6,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="14dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginBottom="10dp"
-    app:cardCornerRadius="12dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="13dp"
+    app:cardElevation="@dimen/cardElevation"
     app:layout_constraintTop_toTopOf="parent">
 
 
@@ -30,24 +31,24 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center|left"
-            app:layout_constraintBottom_toBottomOf="@+id/tvMarka"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toStartOf="@+id/tvMarka"
             app:layout_constraintStart_toStartOf="@+id/constraintLayout8"
-            app:layout_constraintTop_toTopOf="@+id/tvMarka" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvMarka"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="10dp"
             android:text="Honda"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="19sp"
             android:textStyle="bold"
             android:transitionName="trans_marka"
+            app:layout_constraintBottom_toBottomOf="@+id/imgMarka"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/imgMarka" />
 
         <TextView
             android:id="@+id/tvModel"
@@ -56,7 +57,7 @@
             android:layout_marginStart="16dp"
             android:text="CBR1000RR"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="19sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tvMarka"
             app:layout_constraintStart_toEndOf="@+id/tvMarka"
@@ -66,16 +67,16 @@
             android:id="@+id/tvFiyat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="6dp"
             android:fontFamily="monospace"
             android:text="100.000"
             android:textColor="@color/beyaz"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
 
         <com.willy.ratingbar.ScaleRatingBar
             android:id="@+id/rbMotorList"
@@ -101,200 +102,192 @@
             app:srb_starWidth="12dp"
             app:srb_stepSize="0.5" />
 
-        <HorizontalScrollView
 
-            android:id="@+id/horizontalScrollView"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/linearLayout7"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="6dp"
-            android:fadingEdge="horizontal|vertical"
-            android:overScrollMode="ifContentScrolls"
-            android:scrollbarStyle="insideOverlay"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.69"
             app:layout_constraintStart_toStartOf="@+id/tvMarka"
             app:layout_constraintTop_toBottomOf="@+id/tvMarka">
 
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:visibility="visible">
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout4">
 
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-                    app:layout_constraintTop_toTopOf="@+id/linearLayout4">
+                    android:text="Category"
+                    android:textColor="@color/beyaz"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Category"
-                        android:textColor="@color/beyaz"
-                        android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/imgMotorKategori"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_kategori"
+                    android:backgroundTint="#FFFFFF"
+                    android:backgroundTintMode="src_in" />
 
-                    <ImageView
-                        android:id="@+id/imgMotorKategori"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/ic_kategori"
-                        android:backgroundTint="#FFFFFF"
-                        android:backgroundTintMode="src_in" />
-
-                    <TextView
-                        android:id="@+id/tvKategori"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Scooter"
-                        android:textColor="@color/beyaz"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout3"
+                <TextView
+                    android:id="@+id/tvKategori"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="@+id/tvMarka"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMarka">
-
-                    <TextView
-                        android:id="@+id/textView29"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Engine"
-                        android:textColor="@color/beyaz"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/imgSilindir2"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/ic_silindir"
-                        android:backgroundTint="#FFFFFF"
-                        android:backgroundTintMode="src_in" />
-
-                    <TextView
-                        android:id="@+id/detay_silindirhacmi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="600"
-                        android:textColor="@color/beyaz"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout3"
-                    app:layout_constraintTop_toTopOf="@+id/linearLayout3">
-
-                    <TextView
-                        android:id="@+id/textView28"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Power"
-                        android:textColor="@color/beyaz"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/imageView10"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/ic_beygir"
-                        android:backgroundTint="#FFFFFF"
-                        android:backgroundTintMode="src_in" />
-
-                    <TextView
-                        android:id="@+id/detay_beygir"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="86"
-                        android:textColor="@color/beyaz"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-                    app:layout_constraintTop_toTopOf="@+id/linearLayout4">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Torque"
-                        android:textColor="@color/beyaz"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/ic_tork"
-                        android:backgroundTint="#FFFFFF"
-                        android:backgroundTintMode="src_in" />
-
-                    <TextView
-                        android:id="@+id/detay_tork"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="tork"
-                        android:textColor="@color/beyaz"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-                    app:layout_constraintTop_toTopOf="@+id/linearLayout4">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Top Speed"
-                        android:textColor="@color/beyaz"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/ic_hiz"
-                        android:backgroundTint="#FFFFFF"
-                        android:backgroundTintMode="src_in" />
-
-                    <TextView
-                        android:id="@+id/detay_hiz"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="250"
-                        android:textColor="@color/beyaz"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-
+                    android:text="Scooter"
+                    android:textColor="@color/beyaz"
+                    android:textSize="12sp" />
             </LinearLayout>
 
-        </HorizontalScrollView>
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/tvMarka"
+                app:layout_constraintTop_toBottomOf="@+id/tvMarka">
+
+                <TextView
+                    android:id="@+id/textView29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Engine"
+                    android:textColor="@color/beyaz"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imgSilindir2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_silindir"
+                    android:backgroundTint="#FFFFFF"
+                    android:backgroundTintMode="src_in" />
+
+                <TextView
+                    android:id="@+id/detay_silindirhacmi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="600"
+                    android:textColor="@color/beyaz"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout3">
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Power"
+                    android:textColor="@color/beyaz"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_beygir"
+                    android:backgroundTint="#FFFFFF"
+                    android:backgroundTintMode="src_in" />
+
+                <TextView
+                    android:id="@+id/detay_beygir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="86"
+                    android:textColor="@color/beyaz"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout4">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Torque"
+                    android:textColor="@color/beyaz"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_tork"
+                    android:backgroundTint="#FFFFFF"
+                    android:backgroundTintMode="src_in" />
+
+                <TextView
+                    android:id="@+id/detay_tork"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="tork"
+                    android:textColor="@color/beyaz"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout4">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Top Speed"
+                    android:textColor="@color/beyaz"
+                    android:textStyle="bold"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_hiz"
+                    android:backgroundTint="#FFFFFF"
+                    android:backgroundTintMode="src_in" />
+
+                <TextView
+                    android:id="@+id/detay_hiz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="250"
+                    android:textColor="@color/beyaz"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
