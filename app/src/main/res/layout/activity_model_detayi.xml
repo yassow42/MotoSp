@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:text="(0)"
-                    android:textColor="@color/siyah"
+                    android:textColor="@color/beyaz"
                     app:layout_constraintBottom_toBottomOf="@+id/rbMotor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/rbMotor" />
@@ -131,7 +131,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/tvYildizKisi"
                     app:layout_constraintTop_toBottomOf="@+id/ytTekModelList"
                     app:srb_clearRatingEnabled="true"
-                    app:srb_isIndicator="false"
+                    app:srb_isIndicator="true"
                     app:srb_minimumStars="1"
                     app:srb_numStars="5"
                     app:srb_scrollable="true"

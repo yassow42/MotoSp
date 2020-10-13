@@ -31,17 +31,18 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
+                    android:id="@+id/appBarLayouts"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/appbar_uzunluk"
-                    android:background="@color/genel_renk">
+                    android:background="@color/genel_renk"
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/imgAyarlar"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginEnd="8dp"
-                        android:visibility="gone"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="24dp"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -73,7 +74,7 @@
                             android:maxWidth="370dp"
                             android:text="Cevap"
                             android:textSize="13sp"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="@+id/tvKonuBasligi"
@@ -166,7 +167,9 @@
             android:id="@+id/textInputLayoutYorum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="2dp"
             android:hint="Yorum Yap"
             app:endIconMode="clear_text"
@@ -192,9 +195,9 @@
 
         <ImageView
             android:id="@+id/imgFoto"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="3dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="4dp"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

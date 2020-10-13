@@ -195,7 +195,7 @@ class BayiDetayActivity : AppCompatActivity() {
                     }
 
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        if (1 < s!!.length && s!!.length < 150) view.tvGonder.isClickable = true
+                        if (1 < s!!.length && s!!.length < 350) view.tvGonder.isClickable = true
                         else view.tvGonder.isClickable = false
 
 

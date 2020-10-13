@@ -3,6 +3,8 @@ package com.creativeoffice.motosp.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -227,8 +229,6 @@ class ModelDetayiActivity : AppCompatActivity() {
                 }
 
                 setupYorumlarRecyclerView()
-
-
 
 
             }
@@ -466,9 +466,10 @@ class ModelDetayiActivity : AppCompatActivity() {
             floatingYakitEkle.setOnClickListener {
                 var builder: AlertDialog.Builder = AlertDialog.Builder(this)
                 var inflater: LayoutInflater = layoutInflater
-                var view: View = inflater.inflate(R.layout.dialog_yakit_tuketim, null)
+                var view: View = inflater.inflate(R.layout.dialog_yakit_tuketim,null)
 
                 builder.setView(view)
+
 
                 builder.setNegativeButton("İptal", object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface?, which: Int) {

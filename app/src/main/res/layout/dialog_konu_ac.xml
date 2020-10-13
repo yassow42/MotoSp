@@ -15,7 +15,7 @@
         android:hint="Konu Başlığı"
         app:counterEnabled="true"
 
-        app:counterMaxLength="120"
+        app:counterMaxLength="200"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -17,6 +17,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -72,7 +73,7 @@ class KonuDetayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_konu_detay)
         // this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        // this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+      //   this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         cevapList = ArrayList()
         setupRecyclerViewCevap()
 
@@ -216,14 +217,9 @@ class KonuDetayActivity : AppCompatActivity() {
                         val dialog: Dialog = builder.create()
                         view.btnKaydet.setOnClickListener {
 
-                            FirebaseDatabase.getInstance().reference.child("Forum").child(konuKey.toString()).child("konu_basligi").setValue(view.etKonuCevabi.text.toString())
+                           ref.child("Forum").child(konuKey.toString()).child("konu_basligi").setValue(view.etKonuCevabi.text.toString())
                                 .addOnCompleteListener {
-                                    val intent = Intent(this, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-
-                                    intent.putExtra("konuBasligi", view.etKonuCevabi.text.toString())
-                                    intent.putExtra("konuKey", konuKey)
-                                    intent.putExtra("konuyu_acan_key", konuAcanKey)
-                                    startActivity(intent)
+                                    Snackbar.make(tumLayout,"Başlık Değiştirildi",1000).show()
 
                                 }
 
@@ -282,7 +278,7 @@ class KonuDetayActivity : AppCompatActivity() {
                         val gelenKonu = i.getValue(ForumKonuData.cevaplar::class.java)
                         cevapList.add(gelenKonu!!)
                     }
-                    cevapList.sortBy { it.cevap_zamani }
+                    cevapList.sortByDescending { it.cevap_zamani }
                 }
                 val tarih = p0.child("acilma_zamani").value
                 tarih?.let {
@@ -415,8 +411,10 @@ class KonuDetayActivity : AppCompatActivity() {
         super.onResume()
         if (userID == konuAcanKey) {
             imgAyarlar.visibility = View.VISIBLE
+            appBarLayouts.visibility = View.VISIBLE
         } else {
             imgAyarlar.visibility = View.GONE
+            appBarLayouts.visibility = View.GONE
         }
     }
 
@@ -427,7 +425,8 @@ class KonuDetayActivity : AppCompatActivity() {
             yorumFotoUri = data.data
             imgFoto.visibility = View.VISIBLE
             imgFoto.setPadding(0,4,0,4)
-            imgFoto.setImageURI(yorumFotoUri)
+           // imgFoto.setImageURI(yorumFotoUri)
+            Picasso.get().load(yorumFotoUri).resize(150,150).into(imgFoto)
 
 
         }

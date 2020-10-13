@@ -99,6 +99,38 @@
             app:layout_constraintStart_toEndOf="@+id/tvZaman"
             app:layout_constraintTop_toTopOf="@+id/tvZaman" />
 
+        <TextView
+            android:id="@+id/tvKategori"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:autoSizeMinTextSize="10sp"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:text="Tanışma"
+            android:textAlignment="center"
+            android:textColor="@color/siyah"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvZaman"
+            app:layout_constraintStart_toEndOf="@+id/tvCevapSayisi"
+            app:layout_constraintTop_toTopOf="@+id/tvZaman" />
+
+        <TextView
+            android:id="@+id/tvSonCevapZamani"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:autoSizeMinTextSize="10sp"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:text="Tanışma"
+            android:textAlignment="center"
+            android:textColor="@color/siyah"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvZaman"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvZaman" />
+
         <View
             android:id="@+id/ortaView"
             android:layout_width="0dp"

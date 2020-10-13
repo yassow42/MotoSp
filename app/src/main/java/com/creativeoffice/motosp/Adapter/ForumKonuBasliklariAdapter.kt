@@ -65,8 +65,10 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
 
     inner class ForumKonuBasligiHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var konuBasligi = itemView.tvKonuBasligi
+        var konuKategori = itemView.tvKategori
         var userName = itemView.tvUserName
         var tarih = itemView.tvZaman
+        var sonCevapZamani = itemView.tvSonCevapZamani
         var circleProfileImage = itemView.circleProfileImage
         var progressBar = itemView.progressBar
 
@@ -79,8 +81,10 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
 
         fun setData(forumKonuData: ForumKonuData, myContext: Context) {
             konuBasligi.text = "  " + forumKonuData.konu_basligi
+            konuKategori.text = "  " + forumKonuData.kategori
             userName.text = forumKonuData.konuyu_acan
             tarih.text = formatDate(forumKonuData.acilma_zamani).toString()
+            sonCevapZamani.text = formatDate(forumKonuData.son_cevap_zamani).toString()
 
             //foruma soncevap yazan verisi
             ref.child("Forum").child(forumKonuData.konu_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener1 {
@@ -109,7 +113,6 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
 
 
             })
-
 
 
             ref.child("users").child(forumKonuData.konuyu_acan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener1 {

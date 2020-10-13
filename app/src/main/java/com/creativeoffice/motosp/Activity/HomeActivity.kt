@@ -524,7 +524,7 @@ class HomeActivity : AppCompatActivity() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             if (5 < s!!.length) {
-                if (s.length < 121) {
+                if (s.length < 201) {
                     konuBasligiUzunluk = true
                 } else {
                     konuBasligiUzunluk = false
