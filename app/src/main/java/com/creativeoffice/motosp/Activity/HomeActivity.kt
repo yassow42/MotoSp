@@ -339,9 +339,7 @@ class HomeActivity : AppCompatActivity() {
 
 
             val lessonsList: MutableList<String> = mutableListOf("Genel", "Tanışma", "Sohbet", "İl Grupları", "Kamp", "Kazalar", "Konu Dışı")
-
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, lessonsList)
-
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             view.spnKategoriler.adapter = adapter
@@ -377,7 +375,7 @@ class HomeActivity : AppCompatActivity() {
                 var konuyuAcan = userName
 
                 if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
-                    var konuData = ForumKonuData(kategori, true, System.currentTimeMillis(), System.currentTimeMillis(), konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
+                    var konuData = ForumKonuData(kategori, true, System.currentTimeMillis(), System.currentTimeMillis(), konuBasligi, konuCevap, konuKey,  userID)
 
                     ref.child("Forum").child(konuKey.toString()).setValue(konuData)
                     //son cevap ekliyoruzkı sıralayabılelım.
@@ -388,7 +386,6 @@ class HomeActivity : AppCompatActivity() {
                         intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
                         intent.putExtra("konuCevabi", konuData.konu_sahibi_cevap.toString())
 
-                        intent.putExtra("userName", konuData.konuyu_acan.toString())
                         intent.putExtra("konuKey", konuData.konu_key)
                         intent.putExtra("konuyu_acan_key", konuData.konuyu_acan_key)
                         startActivity(intent)

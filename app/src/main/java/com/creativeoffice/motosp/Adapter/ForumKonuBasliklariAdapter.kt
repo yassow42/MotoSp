@@ -50,7 +50,6 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
             val intent = Intent(myContext.applicationContext, KonuDetayActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putExtra("konuBasligi", gelenItem.konu_basligi.toString())
             intent.putExtra("konuCevabi", gelenItem.konu_sahibi_cevap.toString())
-            intent.putExtra("userName", gelenItem.konuyu_acan.toString())
             //   intent.putExtra("tarih", holder.formatDate(gelenItem.acilma_zamani).toString())
             intent.putExtra("konuKey", gelenItem.konu_key)
             intent.putExtra("konuyu_acan_key", gelenItem.konuyu_acan_key)
@@ -82,7 +81,6 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
         fun setData(forumKonuData: ForumKonuData, myContext: Context) {
             konuBasligi.text = "  " + forumKonuData.konu_basligi
             konuKategori.text = "  " + forumKonuData.kategori
-            userName.text = forumKonuData.konuyu_acan
             tarih.text = formatDate(forumKonuData.acilma_zamani).toString()
             sonCevapZamani.text = formatDate(forumKonuData.son_cevap_zamani).toString()
 
@@ -118,14 +116,14 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
             ref.child("users").child(forumKonuData.konuyu_acan_key.toString()).addListenerForSingleValueEvent(object : ValueEventListener1 {
                 override fun onDataChange(p0: DataSnapshot) {
                     if (p0.hasChildren()) {
-
+                        userName.text = p0.child("user_name").value.toString()
                         var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                         if (imgURL != "default") {
-                            Picasso.get().load(imgURL).into(circleProfileImage)
+                            Picasso.get().load(imgURL).placeholder(R.drawable.ic_profile).into(circleProfileImage)
                             progressBar.visibility = View.GONE
                         }else{
                             progressBar.visibility = View.GONE
-                            Picasso.get().load(R.drawable.ic_profile).into(circleProfileImage)
+                            Picasso.get().load(R.drawable.ic_profile).placeholder(R.drawable.ic_profile).into(circleProfileImage)
                         }
                     }
                 }

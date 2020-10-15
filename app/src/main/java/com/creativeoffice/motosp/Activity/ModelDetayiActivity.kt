@@ -171,7 +171,7 @@ class ModelDetayiActivity : AppCompatActivity() {
 
                 }
 
-                imgMotorTipi.setAnimation(AnimationUtils.loadAnimation(this@ModelDetayiActivity, R.anim.olusma_sol))
+                imgMotorTipi.setAnimation(AnimationUtils.loadAnimation(this@ModelDetayiActivity, R.anim.motor_olusma_sol))
                 kategori.let {
                     when (kategori) {
                         "Scooter" -> imgMotorTipi.setBackgroundResource(R.drawable.ic_scooter)

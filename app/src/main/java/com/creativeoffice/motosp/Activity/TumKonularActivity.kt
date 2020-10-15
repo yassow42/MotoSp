@@ -118,7 +118,7 @@ class TumKonularActivity : AppCompatActivity() {
                             var konuyuAcan = p0.value.toString()
 
                             if (konuBasligi.length >= 5 && konuCevap.length >= 5) {
-                                var konuData = ForumKonuData(secilenKategori, true, null, null, konuBasligi, konuCevap, konuKey, konuyuAcan, userID)
+                                var konuData = ForumKonuData(secilenKategori, true, null, null, konuBasligi, konuCevap, konuKey, userID)
 
                                 ref.child("Forum").child(konuKey.toString()).setValue(konuData)
                                 //son cevap ekliyoruzkı sıralayabılelım.
@@ -129,7 +129,7 @@ class TumKonularActivity : AppCompatActivity() {
                                     intent.putExtra("konuBasligi", konuData.konu_basligi.toString())
                                     intent.putExtra("konuCevabi", konuData.konu_sahibi_cevap.toString())
 
-                                    intent.putExtra("userName", konuData.konuyu_acan.toString())
+
                                     intent.putExtra("konuKey", konuData.konu_key)
                                     intent.putExtra("konuyu_acan_key", konuData.konuyu_acan_key)
                                     startActivity(intent)

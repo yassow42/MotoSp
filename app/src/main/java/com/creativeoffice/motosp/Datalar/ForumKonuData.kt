@@ -8,7 +8,6 @@ class ForumKonuData(
     var konu_basligi: String? = null,
     var konu_sahibi_cevap: String? = null,
     var konu_key: String? = null,
-    var konuyu_acan: String? = null,
     var konuyu_acan_key: String? = null,
     val yorumlar: HashMap<String, son_cevap>? = null
 ) {

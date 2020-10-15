@@ -43,7 +43,7 @@
         <View
             android:id="@+id/golgelik"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1.2dp"
             android:layout_marginTop="10dp"
             android:background="@color/beyaz"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,31 +63,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/golgelik" />
 
-        <TextView
-            android:id="@+id/tvSifreniDegistirHesapAyarlari"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Şifreni Değiştir"
-            android:textColor="@color/beyaz"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-        <TextView
-            android:id="@+id/tvCikisYap"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:text="Çıkış Yap"
-            android:textColor="@color/beyaz"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tvSifreniDegistirHesapAyarlari"
-            app:layout_constraintTop_toBottomOf="@+id/tvSifreniDegistirHesapAyarlari" />
-
         <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
             android:id="@+id/bottomNavigationContainer"
             android:layout_width="match_parent"
@@ -100,6 +75,47 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_nav_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+            <TextView
+                android:id="@+id/tvUserNameDegistir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Kullanıcı Adı Değiştir"
+                android:textColor="@color/beyaz" />
+
+            <TextView
+                android:id="@+id/tvSifreniDegistirHesapAyarlari"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Şifreni Değiştir"
+                android:textColor="@color/beyaz" />
+
+            <TextView
+                android:id="@+id/tvCikisYap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="Çıkış Yap"
+                android:textColor="@color/beyaz"
+                android:textStyle="bold" />
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
