@@ -314,6 +314,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 app:cardCornerRadius="12dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,11 +1,13 @@
 package com.creativeoffice.motosp.Activity
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
 import com.creativeoffice.motosp.Adapter.HaberYorumlariAdapter
@@ -19,8 +21,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_haber_detaylari.*
-import kotlinx.android.synthetic.main.activity_konu_detay.*
-import kotlinx.android.synthetic.main.activity_tumkonular.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import java.text.SimpleDateFormat
@@ -59,6 +59,12 @@ class HaberDetaylariActivity : AppCompatActivity() {
         initList()
         init()
 
+        swHaberDetay.setOnRefreshListener {
+       //     swHaberDetay.isRefreshing = false
+            initList()
+            init()
+        }
+
 
     }
 
@@ -89,9 +95,12 @@ class HaberDetaylariActivity : AppCompatActivity() {
             ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).setValue(yapılanYorum).addOnCompleteListener {
                 ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).child("tarih").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
                     initList()
-                    etYorum.text?.clear()
-                    val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
-                    snackbar.show()
+                    etYorum.setText("")
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(getCurrentFocus()?.getWindowToken(), 0)
+                    Snackbar.ANIMATION_MODE_FADE
+                    Snackbar.make(constraintLayout7, "Yorumun gönderildi...", 500).show()
+
 
                 }
             }
@@ -172,11 +181,11 @@ class HaberDetaylariActivity : AppCompatActivity() {
                         yorumListesi.add(gelenYorumlar)
 
                     }
-
+                    swHaberDetay.isRefreshing = false
                     setupHaberYorumlarRecyclerView()
 
                 } else {
-
+                    swHaberDetay.isRefreshing = false
                     yorumListesi.add(HaberlerData.Yorumlar("ilk", "Admin", 1, "İlk Yorumu Yapmak İster Misin?", "key", "admin"))
                     setupHaberYorumlarRecyclerView()
                 }
