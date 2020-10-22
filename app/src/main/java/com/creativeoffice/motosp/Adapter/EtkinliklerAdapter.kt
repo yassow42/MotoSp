@@ -23,10 +23,6 @@ import kotlin.collections.ArrayList
 
 class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<EtkinlikData>) : RecyclerView.Adapter<EtkinliklerAdapter.MainHolder>() {
 
-    init {
-
-
-    }
 
     override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): EtkinliklerAdapter.MainHolder {
 
@@ -76,10 +72,10 @@ class EtkinliklerAdapter(val myContext: Context, val etkinliklerList: ArrayList<
             etkinlikSehir.text = "Şehir: " + item.etkinlik_sehir.toString()
             item.katilanlar_sayisi?.let {
                 item.etkinlik_katilimci_sayisi?.let {
-                    etkinlikKatilimci.text = "Katılımcı Sayısı: " + item.katilanlar_sayisi + "/" + item.etkinlik_katilimci_sayisi.toString() +
-                            " %" + (item.katilanlar_sayisi!!.toDouble() * 100 / item.etkinlik_katilimci_sayisi!!.toDouble()).toDouble()
+                    etkinlikKatilimci.setText("Katılımcı Sayısı: " + (item.katilanlar_sayisi!! + 1) + "/" + item.etkinlik_katilimci_sayisi.toString() +
+                                " %" + (item.katilanlar_sayisi!!.toDouble() * 100 / item.etkinlik_katilimci_sayisi!!.toDouble()).toDouble())
                     etkinlikKatilimci.isSelected = true
-                   // etkinlikKatilimci.setSingleLine()
+                    // etkinlikKatilimci.setSingleLine()
                 }
             }
 

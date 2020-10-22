@@ -77,7 +77,7 @@
                 android:layout_marginBottom="24dp"
                 android:maxWidth="225dp"
                 android:maxLines="1"
-                android:text="Katılımcı Sayısı: 6/125 %4.5"
+                android:text="."
                 android:textColor="@color/beyaz"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

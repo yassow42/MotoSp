@@ -99,7 +99,7 @@ class EtkinliklerActivity : AppCompatActivity() {
 
 
     private fun setupRecyclerView() {
-
+        ref.child("Etkinlikler").keepSynced(true)
         ref.child("Etkinlikler").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.hasChildren()) {
