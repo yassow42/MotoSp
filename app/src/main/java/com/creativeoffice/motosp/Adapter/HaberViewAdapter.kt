@@ -63,7 +63,7 @@ class HaberViewAdapter(val myContext: Context, var haberler: ArrayList<HaberlerD
             tvZaman.text = formatDate(haberler.haber_eklenme_zamani).toString()
 
 
-            Log.e("sayi", haberler!!.haber_baslik!!.length.toString())
+
 
             tumLayout.setOnClickListener {
                 var intent = Intent(myContext, HaberDetaylariActivity::class.java)

@@ -24,10 +24,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.creativeoffice.motosp.Adapter.*
-import com.creativeoffice.motosp.Datalar.ForumKonuData
-import com.creativeoffice.motosp.Datalar.HaberlerData
-import com.creativeoffice.motosp.Datalar.ModelDetaylariData
-import com.creativeoffice.motosp.Datalar.YorumlarData
+import com.creativeoffice.motosp.Datalar.*
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
 import com.creativeoffice.motosp.utils.EventBusDataEvents
@@ -66,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        setupNavigationView()
+        setupNavigationView(); initBtn()
         //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mAuth = FirebaseAuth.getInstance()
         var user = mAuth.currentUser
@@ -86,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        initBtn()
+
 
     }
 
@@ -258,18 +255,19 @@ class HomeActivity : AppCompatActivity() {
         ref.child("Haberler").keepSynced(true)
         ref.child("users").keepSynced(true)
 
-        ref.child("users").child(userID).child("user_name").addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("users").child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.value == null) {
-                    Log.e("HesapHataNull267", p0.value.toString())
                     mAuth.signOut()
                     var intent = Intent(this@HomeActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     finish()
                 } else {
                     ref.child("users").child(userID).child("user_details/son_aktiflik_zamani").setValue(ServerValue.TIMESTAMP)
-                    userName = p0.value.toString()
-                    EventBus.getDefault().postSticky(EventBusDataEvents.KullaniciAdi(userName))
+                    var alinanData = p0.getValue(Users::class.java)!!
+
+                    userName = alinanData.user_name.toString()
+                    EventBus.getDefault().postSticky(EventBusDataEvents.KullaniciData(alinanData))
                 }
 
 

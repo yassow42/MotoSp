@@ -15,6 +15,7 @@ import com.creativeoffice.motosp.Datalar.Users
 import com.creativeoffice.motosp.ProfileEditFragment
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.BottomnavigationViewHelper
+import com.creativeoffice.motosp.utils.EventBusDataEvents
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_profile.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import kotlin.Exception
 
 
@@ -30,12 +33,13 @@ class ProfileActivity : AppCompatActivity() {
     private val ACTIVITY_NO = 4
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-
+    lateinit var userData:Users
     var ref = FirebaseDatabase.getInstance().reference
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-
         mAuth = FirebaseAuth.getInstance()
         //  this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         //  this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -53,6 +57,8 @@ class ProfileActivity : AppCompatActivity() {
     private fun kullaniciVerileriniGetir() {
 
         var userID = mAuth.currentUser!!.uid
+
+
         ref.child("users").child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
@@ -61,7 +67,7 @@ class ProfileActivity : AppCompatActivity() {
                 if (p0.hasChildren()) {
                     var imgURL = "default"
 
-                    var users = p0.getValue(Users::class.java)!!
+                   // var users = p0.getValue(Users::class.java)!!
                     var usersDetails = p0.child("user_details").getValue(UserDetails::class.java)!!
                     imgURL = usersDetails.profile_picture.toString()
 
@@ -159,6 +165,8 @@ class ProfileActivity : AppCompatActivity() {
         menuItem.setChecked(true)
     }
 
+
+
     private fun setupAuthListener() {
         mAuthListener = object : FirebaseAuth.AuthStateListener {
             override fun onAuthStateChanged(p0: FirebaseAuth) {
@@ -181,6 +189,23 @@ class ProfileActivity : AppCompatActivity() {
     override fun onResume() {
         setupNavigationView()
         super.onResume()
+    }
+
+
+    @Subscribe(sticky = true)
+    internal fun onUserName(gelenUserData: EventBusDataEvents.KullaniciData) {
+        userData = gelenUserData.userData
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 
 

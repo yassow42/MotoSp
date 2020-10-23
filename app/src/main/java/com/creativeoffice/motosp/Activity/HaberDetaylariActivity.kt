@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.creativeoffice.motosp.Adapter.ForumKonuBasliklariAdapter
 import com.creativeoffice.motosp.Adapter.HaberYorumlariAdapter
 import com.creativeoffice.motosp.Datalar.HaberlerData
+import com.creativeoffice.motosp.Datalar.Users
 import com.creativeoffice.motosp.R
 import com.creativeoffice.motosp.utils.EventBusDataEvents
 import com.google.android.material.snackbar.Snackbar
@@ -40,7 +41,7 @@ class HaberDetaylariActivity : AppCompatActivity() {
 
 
     var userID: String? = null
-    var userName: String? = null
+    lateinit var userData: Users
     var yorumListesi = ArrayList<HaberlerData.Yorumlar>()
 
     lateinit var mAuth: FirebaseAuth
@@ -90,7 +91,7 @@ class HaberDetaylariActivity : AppCompatActivity() {
         etYorum.addTextChangedListener(watcher)
         tvGonder.setOnClickListener {
             var yorumKey = ref.child("Haberler").child(haber_key.toString()).child("yorumlar").push().key
-            var yapılanYorum = HaberlerData.Yorumlar(haber_key, userName, System.currentTimeMillis(), etYorum.text.toString(), yorumKey, userID)
+            var yapılanYorum = HaberlerData.Yorumlar(haber_key, userData.user_name, System.currentTimeMillis(), etYorum.text.toString(), yorumKey, userID)
 
             ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).setValue(yapılanYorum).addOnCompleteListener {
                 ref.child("Haberler").child(haber_key.toString()).child("yorumlar").child(yorumKey.toString()).child("tarih").setValue(ServerValue.TIMESTAMP).addOnCompleteListener {
@@ -197,8 +198,8 @@ class HaberDetaylariActivity : AppCompatActivity() {
 
 
     @Subscribe(sticky = true)
-    internal fun onUserName(gelenUserName: EventBusDataEvents.KullaniciAdi) {
-        userName = gelenUserName.userName
+    internal fun onUserName(gelenUserData: EventBusDataEvents.KullaniciData) {
+        userData = gelenUserData.userData
 
 
     }

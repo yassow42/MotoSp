@@ -73,7 +73,7 @@ class KonuDetayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_konu_detay)
         // this.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-      //   this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //   this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         cevapList = ArrayList()
         setupRecyclerViewCevap()
 
@@ -134,7 +134,6 @@ class KonuDetayActivity : AppCompatActivity() {
                         if (imgURL != "default") {
                             Picasso.get().load(imgURL).into(imgUser)
                         }
-
                         //cevaba bi key olusturduk
                         cevapKey = ref.child("Forum").child(konuKey).child("cevaplar").push().key.toString()
                         val cevapYazan = p0.child("user_name").value.toString()
@@ -150,28 +149,27 @@ class KonuDetayActivity : AppCompatActivity() {
                         //cevabı da eklıyruz
                         val cevapData = ForumKonuData.son_cevap(konuyaVerilenCevap, cevapKey, cevapYazan, System.currentTimeMillis(), userID, konuKey)
                         ref.child("Forum").child(konuKey).child("cevaplar").child(cevapKey).setValue(cevapData)
+
+                        etCevapKonu.text!!.clear()
+                        
                         ref.child("Forum").child(konuKey).child("cevaplar").child(cevapKey).child("Foto").setValue("null").addOnCompleteListener {
-                            etCevapKonu.text!!.clear()
                             imgYorumFotosu.visibility = View.GONE
 
-
-
                             val snackbar = Snackbar.make(tumLayout, "Yorumun gönderildi...", Snackbar.LENGTH_LONG)
-                            val snackBarView = snackbar.view
-                            val textView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                            val textView = snackbar.view.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
                             textView.textSize = 16f
                             snackbar.show()
+
                             if (yorumFotoUri != null) {
                                 Picasso.get().load(R.drawable.photo).into(imgFoto)
-                                imgFoto.setPadding(16,16,16,16)
+                                imgFoto.setPadding(16, 16, 16, 16)
                                 var comperessed = BackgroundResimCompress()
                                 comperessed.execute(yorumFotoUri)
                                 yorumFotoUri = null
                             }
 
                         }.addOnFailureListener {
-                            val snackbar = Snackbar.make(tumLayout, "Yorum Gönderilemedi... ", Snackbar.LENGTH_LONG)
-                            snackbar.show()
+                            Snackbar.make(tumLayout, "Yorum Gönderilemedi... ", 1500).show()
                         }
 
                         //kullanıcının yaptığı yorumu profiline ekledık.
@@ -217,9 +215,9 @@ class KonuDetayActivity : AppCompatActivity() {
                         val dialog: Dialog = builder.create()
                         view.btnKaydet.setOnClickListener {
 
-                           ref.child("Forum").child(konuKey.toString()).child("konu_basligi").setValue(view.etKonuCevabi.text.toString())
+                            ref.child("Forum").child(konuKey.toString()).child("konu_basligi").setValue(view.etKonuCevabi.text.toString())
                                 .addOnCompleteListener {
-                                    Snackbar.make(tumLayout,"Başlık Değiştirildi",1000).show()
+                                    Snackbar.make(tumLayout, "Başlık Değiştirildi", 1000).show()
 
                                 }
 
@@ -360,7 +358,7 @@ class KonuDetayActivity : AppCompatActivity() {
                 UploadTask.storage.downloadUrl.addOnSuccessListener { itUri ->
                     val downloadUrl = itUri.toString()
                     ref.child("Forum").child(konuKey.toString()).child("cevaplar").child(cevapKey).child("Foto").setValue(downloadUrl)
-                  //  Toast.makeText(this@KonuDetayActivity, "Yorumun Gönderildi", Toast.LENGTH_SHORT).show()
+                    //  Toast.makeText(this@KonuDetayActivity, "Yorumun Gönderildi", Toast.LENGTH_SHORT).show()
                     CevaplarAdapter.notifyDataSetChanged()
                 }
             }
@@ -424,9 +422,9 @@ class KonuDetayActivity : AppCompatActivity() {
         if (requestCode == RESIM_SEC && resultCode == RESULT_OK && data!!.data != null) {
             yorumFotoUri = data.data
             imgFoto.visibility = View.VISIBLE
-            imgFoto.setPadding(0,4,0,4)
-           // imgFoto.setImageURI(yorumFotoUri)
-            Picasso.get().load(yorumFotoUri).resize(150,150).into(imgFoto)
+            imgFoto.setPadding(0, 4, 0, 4)
+            // imgFoto.setImageURI(yorumFotoUri)
+            Picasso.get().load(yorumFotoUri).resize(150, 150).into(imgFoto)
 
 
         }

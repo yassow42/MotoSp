@@ -32,7 +32,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mUser: FirebaseUser
     lateinit var userID: String
-    lateinit var userName: String
+    lateinit var userData: Users
     var ref = FirebaseDatabase.getInstance().reference
 
 
@@ -69,7 +69,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
             var view = LayoutInflater.from(this).inflate(R.layout.dialog_username_degistir, null)
             val builder = AlertDialog.Builder(this).setView(view)
-            view.etKullaniciAdi.setText(userName)
+            view.etKullaniciAdi.setText(userData.user_name)
 
 
             builder.setNegativeButton("İptal", DialogInterface.OnClickListener { dialog, which ->
@@ -205,8 +205,8 @@ class ProfileSettingActivity : AppCompatActivity() {
 
 
     @Subscribe(sticky = true)
-    internal fun onUserName(UserName: EventBusDataEvents.KullaniciAdi) {
-        userName = UserName.userName
+    internal fun onUserName(gelenUserData: EventBusDataEvents.KullaniciData) {
+        userData = gelenUserData.userData
     }
 
 
