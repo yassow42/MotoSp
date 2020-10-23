@@ -204,6 +204,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
 
+
     @Subscribe(sticky = true)
     internal fun onUserName(gelenUserData: EventBusDataEvents.KullaniciData) {
         userData = gelenUserData.userData

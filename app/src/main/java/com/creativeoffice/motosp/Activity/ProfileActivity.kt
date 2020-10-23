@@ -33,7 +33,7 @@ class ProfileActivity : AppCompatActivity() {
     private val ACTIVITY_NO = 4
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-    lateinit var userData:Users
+    lateinit var userData: Users
     var ref = FirebaseDatabase.getInstance().reference
 
 
@@ -64,67 +64,23 @@ class ProfileActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                if (p0.hasChildren()) {
-                    var imgURL = "default"
 
-                   // var users = p0.getValue(Users::class.java)!!
-                    var usersDetails = p0.child("user_details").getValue(UserDetails::class.java)!!
-                    imgURL = usersDetails.profile_picture.toString()
-
-                    tvKullaniciAdi.text = users.user_name.toString()
-                    tvMarkaProfile.text = usersDetails.kullanilan_motor_marka.toString()
-                    tvModelProfile.text = usersDetails.kullanilan_motor_model.toString()
-                    tvPuan.text = usersDetails.puan.toString()
-
-                    if (usersDetails.biyografi.isNullOrEmpty() || usersDetails.biyografi == "Default") {
-                        tvBiyografi.visibility = View.GONE
-                    } else{
-                        tvBiyografi.visibility = View.VISIBLE
-                        tvBiyografi.text = usersDetails.biyografi.toString()
+                if (p0.child("yorumlarim").hasChildren()) {
+                    var yorumlarim = ArrayList<ForumKonuData.cevaplar>()
+                    for (ds in p0.child("yorumlarim").children) {
+                        var gelenData = ds.getValue(ForumKonuData.cevaplar::class.java)!!
+                        yorumlarim.add(gelenData)
                     }
 
+                    rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                    //            rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                    //            rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
 
+                    val adapter = ProfilYorumlarimAdapter(this@ProfileActivity, yorumlarim, userID)
+                    rcYorumlarim.adapter = adapter
+                    rcTecrubelerim.adapter = adapter
+                    rcMotorlarim.adapter = adapter
 
-
-                    linearLayoutSehirIlce.visibility = View.GONE
-                    if (usersDetails.sehir.toString() != "yok") {
-                        tvAdresSehir.text = usersDetails.sehir.toString()
-                        linearLayoutSehirIlce.visibility = View.VISIBLE
-                    }
-                    if (usersDetails.ilce.toString() != "yok") {
-                        tvAdresIlce.text = usersDetails.ilce.toString()
-                        linearLayoutSehirIlce.visibility = View.VISIBLE
-                    }
-
-
-
-
-
-
-                    if (imgURL != "default") {
-                        Picasso.get().load(imgURL).into(circleProfileImage)
-                        mProgressBarActivityProfile.visibility = View.GONE
-                    } else mProgressBarActivityProfile.visibility = View.GONE
-
-
-
-                    if (p0.child("yorumlarim").hasChildren()) {
-                        var yorumlarim = ArrayList<ForumKonuData.cevaplar>()
-                        for (ds in p0.child("yorumlarim").children) {
-                            var gelenData = ds.getValue(ForumKonuData.cevaplar::class.java)!!
-                            yorumlarim.add(gelenData)
-                        }
-
-                        rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
-                        //            rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
-                        //            rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
-
-                        val adapter = ProfilYorumlarimAdapter(this@ProfileActivity, yorumlarim, userID)
-                        rcYorumlarim.adapter = adapter
-                        rcTecrubelerim.adapter = adapter
-                        rcMotorlarim.adapter = adapter
-
-                    }
 
                 }
             }
@@ -166,7 +122,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-
     private fun setupAuthListener() {
         mAuthListener = object : FirebaseAuth.AuthStateListener {
             override fun onAuthStateChanged(p0: FirebaseAuth) {
@@ -195,6 +150,44 @@ class ProfileActivity : AppCompatActivity() {
     @Subscribe(sticky = true)
     internal fun onUserName(gelenUserData: EventBusDataEvents.KullaniciData) {
         userData = gelenUserData.userData
+        var imgURL = "default"
+
+        var usersDetails = userData.user_details!!
+        imgURL = usersDetails.profile_picture.toString()
+
+        if (imgURL != "default") {
+            Picasso.get().load(imgURL).into(circleProfileImage)
+            mProgressBarActivityProfile.visibility = View.GONE
+        } else mProgressBarActivityProfile.visibility = View.GONE
+
+
+        tvKullaniciAdi.text = userData.user_name.toString()
+        tvMarkaProfile.text = usersDetails.kullanilan_motor_marka.toString()
+        tvModelProfile.text = usersDetails.kullanilan_motor_model.toString()
+        tvPuan.text = usersDetails.puan.toString()
+
+        if (usersDetails.biyografi.isNullOrEmpty() || usersDetails.biyografi == "Default") {
+            tvBiyografi.visibility = View.GONE
+        } else {
+            tvBiyografi.visibility = View.VISIBLE
+            tvBiyografi.text = usersDetails.biyografi.toString()
+        }
+
+
+        linearLayoutSehirIlce.visibility = View.GONE
+        if (usersDetails.sehir.toString() != "yok") {
+            tvAdresSehir.text = usersDetails.sehir.toString()
+            linearLayoutSehirIlce.visibility = View.VISIBLE
+        }
+        if (usersDetails.ilce.toString() != "yok") {
+            tvAdresIlce.text = usersDetails.ilce.toString()
+            linearLayoutSehirIlce.visibility = View.VISIBLE
+        }
+
+
+        //    userData = p0.getValue(Users::class.java)!!
+        //   var usersDetails = p0.child("user_details").getValue(UserDetails::class.java)!!
+
     }
 
 
