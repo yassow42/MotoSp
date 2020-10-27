@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.item_bayi_yorumlari.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import kotlin.Exception
@@ -59,20 +60,21 @@ class ProfileActivity : AppCompatActivity() {
         var userID = mAuth.currentUser!!.uid
 
 
-        ref.child("users").child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("users").child(userID).child("yorumlarim").limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
 
-                if (p0.child("yorumlarim").hasChildren()) {
+                if (p0.hasChildren()) {
                     var yorumlarim = ArrayList<ForumKonuData.cevaplar>()
-                    for (ds in p0.child("yorumlarim").children) {
+                    for (ds in p0.children) {
                         var gelenData = ds.getValue(ForumKonuData.cevaplar::class.java)!!
                         yorumlarim.add(gelenData)
                     }
+                    yorumlarim.sortByDescending { it.cevap_zamani }
 
-                    rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
+                    rcYorumlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, false)
                     //            rcMotorlarim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
                     //            rcTecrubelerim.layoutManager = LinearLayoutManager(this@ProfileActivity, LinearLayoutManager.VERTICAL, true)
 
@@ -194,6 +196,11 @@ class ProfileActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onDestroy() {

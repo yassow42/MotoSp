@@ -329,7 +329,7 @@ class KonuDetayActivity : AppCompatActivity() {
                 ref.child("Hatalar/KonuDetayActivity/BackgroundResimCompress").push().setValue(e.message)
             }
 
-            for (i in 1..6) {
+            for (i in 1..7) {
                 resimBytes = convertBitmaptoByte(myBitmap, 50 / i)
                 Log.e("Test", "sıkısmıs: " + resimBytes!!.size.toString())
             }

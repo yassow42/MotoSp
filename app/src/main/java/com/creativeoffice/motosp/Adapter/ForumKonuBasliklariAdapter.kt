@@ -119,11 +119,11 @@ class ForumKonuBasliklariAdapter(val myContext: Context, val konuList: ArrayList
                         userName.text = p0.child("user_name").value.toString()
                         var imgURL = p0.child("user_details").child("profile_picture").value.toString()
                         if (imgURL != "default") {
-                            Picasso.get().load(imgURL).placeholder(R.drawable.ic_profile).into(circleProfileImage)
+                            Picasso.get().load(imgURL).placeholder(R.drawable.ic_profile2).into(circleProfileImage)
                             progressBar.visibility = View.GONE
                         }else{
                             progressBar.visibility = View.GONE
-                            Picasso.get().load(R.drawable.ic_profile).placeholder(R.drawable.ic_profile).into(circleProfileImage)
+                            Picasso.get().load(R.drawable.ic_profile).placeholder(R.drawable.ic_profile2).into(circleProfileImage)
                         }
                     }
                 }
